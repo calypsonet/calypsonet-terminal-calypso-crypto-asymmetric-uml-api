@@ -1,6 +1,8 @@
 @startuml
 title
-    Calypsonet - calypsonet-terminal-calypso-crypto-asymmetric-java-api - 0.1.+ (2022-11-29)
+    <img:../assets/logo.png>
+
+    Terminal Calypso Crypto Asymmetric API 0.1.+ (2023-06-14)
 end title
 
 ' == THEME ==
@@ -51,7 +53,7 @@ hide <<grey>> stereotype
 
 ' == CONTENT ==
 
-package "org.calypsonet.terminal.calypso.crypto.asymmetric" as api {
+package "calypso.crypto.asymmetric" as api {
     +class "**final** CryptoAsymmetricApiProperties" as ApiProperties {
         +{static} **final** String VERSION
     }
@@ -79,6 +81,6 @@ AsymmetricCryptoTransactionManagerFactorySpi ..> AsymmetricCryptoTransactionMana
 ' == STYLE ==
 
 package api #C_GREY1 {}
-package spi #C_GREY2 {}
+package api.spi #C_GREY2 {}
 
 @enduml
