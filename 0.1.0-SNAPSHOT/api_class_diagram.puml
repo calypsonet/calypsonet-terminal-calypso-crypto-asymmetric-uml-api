@@ -1,6 +1,6 @@
 @startuml
 title
-    <img:../assets/logo.png>
+    <img:../assets/logo.svg{scale=0.2}>
 
     Terminal Calypso Crypto Asymmetric API 0.1.+ (2023-06-14)
 end title
@@ -16,6 +16,7 @@ end title
 !define C_GREY6 BDC3C7
 !define C_LINK 3498DB
 !define C_USE 27AE60
+!define C_THROW 2C3E50
 
 ' -- Styles that don't work with new version of plantuml --
 skinparam stereotypeABorderColor #A9DCDF
@@ -54,14 +55,14 @@ hide <<grey>> stereotype
 ' == CONTENT ==
 
 package "calypso.crypto.asymmetric" as api {
-    +class "**final** CryptoAsymmetricApiProperties" as ApiProperties {
+    +class "**final** AsymmetricCryptoApiProperties" as ApiProperties <<green>> {
         +{static} **final** String VERSION
     }
     package spi {
-        +interface AsymmetricCryptoTransactionManagerFactorySpi {
+        +interface AsymmetricCryptoTransactionManagerFactorySpi <<red>> {
             +AsymmetricCryptoTransactionManagerSpi createTransactionManager ()
         }
-        +interface AsymmetricCryptoTransactionManagerSpi {
+        +interface AsymmetricCryptoTransactionManagerSpi <<red>> {
             +byte[] extractCardPublicKey (byte[] cardCertificate)
             +void initTerminalSessionSignature (byte[] cardPublicKey)
             +void updateTerminalSessionSignature (byte[] cardApdu)
