@@ -2,7 +2,7 @@
 title
     <img:../assets/logo.svg{scale=0.2}>
 
-    Terminal Calypso Crypto Asymmetric API 0.2.+ (2023-11-06)
+    Terminal Calypso Crypto Asymmetric API 0.1.+ (2024-01-16)
 end title
 
 ' == THEME ==
@@ -63,7 +63,11 @@ package "calypso.crypto.asymmetric" as api {
             +AsymmetricCryptoCardTransactionManagerSpi createCardTransactionManager ()
         }
         +interface AsymmetricCryptoCardTransactionManagerSpi <<red>> {
-            +byte[] extractCardPublicKey (byte[] cardCertificate)
+            +byte[] createCardCert (byte[] allData, byte[] issuerKeyPriv) ???
+            +byte[] createCardCert (byte[] data, byte[] recoverableData, byte[] issuerKeyPriv) ???
+
+            +byte[] verifyCertificateWithRecoverableData (byte[] certificate, byte[] issuerPublicKey)
+
             +void initTerminalSessionSignature (byte[] cardPublicKey)
             +void updateTerminalSessionSignature (byte[] cardApdu)
             +boolean isCardSessionSignatureValid (byte[] cardSessionSignature)
