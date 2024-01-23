@@ -2,7 +2,7 @@
 title
     <img:../assets/logo.svg{scale=0.2}>
 
-    Terminal Calypso Crypto Asymmetric API 0.1.+ (2024-01-16)
+    Terminal Calypso Crypto Asymmetric API 0.1.+ (2024-01-23)
 end title
 
 ' == THEME ==
@@ -55,22 +55,59 @@ hide <<grey>> stereotype
 ' == CONTENT ==
 
 package "calypso.crypto.asymmetric" as api {
-    +class "**final** AsymmetricCryptoApiProperties" as ApiProperties <<green>> {
+    package "transaction" as transaction {
+        package spi {
+            +interface AsymmetricCryptoCardTransactionManagerFactorySpi <<red>> {
+                +AsymmetricCryptoCardTransactionManagerSpi createCardTransactionManager ()
+            }
+            +interface AsymmetricCryptoCardTransactionManagerSpi <<red>> {
+                +void initTerminalSessionSignature (CardPublicKeySpi cardPublicKey)
+                +void updateTerminalSessionSignature (byte[] cardApdu)
+                +boolean isCardSessionSignatureValid (byte[] cardSessionSignature)
+            }
+        }
+    }
+    +class "**final** AsymmetricCryptoCertificateApiProperties" as ApiProperties <<green>> {
         +{static} **final** String VERSION
     }
-    package spi {
-        +interface AsymmetricCryptoCardTransactionManagerFactorySpi <<red>> {
-            +AsymmetricCryptoCardTransactionManagerSpi createCardTransactionManager ()
+    package "certificate" as certificate {
+        +interface CardIdentifierApi {
+            +byte[] getAid ()
+            +byte[] getSerialNumber ()
         }
-        +interface AsymmetricCryptoCardTransactionManagerSpi <<red>> {
-            +byte[] createCardCert (byte[] allData, byte[] issuerKeyPriv) ???
-            +byte[] createCardCert (byte[] data, byte[] recoverableData, byte[] issuerKeyPriv) ???
-
-            +byte[] verifyCertificateWithRecoverableData (byte[] certificate, byte[] issuerPublicKey)
-
-            +void initTerminalSessionSignature (byte[] cardPublicKey)
-            +void updateTerminalSessionSignature (byte[] cardApdu)
-            +boolean isCardSessionSignatureValid (byte[] cardSessionSignature)
+        package spi {
+            together {
+            +interface PcaCertificateSpi <<red>> {
+                +PublicKeySpi extractPublicKey ()
+            }
+            +interface CaCertificateFactorySpi <<red>> {
+                +byte getCertificateType ()
+                +CaCertificateSpi createCertificate (byte[] cardOutputData)
+            }
+            +interface CaCertificateSpi <<red>> {
+                +byte[] getIssuerPublicKeyReference ()
+                +PublicKeySpi extractPublicKey (PublicKey issuerPublicKey)
+            }
+            +interface CardCertificateFactorySpi <<red>> {
+                +byte getCertificateType ()
+                +CardCertificateSpi createCertificate (byte[] cardOutputData, CardIdentifierApi cardIdentifierApi)
+            }
+            +interface CardCertificateSpi <<red>> {
+                +byte[] getIssuerPublicKeyReference ()
+                +CardPublicKeySpi extractPublicKey (PublicKey issuerPublicKey)
+            }
+            }
+            +interface PublicKeySpi <<red>> {
+                +PublicKey getValue ()
+                +byte[] getReference ()
+            }
+            +interface CardPublicKeySpi <<red>> {
+                +byte[] getRawValue ()
+            }
+        }
+        +class "<<Exception>>\n**final** InvalidCertificateException" as InvalidCertificateException <<green>> {
+            +InvalidCertificateException (String message)
+            +InvalidCertificateException (String message, Throwable cause)
         }
     }
 }
@@ -79,13 +116,30 @@ package "calypso.crypto.asymmetric" as api {
 
 AsymmetricCryptoCardTransactionManagerFactorySpi ..> AsymmetricCryptoCardTransactionManagerSpi #C_LINK : provide >
 
+AsymmetricCryptoCardTransactionManagerSpi ..> CardPublicKeySpi #C_USE : use >
+
+CaCertificateFactorySpi .right.> CaCertificateSpi #C_LINK : provide >
+CardCertificateFactorySpi .right.> CardCertificateSpi #C_LINK : provide >
+
+PcaCertificateSpi ..> PublicKeySpi #C_LINK : provide >
+CaCertificateSpi .right.> PublicKeySpi #C_LINK : provide >
+CardCertificateSpi .right.> CardPublicKeySpi #C_LINK : provide >
+
+CardCertificateFactorySpi ..> CardIdentifierApi #C_USE : use >
+
 ' == LAYOUT ==
 
-'CardSecuritySetting -[hidden]- CalypsoSam
+PcaCertificateSpi -[hidden]- CaCertificateSpi
+CaCertificateFactorySpi -[hidden]- CardCertificateFactorySpi
+CardIdentifierApi -[hidden]right- InvalidCertificateException
+AsymmetricCryptoCardTransactionManagerSpi -[hidden]- ApiProperties
 
 ' == STYLE ==
 
 package api #C_GREY1 {}
-package api.spi #C_GREY2 {}
+package api.transaction #C_GREY2 {}
+package api.transaction.spi #C_GREY3 {}
+package api.certificate #C_GREY2 {}
+package api.certificate.spi #C_GREY3 {}
 
 @enduml
