@@ -54,6 +54,12 @@ hide <<grey>> stereotype
 
 ' == CONTENT ==
 
+legend top
+    __Colors legend__ :
+    * __External public API references__ :
+    ** <back:yellow>java.security</back>
+end legend
+
 package "calypso.crypto.asymmetric" as api {
     package "transaction" as transaction {
         package spi {
@@ -86,7 +92,7 @@ package "calypso.crypto.asymmetric" as api {
             }
             +interface CaCertificateSpi <<red>> {
                 +byte[] getIssuerPublicKeyReference ()
-                +PublicKeySpi extractPublicKey (PublicKey issuerPublicKey)
+                +PublicKeySpi extractPublicKey (<Back:Yellow>PublicKey</Back> issuerPublicKey)
             }
             +interface CardCertificateFactorySpi <<red>> {
                 +byte getCertificateType ()
@@ -94,11 +100,11 @@ package "calypso.crypto.asymmetric" as api {
             }
             +interface CardCertificateSpi <<red>> {
                 +byte[] getIssuerPublicKeyReference ()
-                +CardPublicKeySpi extractPublicKey (PublicKey issuerPublicKey)
+                +CardPublicKeySpi extractPublicKey (<Back:Yellow>PublicKey</Back> issuerPublicKey)
             }
             }
             +interface PublicKeySpi <<red>> {
-                +PublicKey getValue ()
+                +<back:yellow>PublicKey</back> getValue ()
                 +byte[] getReference ()
             }
             +interface CardPublicKeySpi <<red>> {
