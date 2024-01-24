@@ -69,7 +69,7 @@ package "calypso.crypto.asymmetric" as api {
             +interface AsymmetricCryptoCardTransactionManagerSpi <<red>> {
                 +void initSession (CardPublicKeySpi cardPublicKey)
                 +void updateSession (byte[] cardApdu)
-                +boolean verifySession (byte[] cardSessionSignature)
+                +boolean isSessionValid (byte[] cardSessionSignature)
             }
         }
     }
