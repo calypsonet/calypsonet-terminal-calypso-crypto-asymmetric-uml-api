@@ -84,7 +84,7 @@ package "calypso.crypto.asymmetric" as api {
         package spi {
             together {
             +interface PcaCertificateSpi <<red>> {
-                +PublicKeySpi extractPublicKey ()
+                +PublicKeySpi getPublicKey ()
             }
             +interface CaCertificateFactorySpi <<red>> {
                 +byte getCertificateType ()
@@ -92,7 +92,7 @@ package "calypso.crypto.asymmetric" as api {
             }
             +interface CaCertificateSpi <<red>> {
                 +byte[] getIssuerPublicKeyReference ()
-                +PublicKeySpi extractPublicKey (<Back:Yellow>PublicKey</Back> issuerPublicKey)
+                +PublicKeySpi getPublicKey (<Back:Yellow>PublicKey</Back> issuerPublicKey)
             }
             +interface CardCertificateFactorySpi <<red>> {
                 +byte getCertificateType ()
@@ -100,7 +100,7 @@ package "calypso.crypto.asymmetric" as api {
             }
             +interface CardCertificateSpi <<red>> {
                 +byte[] getIssuerPublicKeyReference ()
-                +CardPublicKeySpi extractPublicKey (<Back:Yellow>PublicKey</Back> issuerPublicKey)
+                +CardPublicKeySpi getPublicKey (<Back:Yellow>PublicKey</Back> issuerPublicKey)
             }
             }
             +interface PublicKeySpi <<red>> {
