@@ -2,7 +2,7 @@
 title
     <img:../assets/logo.svg{scale=0.2}>
 
-    Terminal Calypso Crypto Asymmetric API 0.2.+ (2024-01-24)
+    Terminal Calypso Crypto Asymmetric API 0.2.+ (2024-02-09)
 end title
 
 ' == THEME ==
@@ -67,13 +67,13 @@ package "calypso.crypto.asymmetric" as api {
                 +AsymmetricCryptoCardTransactionManagerSpi createCardTransactionManager ()
             }
             +interface AsymmetricCryptoCardTransactionManagerSpi <<red>> {
-                +void initSession (CardPublicKeySpi cardPublicKey)
-                +void updateSession (byte[] cardApdu)
-                +boolean isSessionValid (byte[] cardSessionSignature)
+                +void initTerminalPkiSession (CardPublicKeySpi cardPublicKey)
+                +void updateTerminalPkiSession (byte[] cardApdu)
+                +boolean isCardPkiSessionValid (byte[] cardSessionSignature)
             }
         }
     }
-    +class "**final** AsymmetricCryptoCertificateApiProperties" as ApiProperties <<green>> {
+    +class "**final** AsymmetricCryptoApiProperties" as ApiProperties <<green>> {
         +{static} **final** String VERSION
     }
     package "certificate" as certificate {
@@ -86,17 +86,17 @@ package "calypso.crypto.asymmetric" as api {
             +interface PcaCertificateSpi <<red>> {
                 +PublicKeySpi checkCertificateAndGetPublicKey ()
             }
-            +interface CaCertificateFactorySpi <<red>> {
+            +interface CaCertificateParserSpi <<red>> {
                 +byte getCertificateType ()
-                +CaCertificateSpi createCertificate (byte[] cardOutputData)
+                +CaCertificateSpi parseCertificate (byte[] cardOutputData)
             }
             +interface CaCertificateSpi <<red>> {
                 +byte[] getIssuerPublicKeyReference ()
                 +PublicKeySpi checkCertificateAndGetPublicKey (<Back:Yellow>PublicKey</Back> issuerPublicKey)
             }
-            +interface CardCertificateFactorySpi <<red>> {
+            +interface CardCertificateParserSpi <<red>> {
                 +byte getCertificateType ()
-                +CardCertificateSpi createCertificate (byte[] cardOutputData, CardIdentifierApi cardIdentifierApi)
+                +CardCertificateSpi parseCertificate (byte[] cardOutputData, CardIdentifierApi cardIdentifierApi)
             }
             +interface CardCertificateSpi <<red>> {
                 +byte[] getIssuerPublicKeyReference ()
@@ -124,19 +124,19 @@ AsymmetricCryptoCardTransactionManagerFactorySpi ..> AsymmetricCryptoCardTransac
 
 AsymmetricCryptoCardTransactionManagerSpi ..> CardPublicKeySpi #C_USE : use >
 
-CaCertificateFactorySpi .right.> CaCertificateSpi #C_LINK : provide >
-CardCertificateFactorySpi .right.> CardCertificateSpi #C_LINK : provide >
+CaCertificateParserSpi .right.> CaCertificateSpi #C_LINK : provide >
+CardCertificateParserSpi .right.> CardCertificateSpi #C_LINK : provide >
 
 PcaCertificateSpi ..> PublicKeySpi #C_LINK : provide >
 CaCertificateSpi .right.> PublicKeySpi #C_LINK : provide >
 CardCertificateSpi .right.> CardPublicKeySpi #C_LINK : provide >
 
-CardCertificateFactorySpi ..> CardIdentifierApi #C_USE : use >
+CardCertificateParserSpi ..> CardIdentifierApi #C_USE : use >
 
 ' == LAYOUT ==
 
 PcaCertificateSpi -[hidden]- CaCertificateSpi
-CaCertificateFactorySpi -[hidden]- CardCertificateFactorySpi
+CaCertificateParserSpi -[hidden]- CardCertificateParserSpi
 CardIdentifierApi -[hidden]right- CertificateException
 AsymmetricCryptoCardTransactionManagerSpi -[hidden]- ApiProperties
 
