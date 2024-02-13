@@ -2,7 +2,7 @@
 title
     <img:../assets/logo.svg{scale=0.2}>
 
-    Terminal Calypso Crypto Asymmetric API 0.2.+ (2024-02-09)
+    Terminal Calypso Crypto Asymmetric API 0.2.+ (2024-02-12)
 end title
 
 ' == THEME ==
@@ -72,6 +72,10 @@ package "calypso.crypto.asymmetric" as api {
                 +boolean isCardPkiSessionValid (byte[] cardSessionSignature)
             }
         }
+        +class "<<Exception>>\n**final** InvalidCardPublicKeyException" as InvalidCardPublicKeyException <<green>> {
+            +InvalidCardPublicKeyException (String message)
+            +InvalidCardPublicKeyException (String message, Throwable cause)
+        }
     }
     +class "**final** AsymmetricCryptoApiProperties" as ApiProperties <<green>> {
         +{static} **final** String VERSION
@@ -138,7 +142,8 @@ CardCertificateParserSpi ..> CardIdentifierApi #C_USE : use >
 PcaCertificateSpi -[hidden]- CaCertificateSpi
 CaCertificateParserSpi -[hidden]- CardCertificateParserSpi
 CardIdentifierApi -[hidden]right- CertificateException
-AsymmetricCryptoCardTransactionManagerSpi -[hidden]- ApiProperties
+AsymmetricCryptoCardTransactionManagerSpi -[hidden]- InvalidCardPublicKeyException
+InvalidCardPublicKeyException -[hidden]- ApiProperties
 
 ' == STYLE ==
 
