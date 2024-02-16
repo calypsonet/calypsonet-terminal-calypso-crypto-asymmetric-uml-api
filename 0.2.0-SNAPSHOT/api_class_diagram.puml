@@ -2,7 +2,7 @@
 title
     <img:../assets/logo.svg{scale=0.2}>
 
-    Terminal Calypso Crypto Asymmetric API 0.2.+ (2024-02-12)
+    Terminal Calypso Crypto Asymmetric API 0.2.+ (2024-02-16)
 end title
 
 ' == THEME ==
@@ -88,7 +88,7 @@ package "calypso.crypto.asymmetric" as api {
         package spi {
             together {
             +interface PcaCertificateSpi <<red>> {
-                +PublicKeySpi checkCertificateAndGetPublicKey ()
+                +CaCertificateContentSpi checkCertificateAndGetContent ()
             }
             +interface CaCertificateParserSpi <<red>> {
                 +byte getCertificateType ()
@@ -96,7 +96,7 @@ package "calypso.crypto.asymmetric" as api {
             }
             +interface CaCertificateSpi <<red>> {
                 +byte[] getIssuerPublicKeyReference ()
-                +PublicKeySpi checkCertificateAndGetPublicKey (<Back:Yellow>PublicKey</Back> issuerPublicKey)
+                +CaCertificateContentSpi checkCertificateAndGetContent (CaCertificateContentSpi issuerCertificateContent)
             }
             +interface CardCertificateParserSpi <<red>> {
                 +byte getCertificateType ()
@@ -104,12 +104,19 @@ package "calypso.crypto.asymmetric" as api {
             }
             +interface CardCertificateSpi <<red>> {
                 +byte[] getIssuerPublicKeyReference ()
-                +CardPublicKeySpi checkCertificateAndGetPublicKey (<Back:Yellow>PublicKey</Back> issuerPublicKey)
+                +CardPublicKeySpi checkCertificateAndGetPublicKey (CaCertificateContentSpi issuerCertificateContent)
             }
             }
-            +interface PublicKeySpi <<red>> {
-                +<back:yellow>PublicKey</back> getValue ()
-                +byte[] getReference ()
+            +interface CaCertificateContentSpi <<red>> {
+                +<back:yellow>PublicKey</back> getPublicKeyValue ()
+                +byte[] getPublicKeyReference ()
+
+                +boolean isAidCheckRequested ()
+                +boolean isAidTruncated ()
+                +byte[] getAid ()
+
+                +boolean isCaCertificatesAuthenticationAllowed ()
+                +boolean isCardCertificatesAuthenticationAllowed ()
             }
             +interface CardPublicKeySpi <<red>> {
                 +byte[] getRawValue ()
@@ -131,8 +138,12 @@ AsymmetricCryptoCardTransactionManagerSpi ..> CardPublicKeySpi #C_USE : use >
 CaCertificateParserSpi .right.> CaCertificateSpi #C_LINK : provide >
 CardCertificateParserSpi .right.> CardCertificateSpi #C_LINK : provide >
 
-PcaCertificateSpi ..> PublicKeySpi #C_LINK : provide >
-CaCertificateSpi .right.> PublicKeySpi #C_LINK : provide >
+PcaCertificateSpi ..> CaCertificateContentSpi #C_LINK : provide >
+
+CaCertificateSpi .right.> CaCertificateContentSpi #C_USE : use >
+CaCertificateSpi .right.> CaCertificateContentSpi #C_LINK : provide >
+
+CardCertificateSpi .up.> CaCertificateContentSpi #C_USE : use >
 CardCertificateSpi .right.> CardPublicKeySpi #C_LINK : provide >
 
 CardCertificateParserSpi ..> CardIdentifierApi #C_USE : use >
