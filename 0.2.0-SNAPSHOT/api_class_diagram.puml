@@ -108,7 +108,7 @@ package "calypso.crypto.asymmetric" as api {
             }
             }
             +interface CaCertificateContentSpi <<red>> {
-                +<back:yellow>PublicKey</back> getPublicKeyValue ()
+                +<back:yellow>PublicKey</back> getPublicKey ()
                 +byte[] getPublicKeyReference ()
 
                 +boolean isAidCheckRequested ()
