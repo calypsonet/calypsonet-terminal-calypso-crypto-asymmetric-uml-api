@@ -2,7 +2,7 @@
 title
     <img:../assets/logo.svg{scale=0.2}>
 
-    Terminal Calypso Crypto Asymmetric API 0.2.+ (2024-02-16)
+    Terminal Calypso Crypto Asymmetric API 0.2.+ (2024-02-22)
 end title
 
 ' == THEME ==
@@ -100,16 +100,19 @@ package "calypso.crypto.asymmetric" as api {
             }
             +interface CardCertificateParserSpi <<red>> {
                 +byte getCertificateType ()
-                +CardCertificateSpi parseCertificate (byte[] cardOutputData, CardIdentifierApi cardIdentifierApi)
+                +CardCertificateSpi parseCertificate (byte[] cardOutputData)
             }
             +interface CardCertificateSpi <<red>> {
                 +byte[] getIssuerPublicKeyReference ()
-                +CardPublicKeySpi checkCertificateAndGetPublicKey (CaCertificateContentSpi issuerCertificateContent)
+                +CardPublicKeySpi checkCertificateAndGetPublicKey (CaCertificateContentSpi issuerCertificateContent, CardIdentifierApi cardIdentifierApi)
             }
             }
             +interface CaCertificateContentSpi <<red>> {
                 +<back:yellow>PublicKey</back> getPublicKey ()
                 +byte[] getPublicKeyReference ()
+
+                +Date getStartDate ()
+                +Date getEndDate ()
 
                 +boolean isAidCheckRequested ()
                 +boolean isAidTruncated ()
@@ -146,13 +149,13 @@ CaCertificateSpi .right.> CaCertificateContentSpi #C_LINK : provide >
 CardCertificateSpi .up.> CaCertificateContentSpi #C_USE : use >
 CardCertificateSpi .right.> CardPublicKeySpi #C_LINK : provide >
 
-CardCertificateParserSpi ..> CardIdentifierApi #C_USE : use >
+CardCertificateSpi ..> CardIdentifierApi #C_USE : use >
 
 ' == LAYOUT ==
 
 PcaCertificateSpi -[hidden]- CaCertificateSpi
 CaCertificateParserSpi -[hidden]- CardCertificateParserSpi
-CardIdentifierApi -[hidden]right- CertificateException
+CardCertificateParserSpi -[hidden]- CertificateException
 AsymmetricCryptoCardTransactionManagerSpi -[hidden]- InvalidCardPublicKeyException
 InvalidCardPublicKeyException -[hidden]- ApiProperties
 
