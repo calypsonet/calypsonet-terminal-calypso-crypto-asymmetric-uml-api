@@ -122,8 +122,6 @@ package "calypso.crypto.asymmetric" as api {
 
                 +boolean isCaCertificatesAuthenticationAllowed ()
                 +boolean isCardCertificatesAuthenticationAllowed ()
-
-                +boolean isTestCertificate ()
             }
             +interface CardPublicKeySpi <<red>> {
                 +byte[] getRawValue ()
