@@ -2,7 +2,7 @@
 title
     <img:../assets/logo.svg{scale=0.2}>
 
-    Terminal Calypso Crypto Asymmetric API 0.2.+ (2024-03-08)
+    Terminal Calypso Crypto Asymmetric API 0.2.+ (2024-03-15)
 end title
 
 ' == THEME ==
@@ -113,8 +113,8 @@ package "calypso.crypto.asymmetric" as api {
                 +<back:yellow>PublicKey</back> getPublicKey ()
                 +byte[] getPublicKeyReference ()
 
-                +Date getStartDate ()
-                +Date getEndDate ()
+                +long getStartDate ()
+                +long getEndDate ()
 
                 +boolean isAidCheckRequested ()
                 +boolean isAidTruncated ()
