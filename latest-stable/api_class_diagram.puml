@@ -1,0 +1,170 @@
+@startuml
+title
+    <img:../assets/logo.svg{scale=0.2}>
+
+    Terminal Calypso Crypto Asymmetric API 0.2.+ (2024-03-15)
+end title
+
+' == THEME ==
+
+'Couleurs issues de : https://htmlcolorcodes.com/fr/tableau-de-couleur/tableau-de-couleur-design-plat/
+!define C_GREY1 F8F9F9
+!define C_GREY2 F2F3F4
+!define C_GREY3 E5E7E9
+!define C_GREY4 D7DBDD
+!define C_GREY5 CACFD2
+!define C_GREY6 BDC3C7
+!define C_LINK 3498DB
+!define C_USE 27AE60
+!define C_THROW 2C3E50
+
+' -- Styles that don't work with new version of plantuml --
+skinparam stereotypeABorderColor #A9DCDF
+skinparam stereotypeIBorderColor #B4A7E5
+skinparam stereotypeCBorderColor #ADD1B2
+skinparam stereotypeEBorderColor #EB93DF
+' -- END --
+
+skinparam ClassBorderThickness 2
+skinparam ArrowThickness 2
+
+' Yellow
+skinparam ClassBackgroundColor #FEFECE
+skinparam ClassBorderColor #D4AC0D
+' Red
+skinparam ClassBackgroundColor<<red>> #FDEDEC
+skinparam ClassBorderColor<<red>> #E74C3C
+hide <<red>> stereotype
+' Purple
+skinparam ClassBackgroundColor<<purple>> #F4ECF7
+skinparam ClassBorderColor<<purple>> #8E44AD
+hide <<purple>> stereotype
+' blue
+skinparam ClassBackgroundColor<<blue>> #EBF5FB
+skinparam ClassBorderColor<<blue>> #3498DB
+hide <<blue>> stereotype
+' Green
+skinparam ClassBackgroundColor<<green>> #E9F7EF
+skinparam ClassBorderColor<<green>> #27AE60
+hide <<green>> stereotype
+' Grey
+skinparam ClassBackgroundColor<<grey>> #EAECEE
+skinparam ClassBorderColor<<grey>> #2C3E50
+hide <<grey>> stereotype
+
+' == CONTENT ==
+
+legend top
+    __Colors legend__ :
+    * __External public API references__ :
+    ** <back:yellow>java.security</back>
+end legend
+
+package "calypso.crypto.asymmetric" as api {
+    package "transaction" as transaction {
+        package spi {
+            +interface AsymmetricCryptoCardTransactionManagerFactorySpi <<red>> {
+                +AsymmetricCryptoCardTransactionManagerSpi createCardTransactionManager ()
+            }
+            +interface AsymmetricCryptoCardTransactionManagerSpi <<red>> {
+                +void initTerminalPkiSession (CardPublicKeySpi cardPublicKey)
+                +void updateTerminalPkiSession (byte[] cardApdu)
+                +boolean isCardPkiSessionValid (byte[] cardSessionSignature)
+            }
+        }
+    }
+    +class "<<Exception>>\n**final** AsymmetricCryptoException" as AsymmetricCryptoException <<green>> {
+        +AsymmetricCryptoException (String message)
+        +AsymmetricCryptoException (String message, Throwable cause)
+    }
+    +class "**final** AsymmetricCryptoApiProperties" as ApiProperties <<green>> {
+        +{static} **final** String VERSION
+    }
+    package "certificate" as certificate {
+        package spi {
+            together {
+            +interface PcaCertificateSpi <<red>> {
+                +CaCertificateContentSpi checkCertificateAndGetContent ()
+            }
+            +interface CaCertificateParserSpi <<red>> {
+                +byte getCertificateType ()
+
+                +CaCertificateSpi parseCertificate (byte[] cardOutputData)
+            }
+            +interface CaCertificateSpi <<red>> {
+                +byte[] getIssuerPublicKeyReference ()
+
+                +CaCertificateContentSpi checkCertificateAndGetContent (CaCertificateContentSpi issuerCertificateContent)
+            }
+            +interface CardCertificateParserSpi <<red>> {
+                +byte getCertificateType ()
+
+                +CardCertificateSpi parseCertificate (byte[] cardOutputData)
+            }
+            +interface CardCertificateSpi <<red>> {
+                +byte[] getIssuerPublicKeyReference ()
+                +byte[] getCardAid ()
+                +byte[] getCardSerialNumber ()
+
+                +CardPublicKeySpi checkCertificateAndGetPublicKey (CaCertificateContentSpi issuerCertificateContent)
+            }
+            }
+            +interface CaCertificateContentSpi <<red>> {
+                +<back:yellow>PublicKey</back> getPublicKey ()
+                +byte[] getPublicKeyReference ()
+
+                +long getStartDate ()
+                +long getEndDate ()
+
+                +boolean isAidCheckRequested ()
+                +boolean isAidTruncated ()
+                +byte[] getAid ()
+
+                +boolean isCaCertificatesAuthenticationAllowed ()
+                +boolean isCardCertificatesAuthenticationAllowed ()
+            }
+            +interface CardPublicKeySpi <<red>> {
+                +byte[] getRawValue ()
+            }
+        }
+        +class "<<Exception>>\n**final** CertificateValidationException" as CertificateValidationException <<green>> {
+            +CertificateValidationException (String message)
+            +CertificateValidationException (String message, Throwable cause)
+        }
+    }
+}
+
+' Associations
+
+AsymmetricCryptoCardTransactionManagerFactorySpi ..> AsymmetricCryptoCardTransactionManagerSpi #C_LINK : provide >
+
+AsymmetricCryptoCardTransactionManagerSpi ..> CardPublicKeySpi #C_USE : use >
+
+CaCertificateParserSpi .right.> CaCertificateSpi #C_LINK : provide >
+CardCertificateParserSpi .right.> CardCertificateSpi #C_LINK : provide >
+
+PcaCertificateSpi ..> CaCertificateContentSpi #C_LINK : provide >
+
+CaCertificateSpi .right.> CaCertificateContentSpi #C_USE : use >
+CaCertificateSpi .right.> CaCertificateContentSpi #C_LINK : provide >
+
+CardCertificateSpi .up.> CaCertificateContentSpi #C_USE : use >
+CardCertificateSpi .right.> CardPublicKeySpi #C_LINK : provide >
+
+' == LAYOUT ==
+
+PcaCertificateSpi -[hidden]- CaCertificateSpi
+CaCertificateParserSpi -[hidden]- CardCertificateParserSpi
+CardCertificateSpi -[hidden]- CertificateValidationException
+AsymmetricCryptoCardTransactionManagerSpi -[hidden]- AsymmetricCryptoException
+AsymmetricCryptoException -[hidden]- ApiProperties
+
+' == STYLE ==
+
+package api #C_GREY1 {}
+package api.transaction #C_GREY2 {}
+package api.transaction.spi #C_GREY3 {}
+package api.certificate #C_GREY2 {}
+package api.certificate.spi #C_GREY3 {}
+
+@enduml
