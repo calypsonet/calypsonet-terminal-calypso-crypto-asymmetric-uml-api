@@ -1,4 +1,4 @@
-= Terminal Calypso Crypto Asymmetric API -- Technical Specification
+= Terminal Calypso Crypto Asymmetric API -- Specification
 Calypso Networks Association <https://calypsonet.org>
 v0.2.0-SNAPSHOT, {docdate}
 :doctype: book
@@ -45,23 +45,18 @@ certification chain associated with PKI-enabled Calypso cards.
 [discrete]
 == Document Status
 
-[cols="1h,3", grid=rows, frame=ends]
+[cols="1h,3", grid=rows, frame=all]
 |===
 | Specification ID    | {spec-id}
 | Version             | {spec-version}
-| Status              | Working Draft
+| Status              | Working Draft -- submitted to the CNA TC Terminal for validation
 | Editor              | {organization}
 | Reference license   | Eclipse Public License -- v 2.0 (EPL-2.0)
 |===
 
-[discrete]
-== Revision History
-
-[cols="1,2,2,5", options="header"]
-|===
-| Version | Date | Editor | Description
-| {spec-version} | _TBD_ | CNA  | _Initial working draft._
-|===
+NOTE: The present document specifies the {spec-version} of the {spec-name} as an *initial release*, without
+historical reference to earlier drafts. It defines a single, coherent baseline against which conforming
+implementations are evaluated.
 
 // =============================================================================
 == Introduction
@@ -234,7 +229,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [[type_AsymmetricCryptoApiProperties]]
 ==== AsymmetricCryptoApiProperties
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Final class
 | Package  | `calypso.crypto.asymmetric`
@@ -256,7 +251,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [[type_CaCertificateContentSpi]]
 ==== CaCertificateContentSpi
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.certificate.spi`
@@ -266,7 +261,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 
 ===== Operations
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getPublicKey() -> publicKey`
 | Since       | 0.2.0
@@ -275,7 +270,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getPublicKeyReference() -> byte array`
 | Since       | 0.2.0
@@ -284,7 +279,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getStartDate() -> long`
 | Since       | 0.2.0
@@ -295,7 +290,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getEndDate() -> long`
 | Since       | 0.2.0
@@ -304,7 +299,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `isAidCheckRequested() -> boolean`
 | Since       | 0.2.0
@@ -313,7 +308,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `isAidTruncated() -> boolean`
 | Since       | 0.2.0
@@ -322,7 +317,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getAid() -> byte array`
 | Since       | 0.2.0
@@ -331,7 +326,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `isCaCertificatesAuthenticationAllowed() -> boolean`
 | Since       | 0.2.0
@@ -340,7 +335,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `isCardCertificatesAuthenticationAllowed() -> boolean`
 | Since       | 0.2.0
@@ -352,7 +347,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [[type_CaCertificateSpi]]
 ==== CaCertificateSpi
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.certificate.spi`
@@ -362,7 +357,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 
 ===== Operations
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getIssuerPublicKeyReference() -> byte array`
 | Since       | 0.2.0
@@ -371,7 +366,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature
 | `checkCertificateAndGetContent(issuerCertificateContent: CaCertificateContentSpi) -> CaCertificateContentSpi`
@@ -390,7 +385,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [[type_CaCertificateParserSpi]]
 ==== CaCertificateParserSpi
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.certificate.spi`
@@ -400,7 +395,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 
 ===== Operations
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getCertificateType() -> byte`
 | Since       | 0.2.0
@@ -409,7 +404,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `parseCertificate(cardOutputData: byte array) -> CaCertificateSpi`
 | Since       | 0.2.0
@@ -422,7 +417,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [[type_PcaCertificateSpi]]
 ==== PcaCertificateSpi
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.certificate.spi`
@@ -432,7 +427,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 
 ===== Operations
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `checkCertificateAndGetContent() -> CaCertificateContentSpi`
 | Since       | 0.2.0
@@ -448,7 +443,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [[type_CardCertificateSpi]]
 ==== CardCertificateSpi
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.certificate.spi`
@@ -458,7 +453,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 
 ===== Operations
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getIssuerPublicKeyReference() -> byte array`
 | Since       | 0.2.0
@@ -467,7 +462,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getCardAid() -> byte array`
 | Since       | 0.2.0
@@ -476,7 +471,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getCardSerialNumber() -> byte array`
 | Since       | 0.2.0
@@ -485,7 +480,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature
 | `checkCertificateAndGetPublicKey(issuerCertificateContent: CaCertificateContentSpi) -> CardPublicKeySpi`
@@ -501,7 +496,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [[type_CardCertificateParserSpi]]
 ==== CardCertificateParserSpi
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.certificate.spi`
@@ -511,7 +506,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 
 ===== Operations
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getCertificateType() -> byte`
 | Since       | 0.2.0
@@ -520,7 +515,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `parseCertificate(cardOutputData: byte array) -> CardCertificateSpi`
 | Since       | 0.2.0
@@ -533,7 +528,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [[type_CardPublicKeySpi]]
 ==== CardPublicKeySpi
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.certificate.spi`
@@ -543,7 +538,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 
 ===== Operations
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getRawValue() -> byte array`
 | Since       | 0.2.0
@@ -557,7 +552,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [[type_AsymmetricCryptoCardTransactionManagerFactorySpi]]
 ==== AsymmetricCryptoCardTransactionManagerFactorySpi
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.transaction.spi`
@@ -567,7 +562,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 
 ===== Operations
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `createCardTransactionManager() -> AsymmetricCryptoCardTransactionManagerSpi`
 | Since       | 0.2.0
@@ -579,7 +574,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [[type_AsymmetricCryptoCardTransactionManagerSpi]]
 ==== AsymmetricCryptoCardTransactionManagerSpi
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.transaction.spi`
@@ -589,7 +584,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 
 ===== Operations
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `initTerminalPkiSession(cardPublicKey: CardPublicKeySpi) -> void`
 | Since       | 0.2.0
@@ -598,7 +593,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | `AsymmetricCryptoException` -- if the provided public key value is not compliant with the current elliptic curve, or if an error occurs during the initialisation.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `updateTerminalPkiSession(cardApdu: byte array) -> void`
 | Since       | 0.2.0
@@ -611,7 +606,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | `AsymmetricCryptoException` -- if an error occurs while updating the session.
 |===
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `isCardPkiSessionValid(cardSessionSignature: byte array) -> boolean`
 | Since       | 0.2.0
@@ -631,7 +626,7 @@ raise them.
 [[type_AsymmetricCryptoException]]
 === AsymmetricCryptoException
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Checked exception
 | Package  | `calypso.crypto.asymmetric`
@@ -647,7 +642,7 @@ raise them.
 [[type_CertificateValidationException]]
 === CertificateValidationException
 
-[cols="1h,4", grid=rows, frame=ends]
+[cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Checked exception
 | Package  | `calypso.crypto.asymmetric.certificate`
