@@ -213,8 +213,6 @@ TCCA --> Mod : implemented by
 
 The following UML class diagram provides a visual representation of the types and relationships defined by this specification:
 
-
-
 [plantuml, target="api_class_diagram", format="svg"]
 ----
 include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class diagram, align=center]
@@ -634,11 +632,6 @@ raise them.
 | Purpose  | Indicates that an error occurred when processing an asymmetric cryptographic operation.
 |===
 
-===== Constructors
-
-* `AsymmetricCryptoException(message: string)` -- _since 0.2.0_.
-* `AsymmetricCryptoException(message: string, cause: throwable)` -- _since 0.2.0_.
-
 [[type_CertificateValidationException]]
 === CertificateValidationException
 
@@ -649,11 +642,6 @@ raise them.
 | Since    | 0.2.0
 | Purpose  | Indicates an issue encountered during the certificate validation -- e.g. an invalid signature or incorrect metadata values.
 |===
-
-===== Constructors
-
-* `CertificateValidationException(message: string)` -- _since 0.2.0_.
-* `CertificateValidationException(message: string, cause: throwable)` -- _since 0.2.0_.
 
 // =============================================================================
 [[sec_behaviours]]
@@ -675,6 +663,4 @@ raise them.
 
 Copyright (c) {organization}, https://calypsonet.org.
 
-This specification is distributed under the terms of the *Eclipse Public License -- v 2.0* (EPL-2.0). A copy of the
-license is available in the link:LICENSE[`LICENSE`] file alongside this document and at
-https://www.eclipse.org/legal/epl-2.0/.
+This specification is distributed under the terms of the *Eclipse Public License -- v 2.0* (EPL-2.0). See https://www.eclipse.org/legal/epl-2.0/ for the license text.
