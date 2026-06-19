@@ -234,7 +234,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 | Kind     | Final class
 | Package  | `calypso.crypto.asymmetric`
-| Since    | 0.2.0
+| Since    | 0.2
 | Purpose  | Exposes the immutable properties of the {spec-name}.
 |===
 
@@ -244,7 +244,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 | Name      | Type     | Since  | Description
 
-| `VERSION` | `string` | 0.2.0  | String representation of the version of the API implemented by the conforming binding (e.g. `"0.2"`).
+| `VERSION` | `string` | 0.2  | String representation of the version of the API implemented by the conforming binding (e.g. `"0.2"`).
 |===
 
 === Package calypso.crypto.asymmetric.certificate.spi
@@ -256,7 +256,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2.0
+| Since    | 0.2
 | Purpose  | Exposes the content of a CA certificate that has been parsed and verified by the crypto module.
 |===
 
@@ -265,7 +265,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getPublicKey() -> publicKey`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Returns the public key carried by the certificate.
 | Returns     | A non-`null` public-key handle.
 | Throws      | None.
@@ -274,7 +274,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getPublicKeyReference() -> byte array`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Returns the reference of the public key as a `byte array`. The reference is the stable identifier used by other certificates to designate this key as their issuer.
 | Returns     | A non-empty `byte array`.
 | Throws      | None.
@@ -283,7 +283,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getStartDate() -> long`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description
 | Returns the validity start date of the certificate as a `long` formatted `0xYYYYMMDD` (four-digit year, two-digit
   month, two-digit day). Returns `0` if the validity start date is not defined or available.
@@ -294,7 +294,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getEndDate() -> long`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Returns the validity end date of the certificate as a `long` formatted `0xYYYYMMDD`. Returns `0` if the validity end date is not defined or available.
 | Returns     | The end date, or `0` when not defined.
 | Throws      | None.
@@ -303,7 +303,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `isAidCheckRequested() -> boolean`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Indicates whether the AID associated with the certificate MUST be checked.
 | Returns     | `true` if the AID has to be checked, `false` otherwise.
 | Throws      | None.
@@ -312,7 +312,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `isAidTruncated() -> boolean`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Indicates whether the AID carried by the certificate is truncated.
 | Returns     | `true` if the AID is truncated, `false` otherwise.
 | Throws      | None.
@@ -321,7 +321,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getAid() -> byte array`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Returns the AID value carried by the certificate.
 | Returns     | The AID, or `null` if the AID check is not requested.
 | Throws      | None.
@@ -330,7 +330,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `isCaCertificatesAuthenticationAllowed() -> boolean`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Indicates whether the certificate is allowed to authenticate further CA certificates.
 | Returns     | `true` if CA-certificate authentication is allowed, `false` otherwise.
 | Throws      | None.
@@ -339,7 +339,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `isCardCertificatesAuthenticationAllowed() -> boolean`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Indicates whether the certificate is allowed to authenticate card certificates.
 | Returns     | `true` if card-certificate authentication is allowed, `false` otherwise.
 | Throws      | None.
@@ -352,7 +352,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2.0
+| Since    | 0.2
 | Purpose  | Parses CA certificates from raw data stored on a card.
 |===
 
@@ -361,7 +361,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getCertificateType() -> byte`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Returns the certificate type identifier associated with the parser.
 | Returns     | A `byte`.
 | Throws      | None.
@@ -370,7 +370,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `parseCertificate(cardOutputData: byte array) -> CaCertificateSpi`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Parses the supplied card output data and returns a new CA certificate instance. The first byte of the input array MUST be the certificate type.
 | Parameters  | `cardOutputData` -- a `byte array` containing the CA certificate as stored on the card.
 | Returns     | A non-`null` <<type_CaCertificateSpi,`CaCertificateSpi`>>.
@@ -384,7 +384,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2.0
+| Since    | 0.2
 | Purpose  | Represents a Certification Authority (CA) certificate that has been parsed by the crypto module and is ready for chain validation.
 |===
 
@@ -393,7 +393,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getIssuerPublicKeyReference() -> byte array`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Returns the reference of the issuer's public key, used by the upstream layer to locate the corresponding issuer certificate.
 | Returns     | A non-empty `byte array`.
 | Throws      | None.
@@ -403,7 +403,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 | Signature
 | `checkCertificateAndGetContent(issuerCertificateContent: CaCertificateContentSpi) -> CaCertificateContentSpi`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description
 | Verifies the certificate signature and other relevant fields, then returns the certificate content. The
   validation MUST be comprehensive: signature correctness, validity period, issuer and subject details and any
@@ -422,7 +422,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2.0
+| Since    | 0.2
 | Purpose  | Parses card certificates from raw data stored on a card.
 |===
 
@@ -431,7 +431,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getCertificateType() -> byte`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Returns the certificate type identifier associated with the parser.
 | Returns     | A `byte`.
 | Throws      | None.
@@ -440,7 +440,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `parseCertificate(cardOutputData: byte array) -> CardCertificateSpi`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Parses the supplied card output data and returns a new card certificate instance. The first byte of the input MUST be the certificate type. The expected total length is 316 bytes.
 | Parameters  | `cardOutputData` -- a `byte array` containing the card certificate as stored on the card (316 bytes).
 | Returns     | A non-`null` <<type_CardCertificateSpi,`CardCertificateSpi`>>.
@@ -454,7 +454,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2.0
+| Since    | 0.2
 | Purpose  | Represents a card certificate, used to extract the card's public key after a successful chain validation.
 |===
 
@@ -463,7 +463,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getIssuerPublicKeyReference() -> byte array`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Returns the reference of the issuer's public key.
 | Returns     | A non-empty `byte array`.
 | Throws      | None.
@@ -472,7 +472,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getCardAid() -> byte array`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Returns the AID of the autonomous application of the card as a `byte array` of 5 to 16 bytes.
 | Returns     | A non-empty `byte array` of 5 to 16 bytes.
 | Throws      | None.
@@ -481,7 +481,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getCardSerialNumber() -> byte array`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Returns the serial number of the card as an 8-byte `byte array`.
 | Returns     | An 8-byte `byte array`.
 | Throws      | None.
@@ -491,7 +491,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 | Signature
 | `checkCertificateAndGetPublicKey(issuerCertificateContent: CaCertificateContentSpi) -> CardPublicKeySpi`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Verifies the certificate signature and other relevant fields, then returns the card's public key.
 | Parameters  | `issuerCertificateContent` -- the issuer certificate content to be used for signature verification.
 | Returns     | A non-`null` <<type_CardPublicKeySpi,`CardPublicKeySpi`>>.
@@ -507,7 +507,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2.0
+| Since    | 0.2
 | Purpose  | Exposes the card's public key extracted from a validated card certificate.
 |===
 
@@ -516,7 +516,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `getRawValue() -> byte array`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Returns the raw value of the card's public key.
 | Returns     | A 64-byte `byte array`.
 | Throws      | None.
@@ -529,7 +529,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2.0
+| Since    | 0.2
 | Purpose  | Represents a Primary Certification Authority (PCA) certificate -- the self-signed trust anchor of the Calypso PKI.
 |===
 
@@ -538,7 +538,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `checkCertificateAndGetContent() -> CaCertificateContentSpi`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description
 | Verifies the certificate signature and other relevant fields, then returns the certificate content. The PCA
   certificate MUST be expected to be self-signed in this context.
@@ -557,7 +557,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.transaction.spi`
-| Since    | 0.2.0
+| Since    | 0.2
 | Purpose  | Factory of <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
 |===
 
@@ -566,7 +566,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `createCardTransactionManager() -> AsymmetricCryptoCardTransactionManagerSpi`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Returns a new <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
 | Returns     | A non-`null` instance.
 | Throws      | None.
@@ -579,7 +579,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.transaction.spi`
-| Since    | 0.2.0
+| Since    | 0.2
 | Purpose  | Defines the cryptographic primitives required by a Calypso card transaction when using asymmetric keys.
 |===
 
@@ -588,7 +588,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `initTerminalPkiSession(cardPublicKey: CardPublicKeySpi) -> void`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Initialises the cryptographic context for a new PKI secure session with the supplied card public key.
 | Parameters  | `cardPublicKey` -- the card public key, extracted from the previously validated card certificate.
 | Throws      | `AsymmetricCryptoException` -- if the provided public key value is not compliant with the current elliptic curve, or if an error occurs during the initialisation.
@@ -597,7 +597,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `updateTerminalPkiSession(cardApdu: byte array) -> void`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description
 | Updates the session signature verification engine with data sent to or received from the card.
 
@@ -610,7 +610,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `isCardPkiSessionValid(cardSessionSignature: byte array) -> boolean`
-| Since       | 0.2.0
+| Since       | 0.2
 | Description | Verifies the provided secure session signature against the previously initialised and updated context.
 | Parameters  | `cardSessionSignature` -- the 64-byte card signature to verify.
 | Returns     | `true` if the signature is valid, `false` otherwise.
@@ -631,7 +631,7 @@ raise them.
 |===
 | Kind     | Checked exception
 | Package  | `calypso.crypto.asymmetric`
-| Since    | 0.2.0
+| Since    | 0.2
 | Purpose  | Indicates that an error occurred when processing an asymmetric cryptographic operation.
 |===
 
@@ -642,7 +642,7 @@ raise them.
 |===
 | Kind     | Checked exception
 | Package  | `calypso.crypto.asymmetric.certificate`
-| Since    | 0.2.0
+| Since    | 0.2
 | Purpose  | Indicates an issue encountered during the certificate validation -- e.g. an invalid signature or incorrect metadata values.
 |===
 
