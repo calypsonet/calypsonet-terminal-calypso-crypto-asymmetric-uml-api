@@ -345,6 +345,38 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
+[[type_CaCertificateParserSpi]]
+==== CaCertificateParserSpi
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Interface (SPI)
+| Package  | `calypso.crypto.asymmetric.certificate.spi`
+| Since    | 0.2.0
+| Purpose  | Parses CA certificates from raw data stored on a card.
+|===
+
+===== Operations
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `getCertificateType() -> byte`
+| Since       | 0.2.0
+| Description | Returns the certificate type identifier associated with the parser.
+| Returns     | A `byte`.
+| Throws      | None.
+|===
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `parseCertificate(cardOutputData: byte array) -> CaCertificateSpi`
+| Since       | 0.2.0
+| Description | Parses the supplied card output data and returns a new CA certificate instance. The first byte of the input array MUST be the certificate type.
+| Parameters  | `cardOutputData` -- the CA certificate as stored on the card.
+| Returns     | A non-`null` <<type_CaCertificateSpi,`CaCertificateSpi`>>.
+| Throws      | `CertificateValidationException` -- if the provided certificate has an unsupported format.
+|===
+
 [[type_CaCertificateSpi]]
 ==== CaCertificateSpi
 
@@ -383,15 +415,15 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
   `AsymmetricCryptoException` -- if a technical error occurs during the cryptographic computations.
 |===
 
-[[type_CaCertificateParserSpi]]
-==== CaCertificateParserSpi
+[[type_CardCertificateParserSpi]]
+==== CardCertificateParserSpi
 
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
 | Package  | `calypso.crypto.asymmetric.certificate.spi`
 | Since    | 0.2.0
-| Purpose  | Parses CA certificates from raw data stored on a card.
+| Purpose  | Parses card certificates from raw data stored on a card.
 |===
 
 ===== Operations
@@ -407,38 +439,12 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 
 [cols="1h,4", grid=rows, frame=all]
 |===
-| Signature   | `parseCertificate(cardOutputData: byte array) -> CaCertificateSpi`
+| Signature   | `parseCertificate(cardOutputData: byte array) -> CardCertificateSpi`
 | Since       | 0.2.0
-| Description | Parses the supplied card output data and returns a new CA certificate instance. The first byte of the input array MUST be the certificate type.
-| Parameters  | `cardOutputData` -- the CA certificate as stored on the card.
-| Returns     | A non-`null` <<type_CaCertificateSpi,`CaCertificateSpi`>>.
+| Description | Parses the supplied card output data and returns a new card certificate instance. The first byte of the input MUST be the certificate type. The expected total length is 316 bytes.
+| Parameters  | `cardOutputData` -- the card certificate as stored on the card.
+| Returns     | A non-`null` <<type_CardCertificateSpi,`CardCertificateSpi`>>.
 | Throws      | `CertificateValidationException` -- if the provided certificate has an unsupported format.
-|===
-
-[[type_PcaCertificateSpi]]
-==== PcaCertificateSpi
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Interface (SPI)
-| Package  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2.0
-| Purpose  | Represents a Primary Certification Authority (PCA) certificate -- the self-signed trust anchor of the Calypso PKI.
-|===
-
-===== Operations
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `checkCertificateAndGetContent() -> CaCertificateContentSpi`
-| Since       | 0.2.0
-| Description
-| Verifies the certificate signature and other relevant fields, then returns the certificate content. The PCA
-  certificate MUST be expected to be self-signed in this context.
-| Returns     | A non-`null` <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
-| Throws
-| `CertificateValidationException` -- if the certificate is invalid, expired, revoked, or fails any other validation. +
-  `AsymmetricCryptoException` -- if a technical error occurs during the cryptographic computations.
 |===
 
 [[type_CardCertificateSpi]]
@@ -494,38 +500,6 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
   `AsymmetricCryptoException` -- if a technical error occurs during the cryptographic computations.
 |===
 
-[[type_CardCertificateParserSpi]]
-==== CardCertificateParserSpi
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Interface (SPI)
-| Package  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2.0
-| Purpose  | Parses card certificates from raw data stored on a card.
-|===
-
-===== Operations
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `getCertificateType() -> byte`
-| Since       | 0.2.0
-| Description | Returns the certificate type identifier associated with the parser.
-| Returns     | A `byte`.
-| Throws      | None.
-|===
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `parseCertificate(cardOutputData: byte array) -> CardCertificateSpi`
-| Since       | 0.2.0
-| Description | Parses the supplied card output data and returns a new card certificate instance. The first byte of the input MUST be the certificate type. The expected total length is 316 bytes.
-| Parameters  | `cardOutputData` -- the card certificate as stored on the card.
-| Returns     | A non-`null` <<type_CardCertificateSpi,`CardCertificateSpi`>>.
-| Throws      | `CertificateValidationException` -- if the provided certificate has an unsupported format.
-|===
-
 [[type_CardPublicKeySpi]]
 ==== CardPublicKeySpi
 
@@ -546,6 +520,32 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Description | Returns the raw value of the card's public key.
 | Returns     | A 64-byte `byte array`.
 | Throws      | None.
+|===
+
+[[type_PcaCertificateSpi]]
+==== PcaCertificateSpi
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Interface (SPI)
+| Package  | `calypso.crypto.asymmetric.certificate.spi`
+| Since    | 0.2.0
+| Purpose  | Represents a Primary Certification Authority (PCA) certificate -- the self-signed trust anchor of the Calypso PKI.
+|===
+
+===== Operations
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `checkCertificateAndGetContent() -> CaCertificateContentSpi`
+| Since       | 0.2.0
+| Description
+| Verifies the certificate signature and other relevant fields, then returns the certificate content. The PCA
+  certificate MUST be expected to be self-signed in this context.
+| Returns     | A non-`null` <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
+| Throws
+| `CertificateValidationException` -- if the certificate is invalid, expired, revoked, or fails any other validation. +
+  `AsymmetricCryptoException` -- if a technical error occurs during the cryptographic computations.
 |===
 
 === Package calypso.crypto.asymmetric.transaction.spi
