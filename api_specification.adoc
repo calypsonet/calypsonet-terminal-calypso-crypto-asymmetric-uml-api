@@ -372,7 +372,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Signature   | `parseCertificate(cardOutputData: byte array) -> CaCertificateSpi`
 | Since       | 0.2.0
 | Description | Parses the supplied card output data and returns a new CA certificate instance. The first byte of the input array MUST be the certificate type.
-| Parameters  | `cardOutputData` -- the CA certificate as stored on the card.
+| Parameters  | `cardOutputData` -- a `byte array` containing the CA certificate as stored on the card.
 | Returns     | A non-`null` <<type_CaCertificateSpi,`CaCertificateSpi`>>.
 | Throws      | `CertificateValidationException` -- if the provided certificate has an unsupported format.
 |===
@@ -408,7 +408,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Verifies the certificate signature and other relevant fields, then returns the certificate content. The
   validation MUST be comprehensive: signature correctness, validity period, issuer and subject details and any
   relevant constraints or extensions.
-| Parameters  | `issuerCertificateContent` -- the issuer certificate content to use for signature verification.
+| Parameters  | `issuerCertificateContent` -- the issuer certificate content to be used for signature verification.
 | Returns     | A non-`null` <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
 | Throws
 | `CertificateValidationException` -- if the certificate is invalid, expired, revoked, or fails any other validation. +
@@ -442,7 +442,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Signature   | `parseCertificate(cardOutputData: byte array) -> CardCertificateSpi`
 | Since       | 0.2.0
 | Description | Parses the supplied card output data and returns a new card certificate instance. The first byte of the input MUST be the certificate type. The expected total length is 316 bytes.
-| Parameters  | `cardOutputData` -- the card certificate as stored on the card.
+| Parameters  | `cardOutputData` -- a `byte array` containing the card certificate as stored on the card (316 bytes).
 | Returns     | A non-`null` <<type_CardCertificateSpi,`CardCertificateSpi`>>.
 | Throws      | `CertificateValidationException` -- if the provided certificate has an unsupported format.
 |===
@@ -493,7 +493,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | `checkCertificateAndGetPublicKey(issuerCertificateContent: CaCertificateContentSpi) -> CardPublicKeySpi`
 | Since       | 0.2.0
 | Description | Verifies the certificate signature and other relevant fields, then returns the card's public key.
-| Parameters  | `issuerCertificateContent` -- the issuer certificate content to use for signature verification.
+| Parameters  | `issuerCertificateContent` -- the issuer certificate content to be used for signature verification.
 | Returns     | A non-`null` <<type_CardPublicKeySpi,`CardPublicKeySpi`>>.
 | Throws
 | `CertificateValidationException` -- if the certificate is invalid. +
