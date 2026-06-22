@@ -234,7 +234,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 == API Specification
 
 [[sec_pkg_calypso_crypto_asymmetric]]
-=== API Properties (`calypso.crypto.asymmetric`)
+=== Namespace -- calypso.crypto.asymmetric
 
 [[type_AsymmetricCryptoApiProperties]]
 ==== AsymmetricCryptoApiProperties
@@ -242,7 +242,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Final class
-| Package  | `calypso.crypto.asymmetric`
+| Namespace  | `calypso.crypto.asymmetric`
 | Since    | 0.2
 | Purpose  | Exposes the immutable properties of the {spec-name}.
 |===
@@ -257,7 +257,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 
 [[sec_pkg_calypso_crypto_asymmetric_certificate_spi]]
-=== Certificate Validation SPI (`calypso.crypto.asymmetric.certificate.spi`)
+=== Namespace -- calypso.crypto.asymmetric.certificate.spi
 
 [[type_CaCertificateContentSpi]]
 ==== CaCertificateContentSpi
@@ -265,7 +265,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
-| Package  | `calypso.crypto.asymmetric.certificate.spi`
+| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
 | Since    | 0.2
 | Purpose  | Exposes the content of a CA certificate that has been parsed and verified by the crypto module.
 |===
@@ -361,7 +361,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
-| Package  | `calypso.crypto.asymmetric.certificate.spi`
+| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
 | Since    | 0.2
 | Purpose  | Parses CA certificates from raw data stored on a card.
 |===
@@ -394,7 +394,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
-| Package  | `calypso.crypto.asymmetric.certificate.spi`
+| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
 | Since    | 0.2
 | Purpose  | Represents a Certification Authority (CA) certificate that has been parsed by the crypto module and is ready for chain validation.
 |===
@@ -433,7 +433,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
-| Package  | `calypso.crypto.asymmetric.certificate.spi`
+| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
 | Since    | 0.2
 | Purpose  | Parses card certificates from raw data stored on a card.
 |===
@@ -466,7 +466,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
-| Package  | `calypso.crypto.asymmetric.certificate.spi`
+| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
 | Since    | 0.2
 | Purpose  | Represents a card certificate, used to extract the card's public key after a successful chain validation.
 |===
@@ -520,7 +520,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
-| Package  | `calypso.crypto.asymmetric.certificate.spi`
+| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
 | Since    | 0.2
 | Purpose  | Exposes the card's public key extracted from a validated card certificate.
 |===
@@ -542,7 +542,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
-| Package  | `calypso.crypto.asymmetric.certificate.spi`
+| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
 | Since    | 0.2
 | Purpose  | Represents a Primary Certification Authority (PCA) certificate -- the self-signed trust anchor of the Calypso PKI.
 |===
@@ -563,7 +563,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 
 [[sec_pkg_calypso_crypto_asymmetric_transaction_spi]]
-=== PKI Transaction SPI (`calypso.crypto.asymmetric.transaction.spi`)
+=== Namespace -- calypso.crypto.asymmetric.transaction.spi
 
 [[type_AsymmetricCryptoCardTransactionManagerFactorySpi]]
 ==== AsymmetricCryptoCardTransactionManagerFactorySpi
@@ -571,7 +571,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
-| Package  | `calypso.crypto.asymmetric.transaction.spi`
+| Namespace  | `calypso.crypto.asymmetric.transaction.spi`
 | Since    | 0.2
 | Purpose  | Factory of <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
 |===
@@ -593,7 +593,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Interface (SPI)
-| Package  | `calypso.crypto.asymmetric.transaction.spi`
+| Namespace  | `calypso.crypto.asymmetric.transaction.spi`
 | Since    | 0.2
 | Purpose  | Defines the cryptographic primitives required by a Calypso card transaction when using asymmetric keys.
 |===
@@ -648,7 +648,7 @@ raise them.
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Checked exception
-| Package  | `calypso.crypto.asymmetric`
+| Namespace  | `calypso.crypto.asymmetric`
 | Since    | 0.2
 | Purpose  | Indicates that an error occurred when processing an asymmetric cryptographic operation.
 |===
@@ -659,7 +659,7 @@ raise them.
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Kind     | Checked exception
-| Package  | `calypso.crypto.asymmetric.certificate`
+| Namespace  | `calypso.crypto.asymmetric.certificate`
 | Since    | 0.2
 | Purpose  | Indicates an issue encountered during the certificate validation -- e.g. an invalid signature or incorrect metadata values.
 |===
