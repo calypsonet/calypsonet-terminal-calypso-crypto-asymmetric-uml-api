@@ -119,6 +119,14 @@ order to avoid ambiguity.
 | `publicKey`     | Opaque, immutable handle representing an asymmetric public key.  | `PublicKey` (Java), `X509PublicKey`, equivalent.
 |===
 
+==== Operation contracts
+
+To avoid repetition, the following rule applies to every operation table in <<sec_specification>> and is therefore
+not restated for each operation:
+
+* *Non-`null` results.* Unless the *Returns* row explicitly states that `null` may be returned, an operation
+  returns a non-`null` value.
+
 === References
 
 [cols="1,1,4", options="header"]
@@ -225,7 +233,8 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [[sec_specification]]
 == API Specification
 
-=== Package calypso.crypto.asymmetric
+[[sec_pkg_calypso_crypto_asymmetric]]
+=== API Properties (`calypso.crypto.asymmetric`)
 
 [[type_AsymmetricCryptoApiProperties]]
 ==== AsymmetricCryptoApiProperties
@@ -247,7 +256,8 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | `VERSION` | `string` | 0.2  | String representation of the version of the API implemented by the conforming binding (e.g. `"0.2"`).
 |===
 
-=== Package calypso.crypto.asymmetric.certificate.spi
+[[sec_pkg_calypso_crypto_asymmetric_certificate_spi]]
+=== Certificate Validation SPI (`calypso.crypto.asymmetric.certificate.spi`)
 
 [[type_CaCertificateContentSpi]]
 ==== CaCertificateContentSpi
@@ -267,7 +277,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Signature   | `getPublicKey() -> publicKey`
 | Since       | 0.2
 | Description | Returns the public key carried by the certificate.
-| Returns     | A non-`null` public-key handle.
+| Returns     | A public-key handle.
 | Throws      | None.
 |===
 
@@ -367,13 +377,14 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
+[[op_CaCertificateParserSpi_parseCertificate]]
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `parseCertificate(cardOutputData: byte array) -> CaCertificateSpi`
 | Since       | 0.2
 | Description | Parses the supplied card output data and returns a new CA certificate instance. The first byte of the input array MUST be the certificate type.
 | Parameters  | `cardOutputData` -- a `byte array` containing the CA certificate as stored on the card.
-| Returns     | A non-`null` <<type_CaCertificateSpi,`CaCertificateSpi`>>.
+| Returns     | A <<type_CaCertificateSpi,`CaCertificateSpi`>>.
 | Throws      | `CertificateValidationException` -- if the provided certificate has an unsupported format.
 |===
 
@@ -399,6 +410,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
+[[op_CaCertificateSpi_checkCertificateAndGetContent]]
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature
@@ -409,7 +421,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
   validation MUST be comprehensive: signature correctness, validity period, issuer and subject details and any
   relevant constraints or extensions.
 | Parameters  | `issuerCertificateContent` -- the issuer certificate content to be used for signature verification.
-| Returns     | A non-`null` <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
+| Returns     | A <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
 | Throws
 | `CertificateValidationException` -- if the certificate is invalid, expired, revoked, or fails any other validation. +
   `AsymmetricCryptoException` -- if a technical error occurs during the cryptographic computations.
@@ -437,13 +449,14 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
+[[op_CardCertificateParserSpi_parseCertificate]]
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `parseCertificate(cardOutputData: byte array) -> CardCertificateSpi`
 | Since       | 0.2
 | Description | Parses the supplied card output data and returns a new card certificate instance. The first byte of the input MUST be the certificate type. The expected total length is 316 bytes.
 | Parameters  | `cardOutputData` -- a `byte array` containing the card certificate as stored on the card (316 bytes).
-| Returns     | A non-`null` <<type_CardCertificateSpi,`CardCertificateSpi`>>.
+| Returns     | A <<type_CardCertificateSpi,`CardCertificateSpi`>>.
 | Throws      | `CertificateValidationException` -- if the provided certificate has an unsupported format.
 |===
 
@@ -487,6 +500,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
+[[op_CardCertificateSpi_checkCertificateAndGetPublicKey]]
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature
@@ -494,7 +508,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Since       | 0.2
 | Description | Verifies the certificate signature and other relevant fields, then returns the card's public key.
 | Parameters  | `issuerCertificateContent` -- the issuer certificate content to be used for signature verification.
-| Returns     | A non-`null` <<type_CardPublicKeySpi,`CardPublicKeySpi`>>.
+| Returns     | A <<type_CardPublicKeySpi,`CardPublicKeySpi`>>.
 | Throws
 | `CertificateValidationException` -- if the certificate is invalid. +
   `AsymmetricCryptoException` -- if a technical error occurs during the cryptographic computations.
@@ -542,13 +556,14 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Description
 | Verifies the certificate signature and other relevant fields, then returns the certificate content. The PCA
   certificate MUST be expected to be self-signed in this context.
-| Returns     | A non-`null` <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
+| Returns     | A <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
 | Throws
 | `CertificateValidationException` -- if the certificate is invalid, expired, revoked, or fails any other validation. +
   `AsymmetricCryptoException` -- if a technical error occurs during the cryptographic computations.
 |===
 
-=== Package calypso.crypto.asymmetric.transaction.spi
+[[sec_pkg_calypso_crypto_asymmetric_transaction_spi]]
+=== PKI Transaction SPI (`calypso.crypto.asymmetric.transaction.spi`)
 
 [[type_AsymmetricCryptoCardTransactionManagerFactorySpi]]
 ==== AsymmetricCryptoCardTransactionManagerFactorySpi
@@ -568,7 +583,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Signature   | `createCardTransactionManager() -> AsymmetricCryptoCardTransactionManagerSpi`
 | Since       | 0.2
 | Description | Returns a new <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
-| Returns     | A non-`null` instance.
+| Returns     | An instance.
 | Throws      | None.
 |===
 
@@ -585,6 +600,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 
 ===== Operations
 
+[[op_AsymmetricCryptoCardTransactionManagerSpi_initTerminalPkiSession]]
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `initTerminalPkiSession(cardPublicKey: CardPublicKeySpi) -> void`
@@ -594,6 +610,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | `AsymmetricCryptoException` -- if the provided public key value is not compliant with the current elliptic curve, or if an error occurs during the initialisation.
 |===
 
+[[op_AsymmetricCryptoCardTransactionManagerSpi_updateTerminalPkiSession]]
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `updateTerminalPkiSession(cardApdu: byte array) -> void`
@@ -607,6 +624,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | `AsymmetricCryptoException` -- if an error occurs while updating the session.
 |===
 
+[[op_AsymmetricCryptoCardTransactionManagerSpi_isCardPkiSessionValid]]
 [cols="1h,4", grid=rows, frame=all]
 |===
 | Signature   | `isCardPkiSessionValid(cardSessionSignature: byte array) -> boolean`
