@@ -233,11 +233,18 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [[sec_specification]]
 == API Specification
 
+The API is organized into the following packages:
+
 [[sec_pkg_calypso_crypto_asymmetric]]
-=== Namespace -- calypso.crypto.asymmetric
+
+[[sec_pkg_calypso_crypto_asymmetric_certificate_spi]]
+
+[[sec_pkg_calypso_crypto_asymmetric_transaction_spi]]
+
+=== Classes
 
 [[type_AsymmetricCryptoApiProperties]]
-==== AsymmetricCryptoApiProperties
+==== Asymmetric Crypto API Properties
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -256,11 +263,109 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | `VERSION` | `string` | 0.2  | String representation of the version of the API implemented by the conforming binding (e.g. `"0.2"`).
 |===
 
-[[sec_pkg_calypso_crypto_asymmetric_certificate_spi]]
-=== Namespace -- calypso.crypto.asymmetric.certificate.spi
+[[sec_exceptions]]
+=== Exceptions
+
+[[type_AsymmetricCryptoException]]
+==== Asymmetric Crypto Exception
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Checked exception
+| Namespace  | `calypso.crypto.asymmetric`
+| Since    | 0.2
+| Purpose  | Indicates that an error occurred when processing an asymmetric cryptographic operation.
+|===
+
+[[type_CertificateValidationException]]
+==== Certificate Validation Exception
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Checked exception
+| Namespace  | `calypso.crypto.asymmetric.certificate`
+| Since    | 0.2
+| Purpose  | Indicates an issue encountered during the certificate validation -- e.g. an invalid signature or incorrect metadata values.
+|===
+
+=== Interfaces
+
+[[type_AsymmetricCryptoCardTransactionManagerFactorySpi]]
+==== Asymmetric Crypto Card Transaction Manager Factory SPI
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Interface (SPI)
+| Namespace  | `calypso.crypto.asymmetric.transaction.spi`
+| Since    | 0.2
+| Purpose  | Factory of <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
+|===
+
+===== Create Card Transaction Manager
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `createCardTransactionManager() -> AsymmetricCryptoCardTransactionManagerSpi`
+| Since       | 0.2
+| Description | Returns a new <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
+| Returns     | An instance.
+| Throws      | None.
+|===
+
+[[type_AsymmetricCryptoCardTransactionManagerSpi]]
+==== Asymmetric Crypto Card Transaction Manager SPI
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Interface (SPI)
+| Namespace  | `calypso.crypto.asymmetric.transaction.spi`
+| Since    | 0.2
+| Purpose  | Defines the cryptographic primitives required by a Calypso card transaction when using asymmetric keys.
+|===
+
+[[op_AsymmetricCryptoCardTransactionManagerSpi_initTerminalPkiSession]]
+===== Init Terminal PKI Session
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `initTerminalPkiSession(cardPublicKey: CardPublicKeySpi) -> void`
+| Since       | 0.2
+| Description | Initialises the cryptographic context for a new PKI secure session with the supplied card public key.
+| Parameters  | `cardPublicKey` -- the card public key, extracted from the previously validated card certificate.
+| Throws      | `AsymmetricCryptoException` -- if the provided public key value is not compliant with the current elliptic curve, or if an error occurs during the initialisation.
+|===
+
+[[op_AsymmetricCryptoCardTransactionManagerSpi_isCardPkiSessionValid]]
+===== Is Card PKI Session Valid
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `isCardPkiSessionValid(cardSessionSignature: byte array) -> boolean`
+| Since       | 0.2
+| Description | Verifies the provided secure session signature against the previously initialised and updated context.
+| Parameters  | `cardSessionSignature` -- the 64-byte card signature to verify.
+| Returns     | `true` if the signature is valid, `false` otherwise.
+| Throws      | `AsymmetricCryptoException` -- if an error occurs while verifying the signature.
+|===
+
+[[op_AsymmetricCryptoCardTransactionManagerSpi_updateTerminalPkiSession]]
+===== Update Terminal PKI Session
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Signature   | `updateTerminalPkiSession(cardApdu: byte array) -> void`
+| Since       | 0.2
+| Description
+| Updates the session signature verification engine with data sent to or received from the card.
+
+  - For ingoing data, the input length MUST be `>= 5`.
+  - For outgoing data, the input length MUST be `>= 2`.
+| Parameters  | `cardApdu` -- the APDU bytes exchanged with the card (ingoing or outgoing).
+| Throws      | `AsymmetricCryptoException` -- if an error occurs while updating the session.
+|===
 
 [[type_CaCertificateContentSpi]]
-==== CaCertificateContentSpi
+==== CA Certificate Content SPI
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -270,7 +375,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Purpose  | Exposes the content of a CA certificate that has been parsed and verified by the crypto module.
 |===
 
-===== getAid
+===== Get AID
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -281,7 +386,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-===== getEndDate
+===== Get End Date
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -292,7 +397,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-===== getPublicKey
+===== Get Public Key
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -303,7 +408,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-===== getPublicKeyReference
+===== Get Public Key Reference
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -314,7 +419,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-===== getStartDate
+===== Get Start Date
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -327,7 +432,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-===== isAidCheckRequested
+===== Is AID Check Requested
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -338,7 +443,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-===== isAidTruncated
+===== Is AID Truncated
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -349,7 +454,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-===== isCaCertificatesAuthenticationAllowed
+===== Is CA Certificates Authentication Allowed
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -360,7 +465,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-===== isCardCertificatesAuthenticationAllowed
+===== Is Card Certificates Authentication Allowed
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -372,7 +477,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 
 [[type_CaCertificateParserSpi]]
-==== CaCertificateParserSpi
+==== CA Certificate Parser SPI
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -382,7 +487,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Purpose  | Parses CA certificates from raw data stored on a card.
 |===
 
-===== getCertificateType
+===== Get Certificate Type
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -394,7 +499,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 
 [[op_CaCertificateParserSpi_parseCertificate]]
-===== parseCertificate
+===== Parse Certificate
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -407,7 +512,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 
 [[type_CaCertificateSpi]]
-==== CaCertificateSpi
+==== CA Certificate SPI
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -418,7 +523,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 
 [[op_CaCertificateSpi_checkCertificateAndGetContent]]
-===== checkCertificateAndGetContent
+===== Check Certificate And Get Content
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -436,7 +541,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
   `AsymmetricCryptoException` -- if a technical error occurs during the cryptographic computations.
 |===
 
-===== getIssuerPublicKeyReference
+===== Get Issuer Public Key Reference
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -448,7 +553,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 
 [[type_CardCertificateParserSpi]]
-==== CardCertificateParserSpi
+==== Card Certificate Parser SPI
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -458,7 +563,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Purpose  | Parses card certificates from raw data stored on a card.
 |===
 
-===== getCertificateType
+===== Get Certificate Type
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -470,7 +575,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 
 [[op_CardCertificateParserSpi_parseCertificate]]
-===== parseCertificate
+===== Parse Certificate
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -483,7 +588,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 
 [[type_CardCertificateSpi]]
-==== CardCertificateSpi
+==== Card Certificate SPI
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -494,7 +599,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 
 [[op_CardCertificateSpi_checkCertificateAndGetPublicKey]]
-===== checkCertificateAndGetPublicKey
+===== Check Certificate And Get Public Key
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -509,7 +614,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
   `AsymmetricCryptoException` -- if a technical error occurs during the cryptographic computations.
 |===
 
-===== getCardAid
+===== Get Card AID
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -520,7 +625,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-===== getCardSerialNumber
+===== Get Card Serial Number
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -531,7 +636,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Throws      | None.
 |===
 
-===== getIssuerPublicKeyReference
+===== Get Issuer Public Key Reference
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -543,7 +648,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 
 [[type_CardPublicKeySpi]]
-==== CardPublicKeySpi
+==== Card Public Key SPI
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -553,7 +658,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Purpose  | Exposes the card's public key extracted from a validated card certificate.
 |===
 
-===== getRawValue
+===== Get Raw Value
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -565,7 +670,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 
 [[type_PcaCertificateSpi]]
-==== PcaCertificateSpi
+==== PCA Certificate SPI
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -575,7 +680,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Purpose  | Represents a Primary Certification Authority (PCA) certificate -- the self-signed trust anchor of the Calypso PKI.
 |===
 
-===== checkCertificateAndGetContent
+===== Check Certificate And Get Content
 
 [cols="1h,4", grid=rows, frame=all]
 |===
@@ -590,113 +695,6 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
   `AsymmetricCryptoException` -- if a technical error occurs during the cryptographic computations.
 |===
 
-[[sec_pkg_calypso_crypto_asymmetric_transaction_spi]]
-=== Namespace -- calypso.crypto.asymmetric.transaction.spi
-
-[[type_AsymmetricCryptoCardTransactionManagerFactorySpi]]
-==== AsymmetricCryptoCardTransactionManagerFactorySpi
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Interface (SPI)
-| Namespace  | `calypso.crypto.asymmetric.transaction.spi`
-| Since    | 0.2
-| Purpose  | Factory of <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
-|===
-
-===== createCardTransactionManager
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `createCardTransactionManager() -> AsymmetricCryptoCardTransactionManagerSpi`
-| Since       | 0.2
-| Description | Returns a new <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
-| Returns     | An instance.
-| Throws      | None.
-|===
-
-[[type_AsymmetricCryptoCardTransactionManagerSpi]]
-==== AsymmetricCryptoCardTransactionManagerSpi
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Interface (SPI)
-| Namespace  | `calypso.crypto.asymmetric.transaction.spi`
-| Since    | 0.2
-| Purpose  | Defines the cryptographic primitives required by a Calypso card transaction when using asymmetric keys.
-|===
-
-[[op_AsymmetricCryptoCardTransactionManagerSpi_initTerminalPkiSession]]
-===== initTerminalPkiSession
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `initTerminalPkiSession(cardPublicKey: CardPublicKeySpi) -> void`
-| Since       | 0.2
-| Description | Initialises the cryptographic context for a new PKI secure session with the supplied card public key.
-| Parameters  | `cardPublicKey` -- the card public key, extracted from the previously validated card certificate.
-| Throws      | `AsymmetricCryptoException` -- if the provided public key value is not compliant with the current elliptic curve, or if an error occurs during the initialisation.
-|===
-
-[[op_AsymmetricCryptoCardTransactionManagerSpi_isCardPkiSessionValid]]
-===== isCardPkiSessionValid
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `isCardPkiSessionValid(cardSessionSignature: byte array) -> boolean`
-| Since       | 0.2
-| Description | Verifies the provided secure session signature against the previously initialised and updated context.
-| Parameters  | `cardSessionSignature` -- the 64-byte card signature to verify.
-| Returns     | `true` if the signature is valid, `false` otherwise.
-| Throws      | `AsymmetricCryptoException` -- if an error occurs while verifying the signature.
-|===
-
-[[op_AsymmetricCryptoCardTransactionManagerSpi_updateTerminalPkiSession]]
-===== updateTerminalPkiSession
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Signature   | `updateTerminalPkiSession(cardApdu: byte array) -> void`
-| Since       | 0.2
-| Description
-| Updates the session signature verification engine with data sent to or received from the card.
-
-  - For ingoing data, the input length MUST be `>= 5`.
-  - For outgoing data, the input length MUST be `>= 2`.
-| Parameters  | `cardApdu` -- the APDU bytes exchanged with the card (ingoing or outgoing).
-| Throws      | `AsymmetricCryptoException` -- if an error occurs while updating the session.
-|===
-
-// =============================================================================
-[[sec_exceptions]]
-== Exceptions
-
-All exception types defined by this specification are *checked* and MUST be declared by the operations that may
-raise them.
-
-[[type_AsymmetricCryptoException]]
-=== AsymmetricCryptoException
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Checked exception
-| Namespace  | `calypso.crypto.asymmetric`
-| Since    | 0.2
-| Purpose  | Indicates that an error occurred when processing an asymmetric cryptographic operation.
-|===
-
-[[type_CertificateValidationException]]
-=== CertificateValidationException
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Checked exception
-| Namespace  | `calypso.crypto.asymmetric.certificate`
-| Since    | 0.2
-| Purpose  | Indicates an issue encountered during the certificate validation -- e.g. an invalid signature or incorrect metadata values.
-|===
-
-// =============================================================================
 [[sec_behaviours]]
 == Behavioural Requirements
 
