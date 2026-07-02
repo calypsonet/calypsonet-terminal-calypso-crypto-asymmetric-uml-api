@@ -263,32 +263,7 @@ The API is organized into the following packages:
 | `VERSION` | `string` | 0.2  | String representation of the version of the API implemented by the conforming binding (e.g. `"0.2"`).
 |===
 
-[[sec_exceptions]]
-=== Exceptions
-
-[[type_AsymmetricCryptoException]]
-==== Asymmetric Crypto Exception
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Checked exception
-| Namespace  | `calypso.crypto.asymmetric`
-| Since    | 0.2
-| Purpose  | Indicates that an error occurred when processing an asymmetric cryptographic operation.
-|===
-
-[[type_CertificateValidationException]]
-==== Certificate Validation Exception
-
-[cols="1h,4", grid=rows, frame=all]
-|===
-| Kind     | Checked exception
-| Namespace  | `calypso.crypto.asymmetric.certificate`
-| Since    | 0.2
-| Purpose  | Indicates an issue encountered during the certificate validation -- e.g. an invalid signature or incorrect metadata values.
-|===
-
-=== Interfaces
+=== SPI Interfaces
 
 [[type_AsymmetricCryptoCardTransactionManagerFactorySpi]]
 ==== Asymmetric Crypto Card Transaction Manager Factory SPI
@@ -693,6 +668,31 @@ The API is organized into the following packages:
 | Throws
 | `CertificateValidationException` -- if the certificate is invalid, expired, revoked, or fails any other validation. +
   `AsymmetricCryptoException` -- if a technical error occurs during the cryptographic computations.
+|===
+
+[[sec_exceptions]]
+=== Exceptions
+
+[[type_AsymmetricCryptoException]]
+==== Asymmetric Crypto Exception
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Checked exception
+| Namespace  | `calypso.crypto.asymmetric`
+| Since    | 0.2
+| Purpose  | Indicates that an error occurred when processing an asymmetric cryptographic operation.
+|===
+
+[[type_CertificateValidationException]]
+==== Certificate Validation Exception
+
+[cols="1h,4", grid=rows, frame=all]
+|===
+| Kind     | Checked exception
+| Namespace  | `calypso.crypto.asymmetric.certificate`
+| Since    | 0.2
+| Purpose  | Indicates an issue encountered during the certificate validation -- e.g. an invalid signature or incorrect metadata values.
 |===
 
 [[sec_behaviours]]
