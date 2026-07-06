@@ -159,6 +159,10 @@ not restated for each operation:
 | RFC 2119
 | _Key words for use in RFCs to Indicate Requirement Levels_, S. Bradner, March 1997.
 
+| [[ref_rfc8174]] [RFC 8174]
+| RFC 8174
+| _Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words_, B. Leiba, May 2017.
+
 | [[ref_cna_tcc]] [CNA-TCC-API]
 | CNA-TCC-API
 | _Terminal Calypso Card API Specification_, {organization}.
