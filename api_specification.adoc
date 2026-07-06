@@ -119,10 +119,10 @@ as-is in the UML class diagram (<<sec_class_diagram>>).
 | `string`        | Sequence of characters, UTF-8 encoded by default.                | `String`, `string`, `str`.
 | `boolean`       | Two-state truth value.                                           | `boolean`, `bool`.
 | `byte`          | Signed 8-bit value.                                              | `byte`, `i8`.
-| `byte array`    | Ordered sequence of octets.                                      | `byte[]`, `[u8]`, `bytes`.
 | `long`          | Signed 64-bit integer.                                           | `long`, `Int64`.
-| `void`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`.
+| `byte array`    | Ordered sequence of octets.                                      | `byte[]`, `[u8]`, `bytes`.
 | `publicKey`     | Opaque, immutable handle representing an asymmetric public key.  | `PublicKey` (Java), `X509PublicKey`, equivalent.
+| `void`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`.
 |===
 
 ==== Operation tables
