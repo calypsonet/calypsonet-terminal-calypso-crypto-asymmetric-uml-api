@@ -380,7 +380,7 @@ The API is organized into the following packages:
 
 [cols="1h,4", grid=rows, frame=all]
 |===
-| Signature   | `getAid() -> byte array`
+| Signature   | `getAid() -> byte array?`
 | Since       | 0.2
 | Description | Returns the AID value carried by the certificate.
 | Returns     | The AID, or `null` if the AID check is not requested.
