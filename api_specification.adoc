@@ -29,13 +29,7 @@ v0.2.0-SNAPSHOT, {docdate}
 :spec-name: Terminal Calypso Crypto Asymmetric API
 :spec-id: CNA-TCCA-API
 :spec-version: 0.2.0-SNAPSHOT
-:ver-cna-tr: 3.0
-:ver-cna-tc: 3.0
-:ver-cna-td: 1.0
 :ver-cna-tcc: 3.0
-:ver-cna-tccs: 0.1
-:ver-cna-tcca: 0.2
-:ver-cna-tccl: 2.0
 
 [abstract]
 == Abstract
@@ -76,7 +70,7 @@ transaction manager can:
 * operate a PKI-mode secure session against a Calypso card (init, update, verify card signature).
 
 The contract is intentionally agnostic to the underlying cryptographic library: any component capable of producing
-the required signatures and certificate validations MUST be acceptable.
+the required signatures (as specified in <<ref_iso9796,ISO/IEC 9796>>) and certificate validations MUST be acceptable.
 
 === Scope
 
@@ -191,9 +185,9 @@ is backward-compatible per that API's evolution policy.
 |===
 | Resource | Link
 
-| Calypso Networks Association | https://calypsonet.org[calypsonet.org]
-| Terminal APIs website        | https://terminal-api.calypsonet.org/[terminal-api.calypsonet.org]
-| Terminal APIs documentation  | https://docs.terminal-api.calypsonet.org[docs.terminal-api.calypsonet.org]
+| Calypso Networks Association | https://calypsonet.org
+| Terminal APIs website        | https://terminal-api.calypsonet.org/
+| Terminal APIs documentation  | https://docs.terminal-api.calypsonet.org
 |===
 
 // =============================================================================
