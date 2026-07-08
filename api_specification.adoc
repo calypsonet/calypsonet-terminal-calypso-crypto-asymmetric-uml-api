@@ -29,6 +29,13 @@ v0.2.0-SNAPSHOT, {docdate}
 :spec-name: Terminal Calypso Crypto Asymmetric API
 :spec-id: CNA-TCCA-API
 :spec-version: 0.2.0-SNAPSHOT
+:ver-cna-tr: 3.0
+:ver-cna-tc: 3.0
+:ver-cna-td: 1.0
+:ver-cna-tcc: 3.0
+:ver-cna-tccs: 0.1
+:ver-cna-tcca: 0.2
+:ver-cna-tccl: 2.0
 
 [abstract]
 == Abstract
@@ -154,27 +161,39 @@ Unless explicitly stated otherwise, the stateful types defined by this specifica
 instance MUST be accessed from a single thread at a time; concurrent use of the same instance without external
 synchronisation results in undefined behaviour. Distinct instances MAY be used concurrently.
 
-=== References
+=== References and Resources
 
-[cols="1,1,4", options="header"]
+References to CNA Terminal APIs designate the indicated *major* version; any later release within the same major
+is backward-compatible per that API's evolution policy.
+
+==== Normative references
+
+[cols="1,4", options="header"]
 |===
-| Reference | Identifier | Title
+| Reference | Document
 
 | [[ref_rfc2119]] [RFC 2119]
-| RFC 2119
-| _Key words for use in RFCs to Indicate Requirement Levels_, S. Bradner, March 1997.
+| https://www.rfc-editor.org/rfc/rfc2119[_Key words for use in RFCs to Indicate Requirement Levels_], S. Bradner, March 1997.
 
 | [[ref_rfc8174]] [RFC 8174]
-| RFC 8174
-| _Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words_, B. Leiba, May 2017.
+| https://www.rfc-editor.org/rfc/rfc8174[_Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words_], B. Leiba, May 2017.
 
 | [[ref_cna_tcc]] [CNA-TCC-API]
-| CNA-TCC-API
-| _Terminal Calypso Card API Specification_, {organization}.
+| https://docs.terminal-api.calypsonet.org/calypsonet-terminal-calypso-card-uml-api/[_Terminal Calypso Card API Specification_], version {ver-cna-tcc}, {organization}.
 
 | [[ref_iso9796]] [ISO/IEC 9796]
-| ISO/IEC 9796
-| _Information technology -- Security techniques -- Digital signature schemes giving message recovery_.
+| https://www.iso.org[_Information technology -- Security techniques -- Digital signature schemes giving message recovery_].
+|===
+
+==== External resources
+
+[cols="1,3", options="header"]
+|===
+| Resource | Link
+
+| Calypso Networks Association | https://calypsonet.org[calypsonet.org]
+| Terminal APIs website        | https://terminal-api.calypsonet.org/[terminal-api.calypsonet.org]
+| Terminal APIs documentation  | https://docs.terminal-api.calypsonet.org[docs.terminal-api.calypsonet.org]
 |===
 
 // =============================================================================
