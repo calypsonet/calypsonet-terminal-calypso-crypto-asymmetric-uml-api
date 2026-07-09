@@ -367,8 +367,8 @@ The API is organized into the following packages:
 | Signature   | `initTerminalPkiSession(cardPublicKey: CardPublicKeySpi) -> void`
 | Since       | 0.2
 | Description | Initialises the cryptographic context for a new PKI secure session with the supplied card public key.
-| Parameters  | `cardPublicKey` -- the card public key, extracted from the previously validated card certificate.
-| Throws      | `AsymmetricCryptoException` -- if the provided public key value is not compliant with the current elliptic curve, or if an error occurs during the initialisation.
+| Parameters  | `cardPublicKey` (<<type_CardPublicKeySpi,`CardPublicKeySpi`>>) -- the card public key, extracted from the previously validated card certificate.
+| Throws      | <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if the provided public key value is not compliant with the current elliptic curve, or if an error occurs during the initialisation.
 |===
 
 [[op_AsymmetricCryptoCardTransactionManagerSpi_isCardPkiSessionValid]]
@@ -381,7 +381,7 @@ The API is organized into the following packages:
 | Description | Verifies the provided secure session signature against the previously initialised and updated context.
 | Parameters  | `cardSessionSignature` -- the 64-byte card signature to verify.
 | Returns     | `true` if the signature is valid, `false` otherwise.
-| Throws      | `AsymmetricCryptoException` -- if an error occurs while verifying the signature.
+| Throws      | <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if an error occurs while verifying the signature.
 |===
 
 [[op_AsymmetricCryptoCardTransactionManagerSpi_updateTerminalPkiSession]]
@@ -397,7 +397,7 @@ The API is organized into the following packages:
   - For ingoing data, the input length MUST be `>= 5`.
   - For outgoing data, the input length MUST be `>= 2`.
 | Parameters  | `cardApdu` -- the APDU bytes exchanged with the card (ingoing or outgoing).
-| Throws      | `AsymmetricCryptoException` -- if an error occurs while updating the session.
+| Throws      | <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if an error occurs while updating the session.
 |===
 
 [[type_CaCertificateContentSpi]]
@@ -544,7 +544,7 @@ The API is organized into the following packages:
 | Description | Parses the supplied card output data and returns a new CA certificate instance. The first byte of the input array MUST be the certificate type.
 | Parameters  | `cardOutputData` -- a `byte array` containing the CA certificate as stored on the card.
 | Returns     | A <<type_CaCertificateSpi,`CaCertificateSpi`>>.
-| Throws      | `CertificateValidationException` -- if the provided certificate has an unsupported format.
+| Throws      | <<type_CertificateValidationException,`CertificateValidationException`>> -- if the provided certificate has an unsupported format.
 |===
 
 [[type_CaCertificateSpi]]
@@ -570,11 +570,11 @@ The API is organized into the following packages:
 | Verifies the certificate signature and other relevant fields, then returns the certificate content. The
   validation MUST be comprehensive: signature correctness, validity period, issuer and subject details and any
   relevant constraints or extensions.
-| Parameters  | `issuerCertificateContent` -- the issuer certificate content to be used for signature verification.
+| Parameters  | `issuerCertificateContent` (<<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>) -- the issuer certificate content to be used for signature verification.
 | Returns     | A <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
 | Throws
-| `CertificateValidationException` -- if the certificate is invalid, expired, revoked, or fails any other validation. +
-  `AsymmetricCryptoException` -- if a technical error occurs during the cryptographic computations.
+| <<type_CertificateValidationException,`CertificateValidationException`>> -- if the certificate is invalid, expired, revoked, or fails any other validation. +
+  <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if a technical error occurs during the cryptographic computations.
 |===
 
 ===== Get Issuer Public Key Reference
@@ -620,7 +620,7 @@ The API is organized into the following packages:
 | Description | Parses the supplied card output data and returns a new card certificate instance. The first byte of the input MUST be the certificate type. The expected total length is 316 bytes.
 | Parameters  | `cardOutputData` -- a `byte array` containing the card certificate as stored on the card (316 bytes).
 | Returns     | A <<type_CardCertificateSpi,`CardCertificateSpi`>>.
-| Throws      | `CertificateValidationException` -- if the provided certificate has an unsupported format.
+| Throws      | <<type_CertificateValidationException,`CertificateValidationException`>> -- if the provided certificate has an unsupported format.
 |===
 
 [[type_CardCertificateSpi]]
@@ -643,11 +643,11 @@ The API is organized into the following packages:
 | `checkCertificateAndGetPublicKey(issuerCertificateContent: CaCertificateContentSpi) -> CardPublicKeySpi`
 | Since       | 0.2
 | Description | Verifies the certificate signature and other relevant fields, then returns the card's public key.
-| Parameters  | `issuerCertificateContent` -- the issuer certificate content to be used for signature verification.
+| Parameters  | `issuerCertificateContent` (<<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>) -- the issuer certificate content to be used for signature verification.
 | Returns     | A <<type_CardPublicKeySpi,`CardPublicKeySpi`>>.
 | Throws
-| `CertificateValidationException` -- if the certificate is invalid. +
-  `AsymmetricCryptoException` -- if a technical error occurs during the cryptographic computations.
+| <<type_CertificateValidationException,`CertificateValidationException`>> -- if the certificate is invalid. +
+  <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if a technical error occurs during the cryptographic computations.
 |===
 
 ===== Get Card AID
@@ -727,8 +727,8 @@ The API is organized into the following packages:
   certificate MUST be expected to be self-signed in this context.
 | Returns     | A <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
 | Throws
-| `CertificateValidationException` -- if the certificate is invalid, expired, revoked, or fails any other validation. +
-  `AsymmetricCryptoException` -- if a technical error occurs during the cryptographic computations.
+| <<type_CertificateValidationException,`CertificateValidationException`>> -- if the certificate is invalid, expired, revoked, or fails any other validation. +
+  <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if a technical error occurs during the cryptographic computations.
 |===
 
 [[sec_exceptions]]
