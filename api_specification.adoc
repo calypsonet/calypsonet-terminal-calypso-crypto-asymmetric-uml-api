@@ -259,11 +259,11 @@ TCCA --> Mod : implemented by
 @enduml
 ....
 
-=== Logical packages
+=== Logical namespaces
 
 [cols="1,1,4", options="header"]
 |===
-| Package                                                  | Role     | Summary
+| Namespace                                                  | Role     | Summary
 
 | `calypso.crypto.asymmetric`                              | Public API
 | Properties and root exceptions.
