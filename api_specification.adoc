@@ -95,7 +95,7 @@ A software product conforms to this specification if and only if:
 . it implements every interface defined in <<sec_specification>> with the operations and semantics prescribed in
   this document,
 . it raises exceptions exclusively of the types defined in <<sec_exceptions>> for the situations described,
-. it preserves the structural and behavioural relationships described in <<sec_architecture>> and <<sec_behaviours>>.
+. it preserves the structural relationships described in <<sec_architecture>>.
 
 Throughout this specification, the key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**,
 **MAY** and **OPTIONAL** are to be interpreted as described in <<ref_rfc2119,RFC 2119>> and <<ref_rfc8174,RFC 8174>> when, and only when,
@@ -293,8 +293,6 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [[sec_specification]]
 == API Specification
 
-Stateful operations are subject to the ordering and lifecycle constraints defined in <<sec_behaviours>>.
-
 === Classes
 
 [[type_AsymmetricCryptoApiProperties]]
@@ -318,6 +316,12 @@ Stateful operations are subject to the ordering and lifecycle constraints define
 |===
 
 === SPI Interfaces
+
+Certificate validation follows a *chain*: it MUST start from a PCA certificate (validated through
+<<type_PcaCertificateSpi,`PcaCertificateSpi.checkCertificateAndGetContent`>>), traverse zero or more CA
+certificates, and end on a card certificate that exposes the card's public key. Each `checkCertificateAndGetContent`
+/ `checkCertificateAndGetPublicKey` invocation MUST validate the signature *and* the metadata (validity dates, AID
+constraints, certificate purpose) before returning a value.
 
 [[type_AsymmetricCryptoCardTransactionManagerFactorySpi]]
 ==== Asymmetric Crypto Card Transaction Manager Factory SPI
@@ -371,7 +375,7 @@ Stateful operations are subject to the ordering and lifecycle constraints define
 |===
 | Signature   | `isCardPkiSessionValid(cardSessionSignature: byte array) -> boolean`
 | Since       | 0.2
-| Description | Verifies the provided secure session signature against the previously initialised and updated context.
+| Description | Verifies the provided secure session signature against the previously initialised and updated context. This MUST be the final step of the PKI secure session, invoked after the last `updateTerminalPkiSession`.
 | Parameters  | `cardSessionSignature` -- the 64-byte card signature to verify.
 | Returns     | `true` if the signature is valid, `false` otherwise.
 | Throws      | <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if an error occurs while verifying the signature.
@@ -749,17 +753,6 @@ Stateful operations are subject to the ordering and lifecycle constraints define
 | Since    | 0.2
 | Purpose  | Indicates an issue encountered during the certificate validation -- e.g. an invalid signature or incorrect metadata values.
 |===
-
-[[sec_behaviours]]
-== Behavioural Requirements
-
-. Certificate-chain validation MUST start from a PCA certificate (validated through
-  <<type_PcaCertificateSpi,`PcaCertificateSpi.checkCertificateAndGetContent`>>), traverse zero or more CA
-  certificates and end on a card certificate that exposes the card's public key.
-. Each `checkCertificateAndGetContent` / `checkCertificateAndGetPublicKey` invocation MUST validate the signature
-  *and* the metadata (validity dates, AID constraints, certificate purpose) before returning a value.
-. `isCardPkiSessionValid` MUST be the final step of the PKI session and MUST be called after the last
-  `updateTerminalPkiSession`.
 
 // =============================================================================
 [appendix]
