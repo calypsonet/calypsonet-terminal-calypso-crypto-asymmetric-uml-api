@@ -344,7 +344,7 @@ The API is organized into the following packages:
 | Signature   | `createCardTransactionManager() -> AsymmetricCryptoCardTransactionManagerSpi`
 | Since       | 0.2
 | Description | Returns a new <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
-| Returns     | An instance.
+| Returns     | An <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
 | Throws      | None.
 |===
 
@@ -530,7 +530,7 @@ The API is organized into the following packages:
 | Signature   | `getCertificateType() -> byte`
 | Since       | 0.2
 | Description | Returns the certificate type identifier associated with the parser.
-| Returns     | A `byte`.
+| Returns     | A `byte` value.
 | Throws      | None.
 |===
 
@@ -606,7 +606,7 @@ The API is organized into the following packages:
 | Signature   | `getCertificateType() -> byte`
 | Since       | 0.2
 | Description | Returns the certificate type identifier associated with the parser.
-| Returns     | A `byte`.
+| Returns     | A `byte` value.
 | Throws      | None.
 |===
 
