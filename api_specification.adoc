@@ -385,7 +385,8 @@ Stateful operations are subject to the ordering and lifecycle constraints define
 | Signature   | `updateTerminalPkiSession(cardApdu: byte array) -> void`
 | Since       | 0.2
 | Description
-| Updates the session signature verification engine with data sent to or received from the card.
+| Updates the session signature verification engine with data sent to or received from the card. This operation
+  MUST be called for every APDU exchanged during the PKI secure session, in the order in which it was exchanged.
 
   - For ingoing data, the input length MUST be `>= 5`.
   - For outgoing data, the input length MUST be `>= 2`.
@@ -757,8 +758,6 @@ Stateful operations are subject to the ordering and lifecycle constraints define
   certificates and end on a card certificate that exposes the card's public key.
 . Each `checkCertificateAndGetContent` / `checkCertificateAndGetPublicKey` invocation MUST validate the signature
   *and* the metadata (validity dates, AID constraints, certificate purpose) before returning a value.
-. `updateTerminalPkiSession` MUST be called for every APDU exchanged during the PKI secure session, in the order
-  in which it was exchanged.
 . `isCardPkiSessionValid` MUST be the final step of the PKI session and MUST be called after the last
   `updateTerminalPkiSession`.
 
