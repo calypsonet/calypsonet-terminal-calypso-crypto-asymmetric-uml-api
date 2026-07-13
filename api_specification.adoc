@@ -320,7 +320,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 Certificate validation follows a *chain*: it MUST start from a PCA certificate (validated through
 <<type_PcaCertificateSpi,`PcaCertificateSpi.checkCertificateAndGetContent`>>), traverse zero or more CA
 certificates, and end on a card certificate that exposes the card's public key. Each `checkCertificateAndGetContent`
-/ `checkCertificateAndGetPublicKey` invocation MUST validate the signature *and* the metadata (validity dates, AID
+/ `checkCertificateAndGetPublicKey` call MUST validate the signature *and* the metadata (validity dates, AID
 constraints, certificate purpose) before returning a value.
 
 [[type_AsymmetricCryptoCardTransactionManagerFactorySpi]]
@@ -375,7 +375,7 @@ constraints, certificate purpose) before returning a value.
 |===
 | Signature   | `isCardPkiSessionValid(cardSessionSignature: byte array) -> boolean`
 | Since       | 0.2
-| Description | Verifies the provided secure session signature against the previously initialised and updated context. This MUST be the final step of the PKI secure session, invoked after the last `updateTerminalPkiSession`.
+| Description | Verifies the provided secure session signature against the previously initialised and updated context. This MUST be the final step of the PKI secure session, called after the last `updateTerminalPkiSession`.
 | Parameters  | `cardSessionSignature` -- the 64-byte card signature to verify.
 | Returns     | `true` if the signature is valid, `false` otherwise.
 | Throws      | <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if an error occurs while verifying the signature.
