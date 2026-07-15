@@ -358,7 +358,7 @@ constraints, certificate purpose) before returning a value.
 | Kind     | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.transaction.spi`
 | Since    | 0.2
-| Purpose  | Defines the cryptographic primitives required by a Calypso card transaction when using asymmetric keys.
+| Purpose  | Defines the cryptographic primitives required by a Calypso card transaction when using asymmetric keys. An instance is obtained via <<op_AsymmetricCryptoCardTransactionManagerFactorySpi_createCardTransactionManager,`AsymmetricCryptoCardTransactionManagerFactorySpi.createCardTransactionManager`>>.
 |===
 
 [[op_AsymmetricCryptoCardTransactionManagerSpi_initTerminalPkiSession]]
