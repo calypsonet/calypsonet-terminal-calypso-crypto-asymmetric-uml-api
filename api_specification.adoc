@@ -337,6 +337,7 @@ constraints, certificate purpose) before returning a value.
 | Purpose  | Factory of <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
 |===
 
+[[op_AsymmetricCryptoCardTransactionManagerFactorySpi_createCardTransactionManager]]
 ===== Create Card Transaction Manager
 
 [cols="1h,4", grid=rows, frame=all]
@@ -414,6 +415,7 @@ constraints, certificate purpose) before returning a value.
 | Purpose  | Exposes the content of a CA certificate that has been parsed and verified by the crypto module.
 |===
 
+[[op_CaCertificateContentSpi_getAid]]
 ===== Get AID
 
 [cols="1h,4", grid=rows, frame=all]
@@ -425,6 +427,7 @@ constraints, certificate purpose) before returning a value.
 | Throws      | None.
 |===
 
+[[op_CaCertificateContentSpi_getEndDate]]
 ===== Get End Date
 
 [cols="1h,4", grid=rows, frame=all]
@@ -436,6 +439,7 @@ constraints, certificate purpose) before returning a value.
 | Throws      | None.
 |===
 
+[[op_CaCertificateContentSpi_getPublicKey]]
 ===== Get Public Key
 
 [cols="1h,4", grid=rows, frame=all]
@@ -447,6 +451,7 @@ constraints, certificate purpose) before returning a value.
 | Throws      | None.
 |===
 
+[[op_CaCertificateContentSpi_getPublicKeyReference]]
 ===== Get Public Key Reference
 
 [cols="1h,4", grid=rows, frame=all]
@@ -458,6 +463,7 @@ constraints, certificate purpose) before returning a value.
 | Throws      | None.
 |===
 
+[[op_CaCertificateContentSpi_getStartDate]]
 ===== Get Start Date
 
 [cols="1h,4", grid=rows, frame=all]
@@ -471,6 +477,7 @@ constraints, certificate purpose) before returning a value.
 | Throws      | None.
 |===
 
+[[op_CaCertificateContentSpi_isAidCheckRequested]]
 ===== Is AID Check Requested
 
 [cols="1h,4", grid=rows, frame=all]
@@ -482,6 +489,7 @@ constraints, certificate purpose) before returning a value.
 | Throws      | None.
 |===
 
+[[op_CaCertificateContentSpi_isAidTruncated]]
 ===== Is AID Truncated
 
 [cols="1h,4", grid=rows, frame=all]
@@ -493,6 +501,7 @@ constraints, certificate purpose) before returning a value.
 | Throws      | None.
 |===
 
+[[op_CaCertificateContentSpi_isCaCertificatesAuthenticationAllowed]]
 ===== Is CA Certificates Authentication Allowed
 
 [cols="1h,4", grid=rows, frame=all]
@@ -504,6 +513,7 @@ constraints, certificate purpose) before returning a value.
 | Throws      | None.
 |===
 
+[[op_CaCertificateContentSpi_isCardCertificatesAuthenticationAllowed]]
 ===== Is Card Certificates Authentication Allowed
 
 [cols="1h,4", grid=rows, frame=all]
@@ -527,6 +537,7 @@ constraints, certificate purpose) before returning a value.
 | Purpose  | Parses CA certificates from raw data stored on a card.
 |===
 
+[[op_CaCertificateParserSpi_getCertificateType]]
 ===== Get Certificate Type
 
 [cols="1h,4", grid=rows, frame=all]
@@ -582,6 +593,7 @@ constraints, certificate purpose) before returning a value.
   <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if a technical error occurs during the cryptographic computations.
 |===
 
+[[op_CaCertificateSpi_getIssuerPublicKeyReference]]
 ===== Get Issuer Public Key Reference
 
 [cols="1h,4", grid=rows, frame=all]
@@ -605,6 +617,7 @@ constraints, certificate purpose) before returning a value.
 | Purpose  | Parses card certificates from raw data stored on a card.
 |===
 
+[[op_CardCertificateParserSpi_getCertificateType]]
 ===== Get Certificate Type
 
 [cols="1h,4", grid=rows, frame=all]
@@ -657,6 +670,7 @@ constraints, certificate purpose) before returning a value.
   <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if a technical error occurs during the cryptographic computations.
 |===
 
+[[op_CardCertificateSpi_getCardAid]]
 ===== Get Card AID
 
 [cols="1h,4", grid=rows, frame=all]
@@ -668,6 +682,7 @@ constraints, certificate purpose) before returning a value.
 | Throws      | None.
 |===
 
+[[op_CardCertificateSpi_getCardSerialNumber]]
 ===== Get Card Serial Number
 
 [cols="1h,4", grid=rows, frame=all]
@@ -679,6 +694,7 @@ constraints, certificate purpose) before returning a value.
 | Throws      | None.
 |===
 
+[[op_CardCertificateSpi_getIssuerPublicKeyReference]]
 ===== Get Issuer Public Key Reference
 
 [cols="1h,4", grid=rows, frame=all]
@@ -702,6 +718,7 @@ constraints, certificate purpose) before returning a value.
 | Purpose  | Exposes the card's public key extracted from a validated card certificate.
 |===
 
+[[op_CardPublicKeySpi_getRawValue]]
 ===== Get Raw Value
 
 [cols="1h,4", grid=rows, frame=all]
@@ -725,6 +742,7 @@ constraints, certificate purpose) before returning a value.
 | Purpose  | Represents a Primary Certification Authority (PCA) certificate -- the self-signed trust anchor of the Calypso PKI.
 |===
 
+[[op_PcaCertificateSpi_checkCertificateAndGetContent]]
 ===== Check Certificate And Get Content
 
 [cols="1h,4", grid=rows, frame=all]
