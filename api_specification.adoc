@@ -132,6 +132,7 @@ Each interface, class, enumeration and exception defined in this document is des
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name       | The type's normalized name.
 | Kind       | The category of the type (interface, class, enumeration, exception, etc.).
 | Namespace  | The namespace in which the type is defined.
 | Extends    | The type extended by this type, when applicable.
@@ -300,6 +301,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `AsymmetricCryptoApiProperties`
 | Kind     | Final class
 | Namespace  | `calypso.crypto.asymmetric`
 | Since    | 0.2
@@ -328,6 +330,7 @@ constraints, certificate purpose) before returning a value.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `AsymmetricCryptoCardTransactionManagerFactorySpi`
 | Kind     | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.transaction.spi`
 | Since    | 0.2
@@ -350,6 +353,7 @@ constraints, certificate purpose) before returning a value.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `AsymmetricCryptoCardTransactionManagerSpi`
 | Kind     | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.transaction.spi`
 | Since    | 0.2
@@ -403,6 +407,7 @@ constraints, certificate purpose) before returning a value.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `CaCertificateContentSpi`
 | Kind     | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.certificate.spi`
 | Since    | 0.2
@@ -515,6 +520,7 @@ constraints, certificate purpose) before returning a value.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `CaCertificateParserSpi`
 | Kind     | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.certificate.spi`
 | Since    | 0.2
@@ -550,6 +556,7 @@ constraints, certificate purpose) before returning a value.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `CaCertificateSpi`
 | Kind     | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.certificate.spi`
 | Since    | 0.2
@@ -591,6 +598,7 @@ constraints, certificate purpose) before returning a value.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `CardCertificateParserSpi`
 | Kind     | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.certificate.spi`
 | Since    | 0.2
@@ -626,6 +634,7 @@ constraints, certificate purpose) before returning a value.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `CardCertificateSpi`
 | Kind     | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.certificate.spi`
 | Since    | 0.2
@@ -686,6 +695,7 @@ constraints, certificate purpose) before returning a value.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `CardPublicKeySpi`
 | Kind     | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.certificate.spi`
 | Since    | 0.2
@@ -708,6 +718,7 @@ constraints, certificate purpose) before returning a value.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `PcaCertificateSpi`
 | Kind     | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.certificate.spi`
 | Since    | 0.2
@@ -737,6 +748,7 @@ constraints, certificate purpose) before returning a value.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `AsymmetricCryptoException`
 | Kind     | Checked exception
 | Namespace  | `calypso.crypto.asymmetric`
 | Since    | 0.2
@@ -748,6 +760,7 @@ constraints, certificate purpose) before returning a value.
 
 [cols="1h,4", grid=rows, frame=all]
 |===
+| Name     | `CertificateValidationException`
 | Kind     | Checked exception
 | Namespace  | `calypso.crypto.asymmetric.certificate`
 | Since    | 0.2
