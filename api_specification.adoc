@@ -139,6 +139,7 @@ Each interface, class, enumeration and exception defined in this document is des
 | Implements | The interface implemented by this type, when applicable.
 | Since      | The version of the API in which the type was introduced.
 | Purpose    | A normative description of the type's responsibility.
+| See also   | Cross-references to related operations or types, each a hyperlink to the corresponding table. Present only when applicable.
 |===
 
 ==== Operation tables
@@ -153,6 +154,7 @@ Each operation defined in this document is described by a table of the form:
 | Parameters  | A description of each input parameter.
 | Returns     | A description of the returned value, if any.
 | Throws      | A list of exceptional conditions, each mapped to a specific exception type.
+| See also    | Cross-references to related operations or types, each a hyperlink to the corresponding table. Present only when applicable.
 |===
 
 ==== Operation contracts
