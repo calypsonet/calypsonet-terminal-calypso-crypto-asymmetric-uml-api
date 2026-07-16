@@ -346,7 +346,10 @@ constraints, certificate purpose) before returning a value.
 |===
 | Signature   | `createCardTransactionManager() -> AsymmetricCryptoCardTransactionManagerSpi`
 | Since       | 0.2
-| Description | Returns a new <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
+| Description
+| Creates an <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>
+providing the cryptographic primitives that a Calypso card transaction requires when using asymmetric (PKI) keys.
+Implemented by the crypto module.
 | Returns     | An <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
 | Throws      | None.
 |===
