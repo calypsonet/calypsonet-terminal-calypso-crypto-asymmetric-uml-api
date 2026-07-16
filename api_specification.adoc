@@ -423,7 +423,7 @@ constraints, certificate purpose) before returning a value.
 | Signature   | `getAid() -> byte array?`
 | Since       | 0.2
 | Description | Returns the AID value carried by the certificate.
-| Returns     | The AID, or `null` if the AID check is not requested.
+| Returns     | The non-empty AID, or `null` if the AID check is not requested.
 | Throws      | None.
 |===
 
