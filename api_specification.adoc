@@ -28,6 +28,8 @@ v0.2.0-SNAPSHOT, {docdate}
 :short-name: CNA
 :spec-name: Terminal Calypso Crypto Asymmetric API
 :spec-id: CNA-TCCA-API
+:release-date: <YYMMDD>
+:doc-ref: {release-date}-SP-CNATerminalAPI-CalypsoCryptoAsymmetric
 :spec-version: 0.2.0-SNAPSHOT
 :ver-cna-tcc: 3.0
 
@@ -48,7 +50,8 @@ certification chain associated with PKI-enabled Calypso cards.
 
 [cols="1h,3", grid=rows, frame=all]
 |===
-| Specification ID    | {spec-id}
+| Reference           | {doc-ref}
+| Short name          | {spec-id}
 | Version             | {spec-version}
 | Editor              | {organization}
 | Reference license   | Eclipse Public License -- v 2.0 (EPL-2.0)
@@ -196,7 +199,7 @@ is backward-compatible per that API's evolution policy.
 | https://www.rfc-editor.org/rfc/rfc8174[_Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words_], B. Leiba, May 2017.
 
 | [[ref_cna_tcc]] [CNA-TCC-API]
-| https://docs.terminal-api.calypsonet.org/calypsonet-terminal-calypso-card-uml-api/[_Terminal Calypso Card API Specification_], version {ver-cna-tcc}, {organization}.
+| https://docs.terminal-api.calypsonet.org/calypsonet-terminal-calypso-card-uml-api/[_Terminal Calypso Card API Specification_] (SP-CNATerminalAPI-CalypsoCard), version {ver-cna-tcc}, {organization}.
 
 | [[ref_iso9796]] [ISO/IEC 9796]
 | https://www.iso.org[_Information technology -- Security techniques -- Digital signature schemes giving message recovery_].
