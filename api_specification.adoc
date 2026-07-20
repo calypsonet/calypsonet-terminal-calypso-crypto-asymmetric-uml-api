@@ -217,7 +217,7 @@ is backward-compatible per that API's evolution policy.
 | Reference | Document
 
 | [[ref_cna_tcc]] [CNA-TCC-API]
-| https://docs.terminal-api.calypsonet.org/calypsonet-terminal-calypso-card-uml-api/[_Terminal Calypso Card API Specification_] (SP-CNATerminalAPI-CalypsoCard), version {ver-cna-tcc}, {organization}.
+| https://docs.terminal-api.calypsonet.org/calypsonet-terminal-calypso-card-uml-api/[_CNA Terminal API -- Calypso Card_] (SP-CNATerminalAPI-CalypsoCard), version {ver-cna-tcc}, {organization}.
 |===
 
 ==== Normative References
