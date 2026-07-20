@@ -25,11 +25,9 @@ v0.2.0-SNAPSHOT, {docdate}
 :example-caption: Example
 :appendix-caption: Appendix
 :organization: Calypso Networks Association
-:short-name: CNA
 :spec-name: Terminal Calypso Crypto Asymmetric API
 :spec-id: CNA-TCCA-API
-:release-date: <YYMMDD>
-:doc-ref: {release-date}-SP-CNATerminalAPI-CalypsoCryptoAsymmetric
+:doc-ref: YYMMDD-SP-CNATerminalAPI-CalypsoCryptoAsymmetric
 :spec-version: 0.2.0-SNAPSHOT
 :ver-cna-tcc: 3.0
 
@@ -37,7 +35,7 @@ v0.2.0-SNAPSHOT, {docdate}
 == Abstract
 
 This document is the official technical specification of the **{spec-name}** standardised
-by the **{organization}** ({short-name}).
+by the **{organization}** (CNA).
 It defines, in a language-agnostic way, the interfaces, classes, enumerations, exceptions, structural
 relationships and behavioural requirements that any conforming implementation of the {spec-name} MUST satisfy.
 
