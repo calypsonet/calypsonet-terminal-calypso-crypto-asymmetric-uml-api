@@ -1,4 +1,4 @@
-= Terminal Calypso Crypto Asymmetric API -- Specification
+= Specification: CNA Terminal API -- Calypso Crypto Asymmetric
 Calypso Networks Association <https://calypsonet.org>
 v0.2.0-SNAPSHOT, {docdate}
 :doctype: book
