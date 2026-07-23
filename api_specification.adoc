@@ -158,7 +158,7 @@ as-is in the UML class diagram (<<sec_class_diagram>>).
 
 Each interface, class, enumeration and exception defined in this document is described by a table of the form:
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name       | The type's normalized name.
 | Kind       | The category of the type (interface, class, enumeration, exception, etc.).
@@ -178,7 +178,7 @@ notes, value tables or examples -- is placed as prose below the table.
 
 Each operation defined in this document is described by a table of the form:
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | The operation's language-agnostic signature.
 | Since       | The version of the API in which the operation was introduced.
@@ -340,7 +340,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 [[type_AsymmetricCryptoApiProperties]]
 ==== Asymmetric Crypto API Properties
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `AsymmetricCryptoApiProperties`
 | Kind     | Final class
@@ -369,7 +369,7 @@ constraints, certificate purpose) before returning a value.
 [[type_AsymmetricCryptoCardTransactionManagerFactorySpi]]
 ==== Asymmetric Crypto Card Transaction Manager Factory SPI
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `AsymmetricCryptoCardTransactionManagerFactorySpi`
 | Kind     | Interface (SPI)
@@ -381,7 +381,7 @@ constraints, certificate purpose) before returning a value.
 [[op_AsymmetricCryptoCardTransactionManagerFactorySpi_createCardTransactionManager]]
 ===== Create Card Transaction Manager
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `createCardTransactionManager() -> AsymmetricCryptoCardTransactionManagerSpi`
 | Since       | 0.2
@@ -396,7 +396,7 @@ Implemented by the crypto module.
 [[type_AsymmetricCryptoCardTransactionManagerSpi]]
 ==== Asymmetric Crypto Card Transaction Manager SPI
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `AsymmetricCryptoCardTransactionManagerSpi`
 | Kind     | Interface (SPI)
@@ -408,7 +408,7 @@ Implemented by the crypto module.
 [[op_AsymmetricCryptoCardTransactionManagerSpi_initTerminalPkiSession]]
 ===== Init Terminal PKI Session
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `initTerminalPkiSession(cardPublicKey: CardPublicKeySpi) -> void`
 | Since       | 0.2
@@ -420,7 +420,7 @@ Implemented by the crypto module.
 [[op_AsymmetricCryptoCardTransactionManagerSpi_isCardPkiSessionValid]]
 ===== Is Card PKI Session Valid
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `isCardPkiSessionValid(cardSessionSignature: byte array) -> boolean`
 | Since       | 0.2
@@ -433,7 +433,7 @@ Implemented by the crypto module.
 [[op_AsymmetricCryptoCardTransactionManagerSpi_updateTerminalPkiSession]]
 ===== Update Terminal PKI Session
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `updateTerminalPkiSession(cardApdu: byte array) -> void`
 | Since       | 0.2
@@ -450,7 +450,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[type_CaCertificateContentSpi]]
 ==== CA Certificate Content SPI
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `CaCertificateContentSpi`
 | Kind     | Interface (SPI)
@@ -462,7 +462,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CaCertificateContentSpi_getAid]]
 ===== Get AID
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getAid() -> byte array?`
 | Since       | 0.2
@@ -474,7 +474,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CaCertificateContentSpi_getEndDate]]
 ===== Get End Date
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getEndDate() -> long`
 | Since       | 0.2
@@ -486,7 +486,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CaCertificateContentSpi_getPublicKey]]
 ===== Get Public Key
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getPublicKey() -> publicKey`
 | Since       | 0.2
@@ -498,7 +498,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CaCertificateContentSpi_getPublicKeyReference]]
 ===== Get Public Key Reference
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getPublicKeyReference() -> byte array`
 | Since       | 0.2
@@ -510,7 +510,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CaCertificateContentSpi_getStartDate]]
 ===== Get Start Date
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getStartDate() -> long`
 | Since       | 0.2
@@ -524,7 +524,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CaCertificateContentSpi_isAidCheckRequested]]
 ===== Is AID Check Requested
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `isAidCheckRequested() -> boolean`
 | Since       | 0.2
@@ -536,7 +536,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CaCertificateContentSpi_isAidTruncated]]
 ===== Is AID Truncated
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `isAidTruncated() -> boolean`
 | Since       | 0.2
@@ -548,7 +548,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CaCertificateContentSpi_isCaCertificatesAuthenticationAllowed]]
 ===== Is CA Certificates Authentication Allowed
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `isCaCertificatesAuthenticationAllowed() -> boolean`
 | Since       | 0.2
@@ -560,7 +560,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CaCertificateContentSpi_isCardCertificatesAuthenticationAllowed]]
 ===== Is Card Certificates Authentication Allowed
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `isCardCertificatesAuthenticationAllowed() -> boolean`
 | Since       | 0.2
@@ -572,7 +572,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[type_CaCertificateParserSpi]]
 ==== CA Certificate Parser SPI
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `CaCertificateParserSpi`
 | Kind     | Interface (SPI)
@@ -584,7 +584,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CaCertificateParserSpi_getCertificateType]]
 ===== Get Certificate Type
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getCertificateType() -> byte`
 | Since       | 0.2
@@ -596,7 +596,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CaCertificateParserSpi_parseCertificate]]
 ===== Parse Certificate
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `parseCertificate(cardOutputData: byte array) -> CaCertificateSpi`
 | Since       | 0.2
@@ -609,7 +609,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[type_CaCertificateSpi]]
 ==== CA Certificate SPI
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `CaCertificateSpi`
 | Kind     | Interface (SPI)
@@ -621,7 +621,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CaCertificateSpi_checkCertificateAndGetContent]]
 ===== Check Certificate And Get Content
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature
 | `checkCertificateAndGetContent(issuerCertificateContent: CaCertificateContentSpi) -> CaCertificateContentSpi`
@@ -640,7 +640,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CaCertificateSpi_getIssuerPublicKeyReference]]
 ===== Get Issuer Public Key Reference
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getIssuerPublicKeyReference() -> byte array`
 | Since       | 0.2
@@ -652,7 +652,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[type_CardCertificateParserSpi]]
 ==== Card Certificate Parser SPI
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `CardCertificateParserSpi`
 | Kind     | Interface (SPI)
@@ -664,7 +664,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CardCertificateParserSpi_getCertificateType]]
 ===== Get Certificate Type
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getCertificateType() -> byte`
 | Since       | 0.2
@@ -676,7 +676,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CardCertificateParserSpi_parseCertificate]]
 ===== Parse Certificate
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `parseCertificate(cardOutputData: byte array) -> CardCertificateSpi`
 | Since       | 0.2
@@ -689,7 +689,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[type_CardCertificateSpi]]
 ==== Card Certificate SPI
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `CardCertificateSpi`
 | Kind     | Interface (SPI)
@@ -701,7 +701,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CardCertificateSpi_checkCertificateAndGetPublicKey]]
 ===== Check Certificate And Get Public Key
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature
 | `checkCertificateAndGetPublicKey(issuerCertificateContent: CaCertificateContentSpi) -> CardPublicKeySpi`
@@ -717,7 +717,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CardCertificateSpi_getCardAid]]
 ===== Get Card AID
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getCardAid() -> byte array`
 | Since       | 0.2
@@ -729,7 +729,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CardCertificateSpi_getCardSerialNumber]]
 ===== Get Card Serial Number
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getCardSerialNumber() -> byte array`
 | Since       | 0.2
@@ -741,7 +741,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CardCertificateSpi_getIssuerPublicKeyReference]]
 ===== Get Issuer Public Key Reference
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getIssuerPublicKeyReference() -> byte array`
 | Since       | 0.2
@@ -753,7 +753,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[type_CardPublicKeySpi]]
 ==== Card Public Key SPI
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `CardPublicKeySpi`
 | Kind     | Interface (SPI)
@@ -765,7 +765,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_CardPublicKeySpi_getRawValue]]
 ===== Get Raw Value
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `getRawValue() -> byte array`
 | Since       | 0.2
@@ -777,7 +777,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[type_PcaCertificateSpi]]
 ==== PCA Certificate SPI
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `PcaCertificateSpi`
 | Kind     | Interface (SPI)
@@ -789,7 +789,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[op_PcaCertificateSpi_checkCertificateAndGetContent]]
 ===== Check Certificate And Get Content
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature   | `checkCertificateAndGetContent() -> CaCertificateContentSpi`
 | Since       | 0.2
@@ -808,7 +808,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[type_AsymmetricCryptoException]]
 ==== Asymmetric Crypto Exception
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `AsymmetricCryptoException`
 | Kind     | Checked exception
@@ -820,7 +820,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[type_CertificateValidationException]]
 ==== Certificate Validation Exception
 
-[cols="1h,4", grid=rows, frame=all]
+[cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name     | `CertificateValidationException`
 | Kind     | Checked exception
