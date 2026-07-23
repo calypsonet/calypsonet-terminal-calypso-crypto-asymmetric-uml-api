@@ -351,7 +351,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 
 ===== Constants
 
-[cols="1,1,1,4", options="header"]
+[cols=".^1,^.^1,^.^1,.^4", options="header"]
 |===
 | Name      | Type     | Since  | Description
 
