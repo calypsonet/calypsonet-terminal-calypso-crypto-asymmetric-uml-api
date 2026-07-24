@@ -2,9 +2,9 @@
 Calypso Networks Association <https://calypsonet.org>
 //
 // Document identity
-:spec-name: Terminal Calypso Crypto Asymmetric API
-:spec-id: CNA-TCCA-API
-:spec-ref: YYMMDD-SP-CNATerminalAPI-CalypsoCryptoAsymmetric
+:doc-name: Terminal Calypso Crypto Asymmetric API
+:doc-id: CNA-TCCA-API
+:doc-ref: YYMMDD-SP-CNATerminalAPI-CalypsoCryptoAsymmetric
 :organization: Calypso Networks Association
 //
 // Revision
@@ -48,12 +48,12 @@ Calypso Networks Association <https://calypsonet.org>
 [abstract]
 == Abstract
 
-This document is the official technical specification of the **{spec-name}** standardised
+This document is the official technical specification of the **{doc-name}** standardised
 by the **{organization}** (CNA).
 It defines, in a language-agnostic way, the interfaces, classes, enumerations, exceptions, structural
-relationships and behavioural requirements that any conforming implementation of the {spec-name} MUST satisfy.
+relationships and behavioural requirements that any conforming implementation of the {doc-name} MUST satisfy.
 
-The {spec-name} is the SPI through which the *Terminal Calypso Card API* delegates every asymmetric-key
+The {doc-name} is the SPI through which the *Terminal Calypso Card API* delegates every asymmetric-key
 cryptographic operation -- in particular PKI-mode secure session computations and the validation of the
 certification chain associated with PKI-enabled Calypso cards.
 
@@ -62,15 +62,15 @@ certification chain associated with PKI-enabled Calypso cards.
 
 [cols="^.^1h,.^3", grid=rows, frame=all]
 |===
-| Reference           | {spec-ref}
-| Short name          | {spec-id}
+| Reference           | {doc-ref}
+| Short name          | {doc-id}
 | Version             | {revnumber}
 | Revision date       | {revdate}
 | Editor              | {organization}
 | Reference license   | Eclipse Public License -- v 2.0 (EPL-2.0)
 |===
 
-NOTE: The present document specifies the {revnumber} of the {spec-name}. It defines a single, coherent
+NOTE: The present document specifies the {revnumber} of the {doc-name}. It defines a single, coherent
 baseline against which conforming implementations are evaluated; the *Since* column indicates the version in
 which each member was introduced.
 
@@ -91,7 +91,7 @@ which each member was introduced.
 
 === Purpose
 
-The {spec-name} defines the contract that an *asymmetric-key crypto module* MUST expose so that a Calypso
+The {doc-name} defines the contract that an *asymmetric-key crypto module* MUST expose so that a Calypso
 transaction manager can:
 
 * parse, validate and chain Primary CA (PCA), CA and card certificates produced by the Calypso PKI;
@@ -346,7 +346,7 @@ include::api_class_diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 | Kind     | Final class
 | Namespace  | `calypso.crypto.asymmetric`
 | Since    | 0.2
-| Purpose  | Exposes the immutable properties of the {spec-name}.
+| Purpose  | Exposes the immutable properties of the {doc-name}.
 |===
 
 ===== Constants
