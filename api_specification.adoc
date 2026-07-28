@@ -654,7 +654,9 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature
-| `checkCertificateAndGetContent(issuerCertificateContent: CaCertificateContentSpi) -> CaCertificateContentSpi`
+| `checkCertificateAndGetContent(` +
+`{nbsp}{nbsp}{nbsp}{nbsp}issuerCertificateContent: CaCertificateContentSpi` +
+`) -> CaCertificateContentSpi`
 | Since       | 0.2
 | Description
 | Verifies the certificate signature and other relevant fields, then returns the certificate content. The
@@ -734,7 +736,9 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Signature
-| `checkCertificateAndGetPublicKey(issuerCertificateContent: CaCertificateContentSpi) -> CardPublicKeySpi`
+| `checkCertificateAndGetPublicKey(` +
+`{nbsp}{nbsp}{nbsp}{nbsp}issuerCertificateContent: CaCertificateContentSpi` +
+`) -> CardPublicKeySpi`
 | Since       | 0.2
 | Description | Verifies the certificate signature and other relevant fields, then returns the card's public key.
 | Parameters  | `issuerCertificateContent` (<<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>) -- the issuer certificate content to be used for signature verification.
