@@ -11,6 +11,7 @@
 :doc-classification: Public
 :doc-id: CNA-TCCA-API
 :doc-ref: YYMMDD-SP-CNATerminalAPI-CalypsoCryptoAsymmetric
+:doc-repo: https://github.com/calypsonet/calypsonet-terminal-calypso-crypto-asymmetric-uml-api
 //
 // Revision (bumped every edition)
 :revnumber: 0.2.0-SNAPSHOT
@@ -97,6 +98,7 @@ certification chain associated with PKI-enabled Calypso cards.
 | Version             | {revnumber}
 | Revision date       | {revdate}
 | Editor              | {organization}
+| Source repository   | {doc-repo}
 | Reference license   | Eclipse Public License -- v 2.0 (EPL-2.0)
 |===
 
