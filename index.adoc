@@ -1,0 +1,880 @@
+= {doc-title} — {doc-subtitle}
+//
+// ============================================================================
+// Dynamic — update these (everything below is shared / fixed)
+// ============================================================================
+//
+// Per-spec identity
+:doc-topic: Calypso Crypto Asymmetric
+:doc-name: Terminal Calypso Crypto Asymmetric API
+:doc-type: Specification
+:doc-classification: Public
+:doc-id: CNA-TCCA-API
+:doc-ref: YYMMDD-SP-CNATerminalAPI-CalypsoCryptoAsymmetric
+:doc-repo: https://github.com/calypsonet/calypsonet-terminal-calypso-crypto-asymmetric-uml-api
+include::assets/logos/_terminal-api.adoc[]
+include::assets/legal/_license-cc-by-nd-4.0.adoc[]
+//
+// Revision (bumped every edition)
+:revnumber: 0.2.0-SNAPSHOT
+:revdate: 2026-07-20
+//
+// ============================================================================
+// Document-specific constants (local — differ per spec)
+// ============================================================================
+//
+// Referenced specifications
+:ver-cna-tcc: 3.0
+//
+// ============================================================================
+// Shared / fixed — identical across every spec
+// ============================================================================
+//
+// Title composition (fixed expression)
+:doc-title: {doc-type}
+:doc-subtitle: {doc-topic}
+:title-separator: —
+//
+// Publisher and authorship
+:organization: Calypso Networks Association
+:author: Calypso_Networks_Association
+:email: https://calypsonet.org
+//
+// ============================================================================
+// Technical settings — common to all documents (build, rendering, output)
+// ============================================================================
+//
+// Build (works with revdate for deterministic output)
+:reproducible:
+//
+// Output & rendering
+:doctype: book
+:toc: left
+// PDF only: switch the TOC to manual placement so the colophon can sit between
+// the title page and the TOC (see the `toc::[]` macro after the colophon).
+ifdef::backend-pdf[:toc: macro]
+:toclevels: 4
+:sectnums:
+:sectnumlevels: 3
+:sectanchors:
+:sectlinks:
+:xrefstyle: short
+:source-highlighter: rouge
+:rouge-style: github
+:icons: font
+:experimental:
+:data-uri:
+:webfonts!:
+//
+// Assets & theming
+:docinfodir: {docdir}/assets
+:docinfo: shared-head
+:docinfo-subs: attributes
+:imagesoutdir: {docdir}/generated
+:pdf-themesdir: {docdir}/assets
+:pdf-theme: pdf
+:pdf-fontsdir: {docdir}/assets/fonts
+// Web fonts (base64 woff2) — factored out of docinfo.html
+include::assets/fonts/_fonts.adoc[]
+// Favicon (HTML) — common to all Calypso documents
+include::assets/layout/_favicon.adoc[]
+// Legal icons — common to all Calypso documents
+include::assets/layout/_web.adoc[]
+include::assets/layout/_mail.adoc[]
+//
+// Captions & sectioning
+:appendix-caption: Annex
+:example-caption: Example
+:figure-caption: Figure
+:table-caption: Table
+:!chapter-signifier:
+
+// Colophon (legal notice) — shared "Link and Contact" front matter. See
+// assets/layout/_colophon.adoc.
+include::assets/layout/_colophon.adoc[]
+
+[abstract]
+== Abstract
+
+This document is the official technical specification of the **{doc-name}** standardised
+by the **{organization}** (CNA).
+It defines, in a language-agnostic way, the interfaces, classes, enumerations, exceptions, structural
+relationships and behavioural requirements that any conforming implementation of the {doc-name} MUST satisfy.
+
+The {doc-name} is the SPI through which the *Terminal Calypso Card API* delegates every asymmetric-key
+cryptographic operation -- in particular PKI-mode secure session computations and the validation of the
+certification chain associated with PKI-enabled Calypso cards.
+
+[discrete]
+== Document Status
+
+[cols="^.^1h,.^3", grid=rows, frame=all]
+|===
+| Reference           | {doc-ref}
+| Short name          | {doc-id}
+| Version             | {revnumber}
+| Revision date       | {revdate}
+| Editor              | {organization}
+| Source repository   | {doc-repo}
+| Reference license   | {doc-license} ({doc-license-short})
+|===
+
+NOTE: The present document specifies the {revnumber} of the {doc-name}. It defines a single, coherent
+baseline against which conforming implementations are evaluated; the *Since* column indicates the version in
+which each member was introduced.
+
+[discrete]
+== Revision List
+
+[NOTE]
+====
+This section lists the high-level changes per version. The complete, fine-grained
+changelog is maintained in the {doc-repo}/blob/HEAD/CHANGELOG.md[`CHANGELOG.md`]
+file at the root of the source repository.
+====
+
+[cols="^.^1,.^4", options="header"]
+|===
+| Version / Date | Modifications
+
+| *v{revnumber}* +
+{revdate}
+| Baseline.
+|===
+
+// =============================================================================
+== Introduction
+
+=== Purpose
+
+The {doc-name} defines the contract that an *asymmetric-key crypto module* MUST expose so that a Calypso
+transaction manager can:
+
+* parse, validate and chain Primary CA (PCA), CA and card certificates produced by the Calypso PKI;
+* operate a PKI-mode secure session against a Calypso card (init, update, verify card signature).
+
+The contract is intentionally agnostic to the underlying cryptographic library: any component capable of producing
+the required signatures (as specified in <<ref_iso9796,ISO/IEC 9796>>) and certificate validations MUST be acceptable.
+
+=== Scope
+
+This specification covers:
+
+* the data carriers used to expose certificate content and public keys to the upstream layer,
+* the SPIs implemented by the crypto module to parse and validate certificates,
+* the SPI implemented by the crypto module to drive a PKI secure session,
+* the factory used by the upstream layer to instantiate the transaction-manager SPI,
+* the exceptions raised by the SPI.
+
+The following topics are *out of scope*:
+
+* the on-the-wire format of certificates beyond their parsing entry point,
+* the management of certificate stores and revocation,
+* the cryptographic algorithms themselves.
+
+=== Conformance
+
+A software product conforms to this specification if and only if:
+
+. it implements every interface defined in <<sec_specification>> with the operations and semantics prescribed in
+  this document,
+. it raises exceptions exclusively of the types defined in <<sec_exceptions>> for the situations described,
+. it preserves the structural relationships described in <<sec_architecture>>.
+
+Throughout this specification, the key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**,
+**MAY** and **OPTIONAL** are to be interpreted as described in <<ref_rfc2119,RFC 2119>> and <<ref_rfc8174,RFC 8174>> when, and only when,
+they appear in all capitals.
+
+In conformance with <<ref_rfc2119,RFC 2119>>, **SHALL** is equivalent to **MUST**; this specification uses **MUST** exclusively in
+order to avoid ambiguity.
+
+=== Document Conventions
+
+==== Naming
+
+Type names follow `UpperCamelCase`; operation, parameter and enumeration-member names follow `lowerCamelCase`
+except for enumeration values which use `UPPER_SNAKE_CASE`. Names defined by this specification are reproduced
+as-is in the UML class diagram (<<sec_class_diagram>>).
+
+==== Language-agnostic types
+
+[cols="^.^1,.^3,.^3", options="header"]
+|===
+| Symbolic type   | Description                                                     | Typical bindings
+| `string`        | Sequence of characters, UTF-8 encoded by default.                | `String`, `string`, `str`.
+| `boolean`       | Two-state truth value.                                           | `boolean`, `bool`.
+| `byte`          | Signed 8-bit value.                                              | `byte`, `i8`.
+| `long`          | Signed 64-bit integer.                                           | `long`, `Int64`.
+| `byte array`    | Ordered sequence of octets.                                      | `byte[]`, `[u8]`, `bytes`.
+| `publicKey`     | Opaque, immutable handle representing an asymmetric public key.  | `PublicKey` (Java), `X509PublicKey`, equivalent.
+| `void`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`.
+|===
+
+==== Type tables
+
+Each interface, class, enumeration and exception defined in this document is described by a table of the form:
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Name       | The type's normalized name.
+| Kind       | The category of the type (interface, class, enumeration, exception, etc.).
+| Namespace  | The namespace in which the type is defined.
+| Extends    | The type extended by this type, when applicable.
+| Implements | The interface implemented by this type, when applicable.
+| Since      | The version of the API in which the type was introduced.
+| Purpose    | A normative description of the type's responsibility.
+| See also   | Cross-references to related operations or types, each a hyperlink to the corresponding table. Present only when applicable.
+|===
+
+The *Purpose* row states, in one or two sentences, the responsibility of the type and the way an instance is
+obtained. It is meant to be scanned, not read: any content that requires structure or depth -- rules, lists,
+notes, value tables or examples -- is placed as prose below the table.
+
+==== Operation tables
+
+Each operation defined in this document is described by a table of the form:
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | The operation's language-agnostic signature.
+| Since       | The version of the API in which the operation was introduced.
+| Description | A normative description of the operation's behaviour.
+| Parameters  | A description of each input parameter.
+| Returns     | A description of the returned value, if any.
+| Throws      | A list of exceptional conditions, each mapped to a specific exception type.
+| See also    | Cross-references to related operations or types, each a hyperlink to the corresponding table. Present only when applicable.
+|===
+
+==== Operation contracts
+
+To avoid repetition, the following rules apply to every operation table in <<sec_specification>> and are therefore
+not restated for each operation:
+
+* *Non-`null` arguments.* Unless explicitly stated otherwise, every input parameter MUST be non-`null`. An
+  implementation MUST raise `IllegalArgumentException` if a `null` value is supplied. This implicit `null` check is
+  not repeated in the *Throws* row, which states `None.` when no other exception can occur.
+* *Non-`null` results.* Unless the return type is marked nullable (`T?`) or the *Returns* row states otherwise, an
+  operation returns a non-`null` value.
+
+==== Concurrency
+
+Unless explicitly stated otherwise, the stateful types defined by this specification are *not* thread-safe. A given
+instance MUST be accessed from a single thread at a time; concurrent use of the same instance without external
+synchronisation results in undefined behaviour. Distinct instances MAY be used concurrently.
+
+=== References and Resources
+
+==== Calypso References
+
+References to CNA Terminal APIs designate the indicated *major* version; any later release within the same major
+is backward-compatible per that API's evolution policy.
+
+[cols="^.^1,.^4", options="header"]
+|===
+| Reference | Document
+
+| [[ref_cna_tcc]] [CNA-TCC-API]
+| https://docs.terminal-api.calypsonet.org/calypsonet-terminal-calypso-card-uml-api/[_CNA Terminal API -- Calypso Card_] (SP-CNATerminalAPI-CalypsoCard), version {ver-cna-tcc}, {organization}.
+|===
+
+==== Normative References
+
+[cols="^.^1,.^4", options="header"]
+|===
+| Reference | Document
+
+| [[ref_rfc2119]] [RFC 2119]
+| https://www.rfc-editor.org/rfc/rfc2119[_Key words for use in RFCs to Indicate Requirement Levels_], S. Bradner, March 1997.
+
+| [[ref_rfc8174]] [RFC 8174]
+| https://www.rfc-editor.org/rfc/rfc8174[_Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words_], B. Leiba, May 2017.
+
+| [[ref_iso9796]] [ISO/IEC 9796]
+| https://www.iso.org[_Information technology -- Security techniques -- Digital signature schemes giving message recovery_].
+|===
+
+==== External Resources
+
+[cols="^.^1,.^2", options="header"]
+|===
+| Resource | Link
+
+| Calypso Networks Association | https://calypsonet.org
+| Terminal APIs website        | https://terminal-api.calypsonet.org
+| Terminal APIs documentation  | https://docs.terminal-api.calypsonet.org
+|===
+
+// =============================================================================
+== Glossary and Acronyms
+
+=== Glossary
+
+[cols="^.^1,.^4", options="header"]
+|===
+| Term              | Definition
+
+| PCA               | Primary Certification Authority -- the trust anchor of the Calypso PKI certificate hierarchy. Self-signed.
+| CA                | Certification Authority -- intermediate authority signed by the PCA or another CA, used to authenticate further CAs or cards.
+| Card Certificate  | Certificate signed by a CA, binding a public key to the card identity.
+| PKI Mode          | Calypso secure-session mode in which authentication of the card relies on asymmetric cryptography.
+| Public Key Reference | Stable identifier (typically the public key hash) used to look up the issuer's public key.
+| SPI               | Service Provider Interface -- an interface designed to be implemented by an extension module.
+|===
+
+=== Acronyms
+
+[cols="^.^1,.^4", options="header"]
+|===
+| Abbreviation | Expansion
+
+| AID  | Application IDentifier
+| APDU | Application Protocol Data Unit
+| CA   | Certification Authority
+| CNA  | Calypso Networks Association
+| PCA  | Primary Certification Authority
+| PKI  | Public Key Infrastructure
+| SPI  | Service Provider Interface
+| UML  | Unified Modelling Language
+|===
+
+// =============================================================================
+[[sec_architecture]]
+== Architectural Overview
+
+=== Functional positioning
+
+[plantuml, target=architecture-overview, format=svg]
+----
+include::uml/architecture-overview.puml[]
+----
+
+=== Logical namespaces
+
+[cols=".^4,^.^1,.^4", options="header"]
+|===
+| Namespace                                                  | Role     | Summary
+
+| `calypso.crypto.asymmetric`                              | Public API
+| Properties and root exceptions.
+
+| `calypso.crypto.asymmetric.certificate`                  | Public API
+| Certificate-validation exception type.
+
+| `calypso.crypto.asymmetric.certificate.spi`              | SPI
+| Interfaces implemented by the crypto module for certificate parsing, validation and public-key exposure.
+
+| `calypso.crypto.asymmetric.transaction.spi`              | SPI
+| Interfaces implemented by the crypto module to drive a PKI-mode card transaction.
+|===
+
+[[sec_class_diagram]]
+=== UML class diagram
+
+The following UML class diagram provides a visual representation of the types and relationships defined by this specification:
+
+[plantuml, target="class-diagram", format="svg"]
+----
+include::uml/class-diagram.puml[Terminal Calypso Crypto Asymmetric API class diagram, align=center]
+----
+
+// =============================================================================
+[[sec_specification]]
+== API Specification
+
+=== Classes
+
+[[type_AsymmetricCryptoApiProperties]]
+==== Asymmetric Crypto API Properties
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Name     | `AsymmetricCryptoApiProperties`
+| Kind     | Final class
+| Namespace  | `calypso.crypto.asymmetric`
+| Since    | 0.2
+| Purpose  | Exposes the immutable properties of the {doc-name}.
+|===
+
+===== Constants
+
+[cols="^.^1,^.^1,^.^1,.^4", options="header"]
+|===
+| Name      | Type     | Since  | Description
+
+| `VERSION` | `string` | 0.2  | String representation of the version of the API implemented by the conforming binding (e.g. `"0.2"`).
+|===
+
+=== SPI Interfaces
+
+Certificate validation follows a *chain*: it MUST start from a PCA certificate (validated through
+<<type_PcaCertificateSpi,`PcaCertificateSpi.checkCertificateAndGetContent`>>), traverse zero or more CA
+certificates, and end on a card certificate that exposes the card's public key. Each `checkCertificateAndGetContent`
+/ `checkCertificateAndGetPublicKey` call MUST validate the signature *and* the metadata (validity dates, AID
+constraints, certificate purpose) before returning a value.
+
+[[type_AsymmetricCryptoCardTransactionManagerFactorySpi]]
+==== Asymmetric Crypto Card Transaction Manager Factory SPI
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Name     | `AsymmetricCryptoCardTransactionManagerFactorySpi`
+| Kind     | Interface (SPI)
+| Namespace  | `calypso.crypto.asymmetric.transaction.spi`
+| Since    | 0.2
+| Purpose  | Factory of <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
+|===
+
+[[op_AsymmetricCryptoCardTransactionManagerFactorySpi_createCardTransactionManager]]
+===== Create Card Transaction Manager
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `createCardTransactionManager() -> AsymmetricCryptoCardTransactionManagerSpi`
+| Since       | 0.2
+| Description
+| Creates an <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>
+providing the cryptographic primitives that a Calypso card transaction requires when using asymmetric (PKI) keys.
+Implemented by the crypto module.
+| Returns     | An <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
+| Throws      | None.
+|===
+
+[[type_AsymmetricCryptoCardTransactionManagerSpi]]
+==== Asymmetric Crypto Card Transaction Manager SPI
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Name     | `AsymmetricCryptoCardTransactionManagerSpi`
+| Kind     | Interface (SPI)
+| Namespace  | `calypso.crypto.asymmetric.transaction.spi`
+| Since    | 0.2
+| Purpose  | Defines the cryptographic primitives required by a Calypso card transaction when using asymmetric keys. An instance is obtained via <<op_AsymmetricCryptoCardTransactionManagerFactorySpi_createCardTransactionManager,`AsymmetricCryptoCardTransactionManagerFactorySpi.createCardTransactionManager`>>.
+|===
+
+[[op_AsymmetricCryptoCardTransactionManagerSpi_initTerminalPkiSession]]
+===== Init Terminal PKI Session
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `initTerminalPkiSession(cardPublicKey: CardPublicKeySpi) -> void`
+| Since       | 0.2
+| Description | Initialises the cryptographic context for a new PKI secure session with the supplied card public key.
+| Parameters  | `cardPublicKey` (<<type_CardPublicKeySpi,`CardPublicKeySpi`>>) -- the card public key, extracted from the previously validated card certificate.
+| Throws      | <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if the provided public key value is not compliant with the current elliptic curve, or if an error occurs during the initialisation.
+|===
+
+[[op_AsymmetricCryptoCardTransactionManagerSpi_isCardPkiSessionValid]]
+===== Is Card PKI Session Valid
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `isCardPkiSessionValid(cardSessionSignature: byte array) -> boolean`
+| Since       | 0.2
+| Description | Verifies the provided secure session signature against the previously initialised and updated context. This MUST be the final step of the PKI secure session, called after the last `updateTerminalPkiSession`.
+| Parameters  | `cardSessionSignature` -- the 64-byte card signature to verify.
+| Returns     | `true` if the signature is valid, `false` otherwise.
+| Throws      | <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if an error occurs while verifying the signature.
+|===
+
+[[op_AsymmetricCryptoCardTransactionManagerSpi_updateTerminalPkiSession]]
+===== Update Terminal PKI Session
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `updateTerminalPkiSession(cardApdu: byte array) -> void`
+| Since       | 0.2
+| Description
+a| Updates the session signature verification engine with data sent to or received from the card. This operation
+MUST be called for every APDU exchanged during the PKI secure session, in the order in which it was exchanged.
+
+* For ingoing data, the input length MUST be `>= 5`.
+* For outgoing data, the input length MUST be `>= 2`.
+| Parameters  | `cardApdu` -- the APDU bytes exchanged with the card (ingoing or outgoing).
+| Throws      | <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if an error occurs while updating the session.
+|===
+
+[[type_CaCertificateContentSpi]]
+==== CA Certificate Content SPI
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Name     | `CaCertificateContentSpi`
+| Kind     | Interface (SPI)
+| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
+| Since    | 0.2
+| Purpose  | Exposes the content of a CA certificate that has been parsed and verified by the crypto module.
+|===
+
+[[op_CaCertificateContentSpi_getAid]]
+===== Get AID
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `getAid() -> byte array?`
+| Since       | 0.2
+| Description | Returns the AID value carried by the certificate.
+| Returns     | The non-empty AID, or `null` if the AID check is not requested.
+| Throws      | None.
+|===
+
+[[op_CaCertificateContentSpi_getEndDate]]
+===== Get End Date
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `getEndDate() -> long`
+| Since       | 0.2
+| Description | Returns the validity end date of the certificate as a `long` formatted `0xYYYYMMDD`. Returns `0` if the validity end date is not defined or available.
+| Returns     | The end date, or `0` when not defined.
+| Throws      | None.
+|===
+
+[[op_CaCertificateContentSpi_getPublicKey]]
+===== Get Public Key
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `getPublicKey() -> publicKey`
+| Since       | 0.2
+| Description | Returns the public key carried by the certificate.
+| Returns     | A public-key handle.
+| Throws      | None.
+|===
+
+[[op_CaCertificateContentSpi_getPublicKeyReference]]
+===== Get Public Key Reference
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `getPublicKeyReference() -> byte array`
+| Since       | 0.2
+| Description | Returns the reference of the public key as a `byte array`. The reference is the stable identifier used by other certificates to designate this key as their issuer.
+| Returns     | A non-empty `byte array`.
+| Throws      | None.
+|===
+
+[[op_CaCertificateContentSpi_getStartDate]]
+===== Get Start Date
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `getStartDate() -> long`
+| Since       | 0.2
+| Description
+| Returns the validity start date of the certificate as a `long` formatted `0xYYYYMMDD` (four-digit year, two-digit
+  month, two-digit day). Returns `0` if the validity start date is not defined or available.
+| Returns     | The start date, or `0` when not defined.
+| Throws      | None.
+|===
+
+[[op_CaCertificateContentSpi_isAidCheckRequested]]
+===== Is AID Check Requested
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `isAidCheckRequested() -> boolean`
+| Since       | 0.2
+| Description | Indicates whether the AID associated with the certificate MUST be checked.
+| Returns     | `true` if the AID has to be checked, `false` otherwise.
+| Throws      | None.
+|===
+
+[[op_CaCertificateContentSpi_isAidTruncated]]
+===== Is AID Truncated
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `isAidTruncated() -> boolean`
+| Since       | 0.2
+| Description | Indicates whether the AID carried by the certificate is truncated.
+| Returns     | `true` if the AID is truncated, `false` otherwise.
+| Throws      | None.
+|===
+
+[[op_CaCertificateContentSpi_isCaCertificatesAuthenticationAllowed]]
+===== Is CA Certificates Authentication Allowed
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `isCaCertificatesAuthenticationAllowed() -> boolean`
+| Since       | 0.2
+| Description | Indicates whether the certificate is allowed to authenticate further CA certificates.
+| Returns     | `true` if CA-certificate authentication is allowed, `false` otherwise.
+| Throws      | None.
+|===
+
+[[op_CaCertificateContentSpi_isCardCertificatesAuthenticationAllowed]]
+===== Is Card Certificates Authentication Allowed
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `isCardCertificatesAuthenticationAllowed() -> boolean`
+| Since       | 0.2
+| Description | Indicates whether the certificate is allowed to authenticate card certificates.
+| Returns     | `true` if card-certificate authentication is allowed, `false` otherwise.
+| Throws      | None.
+|===
+
+[[type_CaCertificateParserSpi]]
+==== CA Certificate Parser SPI
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Name     | `CaCertificateParserSpi`
+| Kind     | Interface (SPI)
+| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
+| Since    | 0.2
+| Purpose  | Parses CA certificates from raw data stored on a card.
+|===
+
+[[op_CaCertificateParserSpi_getCertificateType]]
+===== Get Certificate Type
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `getCertificateType() -> byte`
+| Since       | 0.2
+| Description | Returns the certificate type identifier associated with the parser.
+| Returns     | A `byte` value.
+| Throws      | None.
+|===
+
+[[op_CaCertificateParserSpi_parseCertificate]]
+===== Parse Certificate
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `parseCertificate(cardOutputData: byte array) -> CaCertificateSpi`
+| Since       | 0.2
+| Description | Parses the supplied card output data and returns a new CA certificate instance. The first byte of the input array MUST be the certificate type.
+| Parameters  | `cardOutputData` -- a `byte array` containing the CA certificate as stored on the card.
+| Returns     | A <<type_CaCertificateSpi,`CaCertificateSpi`>>.
+| Throws      | <<type_CertificateValidationException,`CertificateValidationException`>> -- if the provided certificate has an unsupported format.
+|===
+
+[[type_CaCertificateSpi]]
+==== CA Certificate SPI
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Name     | `CaCertificateSpi`
+| Kind     | Interface (SPI)
+| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
+| Since    | 0.2
+| Purpose  | Represents a Certification Authority (CA) certificate that has been parsed by the crypto module and is ready for chain validation.
+|===
+
+[[op_CaCertificateSpi_checkCertificateAndGetContent]]
+===== Check Certificate And Get Content
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature
+| `checkCertificateAndGetContent(` +
+`{nbsp}{nbsp}{nbsp}{nbsp}issuerCertificateContent: CaCertificateContentSpi` +
+`) -> CaCertificateContentSpi`
+| Since       | 0.2
+| Description
+| Verifies the certificate signature and other relevant fields, then returns the certificate content. The
+  validation MUST be comprehensive: signature correctness, validity period, issuer and subject details and any
+  relevant constraints or extensions.
+| Parameters  | `issuerCertificateContent` (<<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>) -- the issuer certificate content to be used for signature verification.
+| Returns     | A <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
+| Throws
+| <<type_CertificateValidationException,`CertificateValidationException`>> -- if the certificate is invalid, expired, revoked, or fails any other validation. +
+  <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if a technical error occurs during the cryptographic computations.
+|===
+
+[[op_CaCertificateSpi_getIssuerPublicKeyReference]]
+===== Get Issuer Public Key Reference
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `getIssuerPublicKeyReference() -> byte array`
+| Since       | 0.2
+| Description | Returns the reference of the issuer's public key, used by the upstream layer to locate the corresponding issuer certificate.
+| Returns     | A non-empty `byte array`.
+| Throws      | None.
+|===
+
+[[type_CardCertificateParserSpi]]
+==== Card Certificate Parser SPI
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Name     | `CardCertificateParserSpi`
+| Kind     | Interface (SPI)
+| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
+| Since    | 0.2
+| Purpose  | Parses card certificates from raw data stored on a card.
+|===
+
+[[op_CardCertificateParserSpi_getCertificateType]]
+===== Get Certificate Type
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `getCertificateType() -> byte`
+| Since       | 0.2
+| Description | Returns the certificate type identifier associated with the parser.
+| Returns     | A `byte` value.
+| Throws      | None.
+|===
+
+[[op_CardCertificateParserSpi_parseCertificate]]
+===== Parse Certificate
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `parseCertificate(cardOutputData: byte array) -> CardCertificateSpi`
+| Since       | 0.2
+| Description | Parses the supplied card output data and returns a new card certificate instance. The first byte of the input MUST be the certificate type. The expected total length is 316 bytes.
+| Parameters  | `cardOutputData` -- a `byte array` containing the card certificate as stored on the card (316 bytes).
+| Returns     | A <<type_CardCertificateSpi,`CardCertificateSpi`>>.
+| Throws      | <<type_CertificateValidationException,`CertificateValidationException`>> -- if the provided certificate has an unsupported format.
+|===
+
+[[type_CardCertificateSpi]]
+==== Card Certificate SPI
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Name     | `CardCertificateSpi`
+| Kind     | Interface (SPI)
+| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
+| Since    | 0.2
+| Purpose  | Represents a card certificate, used to extract the card's public key after a successful chain validation.
+|===
+
+[[op_CardCertificateSpi_checkCertificateAndGetPublicKey]]
+===== Check Certificate And Get Public Key
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature
+| `checkCertificateAndGetPublicKey(` +
+`{nbsp}{nbsp}{nbsp}{nbsp}issuerCertificateContent: CaCertificateContentSpi` +
+`) -> CardPublicKeySpi`
+| Since       | 0.2
+| Description | Verifies the certificate signature and other relevant fields, then returns the card's public key.
+| Parameters  | `issuerCertificateContent` (<<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>) -- the issuer certificate content to be used for signature verification.
+| Returns     | A <<type_CardPublicKeySpi,`CardPublicKeySpi`>>.
+| Throws
+| <<type_CertificateValidationException,`CertificateValidationException`>> -- if the certificate is invalid. +
+  <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if a technical error occurs during the cryptographic computations.
+|===
+
+[[op_CardCertificateSpi_getCardAid]]
+===== Get Card AID
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `getCardAid() -> byte array`
+| Since       | 0.2
+| Description | Returns the AID of the autonomous application of the card as a `byte array` of 5 to 16 bytes.
+| Returns     | A non-empty `byte array` of 5 to 16 bytes.
+| Throws      | None.
+|===
+
+[[op_CardCertificateSpi_getCardSerialNumber]]
+===== Get Card Serial Number
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `getCardSerialNumber() -> byte array`
+| Since       | 0.2
+| Description | Returns the serial number of the card as an 8-byte `byte array`.
+| Returns     | An 8-byte `byte array`.
+| Throws      | None.
+|===
+
+[[op_CardCertificateSpi_getIssuerPublicKeyReference]]
+===== Get Issuer Public Key Reference
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `getIssuerPublicKeyReference() -> byte array`
+| Since       | 0.2
+| Description | Returns the reference of the issuer's public key.
+| Returns     | A non-empty `byte array`.
+| Throws      | None.
+|===
+
+[[type_CardPublicKeySpi]]
+==== Card Public Key SPI
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Name     | `CardPublicKeySpi`
+| Kind     | Interface (SPI)
+| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
+| Since    | 0.2
+| Purpose  | Exposes the card's public key extracted from a validated card certificate.
+|===
+
+[[op_CardPublicKeySpi_getRawValue]]
+===== Get Raw Value
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `getRawValue() -> byte array`
+| Since       | 0.2
+| Description | Returns the raw value of the card's public key.
+| Returns     | A 64-byte `byte array`.
+| Throws      | None.
+|===
+
+[[type_PcaCertificateSpi]]
+==== PCA Certificate SPI
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Name     | `PcaCertificateSpi`
+| Kind     | Interface (SPI)
+| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
+| Since    | 0.2
+| Purpose  | Represents a Primary Certification Authority (PCA) certificate -- the self-signed trust anchor of the Calypso PKI.
+|===
+
+[[op_PcaCertificateSpi_checkCertificateAndGetContent]]
+===== Check Certificate And Get Content
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Signature   | `checkCertificateAndGetContent() -> CaCertificateContentSpi`
+| Since       | 0.2
+| Description
+| Verifies the certificate signature and other relevant fields, then returns the certificate content. The PCA
+  certificate MUST be expected to be self-signed in this context.
+| Returns     | A <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
+| Throws
+| <<type_CertificateValidationException,`CertificateValidationException`>> -- if the certificate is invalid, expired, revoked, or fails any other validation. +
+  <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if a technical error occurs during the cryptographic computations.
+|===
+
+[[sec_exceptions]]
+=== Exceptions
+
+[[type_AsymmetricCryptoException]]
+==== Asymmetric Crypto Exception
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Name     | `AsymmetricCryptoException`
+| Kind     | Checked exception
+| Namespace  | `calypso.crypto.asymmetric`
+| Since    | 0.2
+| Purpose  | Indicates that an error occurred when processing an asymmetric cryptographic operation.
+|===
+
+[[type_CertificateValidationException]]
+==== Certificate Validation Exception
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Name     | `CertificateValidationException`
+| Kind     | Checked exception
+| Namespace  | `calypso.crypto.asymmetric.certificate`
+| Since    | 0.2
+| Purpose  | Indicates an issue encountered during the certificate validation -- e.g. an invalid signature or incorrect metadata values.
+|===
