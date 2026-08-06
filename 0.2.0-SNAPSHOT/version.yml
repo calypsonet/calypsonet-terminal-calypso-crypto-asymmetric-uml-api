@@ -1,0 +1,12 @@
+  - version: "0.2.0-SNAPSHOT"
+    status: snapshot
+    files:
+      diagram:
+        name: "class-diagram.svg"
+        size: "51 kB"
+      html:
+        name: "YYMMDD-SP-CNATerminalAPI-CalypsoCryptoAsymmetric_v0.2.0-SNAPSHOT.html"
+        size: "1.4 MB"
+      pdf:
+        name: "YYMMDD-SP-CNATerminalAPI-CalypsoCryptoAsymmetric_v0.2.0-SNAPSHOT.pdf"
+        size: "983 kB"
