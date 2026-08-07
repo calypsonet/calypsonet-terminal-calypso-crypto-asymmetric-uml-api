@@ -5,7 +5,7 @@ title
     Terminal Calypso Crypto Asymmetric API 0.2.+ (2024-03-15)
 end title
 
-' == THEME ==
+' == THEME (class) ==
 
 'Couleurs issues de : https://htmlcolorcodes.com/fr/tableau-de-couleur/tableau-de-couleur-design-plat/
 !define C_GREY1 F8F9F9
