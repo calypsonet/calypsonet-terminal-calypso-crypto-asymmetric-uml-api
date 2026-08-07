@@ -1,6 +1,4 @@
 @startuml
-skinparam shadowing false
-skinparam roundCorner 8
 
 component "Terminal Calypso Card API\n[CNA-TCC-API]" as TCC
 component "Terminal Calypso Crypto\nAsymmetric API (this specification)" as TCCA #LightYellow
