@@ -16,7 +16,7 @@ include::assets/logos/_terminal-api.adoc[]
 include::assets/legal/_license-cc-by-nd-4.0.adoc[]
 //
 // Revision (bumped every edition)
-:revnumber: 0.2.0-SNAPSHOT
+:revnumber: 0.2.1-SNAPSHOT
 :revdate: 2026-07-20
 //
 // ============================================================================
