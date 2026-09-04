@@ -64,65 +64,65 @@ package "calypso.crypto.asymmetric" as api {
     package "transaction" as transaction {
         package spi {
             +interface AsymmetricCryptoCardTransactionManagerFactorySpi <<red>> {
-                +AsymmetricCryptoCardTransactionManagerSpi createCardTransactionManager ()
+                +createCardTransactionManager() -> AsymmetricCryptoCardTransactionManagerSpi
             }
             +interface AsymmetricCryptoCardTransactionManagerSpi <<red>> {
-                +void initTerminalPkiSession (CardPublicKeySpi cardPublicKey)
-                +void updateTerminalPkiSession (byte[] cardApdu)
-                +boolean isCardPkiSessionValid (byte[] cardSessionSignature)
+                +initTerminalPkiSession(cardPublicKey: CardPublicKeySpi) -> unit
+                +updateTerminalPkiSession(cardApdu: byte array) -> unit
+                +isCardPkiSessionValid(cardSessionSignature: byte array) -> boolean
             }
         }
     }
     +class "<<Exception>>\nAsymmetricCryptoException" as AsymmetricCryptoException <<green>> {
     }
     +class "**final** AsymmetricCryptoApiProperties" as ApiProperties <<green>> {
-        +{static} **final** String VERSION
+        +{static} **final** VERSION: string
     }
     package "certificate" as certificate {
         package spi {
             together {
             +interface PcaCertificateSpi <<red>> {
-                +CaCertificateContentSpi checkCertificateAndGetContent ()
+                +checkCertificateAndGetContent() -> CaCertificateContentSpi
             }
             +interface CaCertificateParserSpi <<red>> {
-                +byte getCertificateType ()
+                +getCertificateType() -> byte
 
-                +CaCertificateSpi parseCertificate (byte[] cardOutputData)
+                +parseCertificate(cardOutputData: byte array) -> CaCertificateSpi
             }
             +interface CaCertificateSpi <<red>> {
-                +byte[] getIssuerPublicKeyReference ()
+                +getIssuerPublicKeyReference() -> byte array
 
-                +CaCertificateContentSpi checkCertificateAndGetContent (CaCertificateContentSpi issuerCertificateContent)
+                +checkCertificateAndGetContent(issuerCertificateContent: CaCertificateContentSpi) -> CaCertificateContentSpi
             }
             +interface CardCertificateParserSpi <<red>> {
-                +byte getCertificateType ()
+                +getCertificateType() -> byte
 
-                +CardCertificateSpi parseCertificate (byte[] cardOutputData)
+                +parseCertificate(cardOutputData: byte array) -> CardCertificateSpi
             }
             +interface CardCertificateSpi <<red>> {
-                +byte[] getIssuerPublicKeyReference ()
-                +byte[] getCardAid ()
-                +byte[] getCardSerialNumber ()
+                +getIssuerPublicKeyReference() -> byte array
+                +getCardAid() -> byte array
+                +getCardSerialNumber() -> byte array
 
-                +CardPublicKeySpi checkCertificateAndGetPublicKey (CaCertificateContentSpi issuerCertificateContent)
+                +checkCertificateAndGetPublicKey(issuerCertificateContent: CaCertificateContentSpi) -> CardPublicKeySpi
             }
             }
             +interface CaCertificateContentSpi <<red>> {
-                +<back:yellow>PublicKey</back> getPublicKey ()
-                +byte[] getPublicKeyReference ()
+                +getPublicKey() -> <back:yellow>publicKey</back>
+                +getPublicKeyReference() -> byte array
 
-                +long getStartDate ()
-                +long getEndDate ()
+                +getStartDate() -> long
+                +getEndDate() -> long
 
-                +boolean isAidCheckRequested ()
-                +boolean isAidTruncated ()
-                +byte[] getAid ()
+                +isAidCheckRequested() -> boolean
+                +isAidTruncated() -> boolean
+                +getAid() -> byte array?
 
-                +boolean isCaCertificatesAuthenticationAllowed ()
-                +boolean isCardCertificatesAuthenticationAllowed ()
+                +isCaCertificatesAuthenticationAllowed() -> boolean
+                +isCardCertificatesAuthenticationAllowed() -> boolean
             }
             +interface CardPublicKeySpi <<red>> {
-                +byte[] getRawValue ()
+                +getRawValue() -> byte array
             }
         }
         +class "<<Exception>>\nCertificateValidationException" as CertificateValidationException <<green>> {

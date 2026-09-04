@@ -207,7 +207,7 @@ as-is in the UML class diagram (<<sec_class_diagram>>).
 | `long`          | Signed 64-bit integer.                                           | `long`, `Int64`.
 | `byte array`    | Ordered sequence of octets.                                      | `byte[]`, `[u8]`, `bytes`.
 | `publicKey`     | Opaque, immutable handle representing an asymmetric public key.  | `PublicKey` (Java), `X509PublicKey`, equivalent.
-| `void`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`.
+| `unit`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`.
 |===
 
 ==== Type tables
@@ -458,7 +458,7 @@ Implemented by the crypto module.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `initTerminalPkiSession(cardPublicKey: CardPublicKeySpi) -> void`
+| Signature   | `initTerminalPkiSession(cardPublicKey: CardPublicKeySpi) -> unit`
 | Since       | 0.2
 | Description | Initialises the cryptographic context for a new PKI secure session with the supplied card public key.
 | Parameters  | `cardPublicKey` (<<type_CardPublicKeySpi,`CardPublicKeySpi`>>) -- the card public key, extracted from the previously validated card certificate.
@@ -483,7 +483,7 @@ Implemented by the crypto module.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `updateTerminalPkiSession(cardApdu: byte array) -> void`
+| Signature   | `updateTerminalPkiSession(cardApdu: byte array) -> unit`
 | Since       | 0.2
 | Description
 a| Updates the session signature verification engine with data sent to or received from the card. This operation
