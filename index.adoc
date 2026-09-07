@@ -98,8 +98,9 @@ include::assets/layout/_colophon.adoc[]
 
 This document is the official technical specification of the **{doc-name}** standardised
 by the **{organization}** (CNA).
-It defines, in a language-agnostic way, the interfaces, classes, enumerations, exceptions, structural
-relationships and behavioural requirements that any conforming implementation of the {doc-name} MUST satisfy.
+It defines, in a language-agnostic way (using a notation inspired by the Kotlin language), the interfaces,
+classes, enumerations, exceptions, structural relationships and behavioural requirements that any conforming
+implementation of the {doc-name} MUST satisfy.
 
 The {doc-name} is the SPI through which the *Terminal Calypso Card API* delegates every asymmetric-key
 cryptographic operation -- in particular PKI-mode secure session computations and the validation of the
@@ -196,18 +197,22 @@ Type names follow `UpperCamelCase`; operation, parameter and enumeration-member 
 except for enumeration values which use `UPPER_SNAKE_CASE`. Names defined by this specification are reproduced
 as-is in the UML class diagram (<<sec_class_diagram>>).
 
-==== Language-agnostic types
+==== Data types
+
+The following type names, whose notation is inspired by the Kotlin language, are used in operation signatures
+and are mapped, in each binding, to the closest equivalent native type. Implementations MUST preserve the
+semantic intent rather than the syntactic form.
 
 [cols="^.^1,.^3,.^3", options="header"]
 |===
-| Symbolic type   | Description                                                     | Typical bindings
-| `string`        | Sequence of characters, UTF-8 encoded by default.                | `String`, `string`, `str`.
-| `boolean`       | Two-state truth value.                                           | `boolean`, `bool`.
-| `byte`          | Signed 8-bit value.                                              | `byte`, `i8`.
-| `long`          | Signed 64-bit integer.                                           | `long`, `Int64`.
-| `byte array`    | Ordered sequence of octets.                                      | `byte[]`, `[u8]`, `bytes`.
-| `publicKey`     | Opaque, immutable handle representing an asymmetric public key.  | `PublicKey` (Java), `X509PublicKey`, equivalent.
-| `unit`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`.
+| Type            | Description                                                     | Typical bindings
+| `String`        | Sequence of characters, UTF-8 encoded by default.                | `String`, `string`, `str`.
+| `Boolean`       | Two-state truth value.                                           | `boolean`, `bool`.
+| `Byte`          | Signed 8-bit value.                                              | `byte`, `i8`.
+| `Long`          | Signed 64-bit integer.                                           | `long`, `Int64`, `i64`.
+| `ByteArray`     | Ordered sequence of octets.                                      | `byte[]`, `[u8]`, `bytes`.
+| `PublicKey`     | Opaque, immutable handle representing an asymmetric public key.  | `PublicKey` (Java), `X509PublicKey`, `SubjectPublicKeyInfo`, equivalent.
+| `Unit`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`, `()`.
 |===
 
 ==== Type tables
@@ -236,7 +241,7 @@ Each operation defined in this document is described by a table of the form:
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | The operation's language-agnostic signature.
+| Signature   | The operation's signature.
 | Since       | The version of the API in which the operation was introduced.
 | Description | A normative description of the operation's behaviour.
 | Parameters  | A description of each input parameter.
@@ -403,7 +408,7 @@ include::uml/class-diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 |===
 | Name      | Type     | Since  | Description
 
-| `VERSION` | `string` | 0.2  | String representation of the version of the API implemented by the conforming binding (e.g. `"0.2"`).
+| `VERSION` | `String` | 0.2  | String representation of the version of the API implemented by the conforming binding (e.g. `"0.2"`).
 |===
 
 === SPI Interfaces
@@ -458,7 +463,7 @@ Implemented by the crypto module.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `initTerminalPkiSession(cardPublicKey: CardPublicKeySpi) -> unit`
+| Signature   | `initTerminalPkiSession(cardPublicKey: CardPublicKeySpi) -> Unit`
 | Since       | 0.2
 | Description | Initialises the cryptographic context for a new PKI secure session with the supplied card public key.
 | Parameters  | `cardPublicKey` (<<type_CardPublicKeySpi,`CardPublicKeySpi`>>) -- the card public key, extracted from the previously validated card certificate.
@@ -470,7 +475,7 @@ Implemented by the crypto module.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `isCardPkiSessionValid(cardSessionSignature: byte array) -> boolean`
+| Signature   | `isCardPkiSessionValid(cardSessionSignature: ByteArray) -> Boolean`
 | Since       | 0.2
 | Description | Verifies the provided secure session signature against the previously initialised and updated context. This MUST be the final step of the PKI secure session, called after the last `updateTerminalPkiSession`.
 | Parameters  | `cardSessionSignature` -- the 64-byte card signature to verify.
@@ -483,7 +488,7 @@ Implemented by the crypto module.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `updateTerminalPkiSession(cardApdu: byte array) -> unit`
+| Signature   | `updateTerminalPkiSession(cardApdu: ByteArray) -> Unit`
 | Since       | 0.2
 | Description
 a| Updates the session signature verification engine with data sent to or received from the card. This operation
@@ -512,7 +517,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getAid() -> byte array?`
+| Signature   | `getAid() -> ByteArray?`
 | Since       | 0.2
 | Description | Returns the AID value carried by the certificate.
 | Returns     | The non-empty AID, or `null` if the AID check is not requested.
@@ -524,9 +529,9 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getEndDate() -> long`
+| Signature   | `getEndDate() -> Long`
 | Since       | 0.2
-| Description | Returns the validity end date of the certificate as a `long` formatted `0xYYYYMMDD`. Returns `0` if the validity end date is not defined or available.
+| Description | Returns the validity end date of the certificate as a `Long` formatted `0xYYYYMMDD`. Returns `0` if the validity end date is not defined or available.
 | Returns     | The end date, or `0` when not defined.
 | Throws      | None.
 |===
@@ -536,7 +541,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getPublicKey() -> publicKey`
+| Signature   | `getPublicKey() -> PublicKey`
 | Since       | 0.2
 | Description | Returns the public key carried by the certificate.
 | Returns     | A public-key handle.
@@ -548,10 +553,10 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getPublicKeyReference() -> byte array`
+| Signature   | `getPublicKeyReference() -> ByteArray`
 | Since       | 0.2
-| Description | Returns the reference of the public key as a `byte array`. The reference is the stable identifier used by other certificates to designate this key as their issuer.
-| Returns     | A non-empty `byte array`.
+| Description | Returns the reference of the public key as a `ByteArray`. The reference is the stable identifier used by other certificates to designate this key as their issuer.
+| Returns     | A non-empty `ByteArray`.
 | Throws      | None.
 |===
 
@@ -560,10 +565,10 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getStartDate() -> long`
+| Signature   | `getStartDate() -> Long`
 | Since       | 0.2
 | Description
-| Returns the validity start date of the certificate as a `long` formatted `0xYYYYMMDD` (four-digit year, two-digit
+| Returns the validity start date of the certificate as a `Long` formatted `0xYYYYMMDD` (four-digit year, two-digit
   month, two-digit day). Returns `0` if the validity start date is not defined or available.
 | Returns     | The start date, or `0` when not defined.
 | Throws      | None.
@@ -574,7 +579,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `isAidCheckRequested() -> boolean`
+| Signature   | `isAidCheckRequested() -> Boolean`
 | Since       | 0.2
 | Description | Indicates whether the AID associated with the certificate MUST be checked.
 | Returns     | `true` if the AID has to be checked, `false` otherwise.
@@ -586,7 +591,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `isAidTruncated() -> boolean`
+| Signature   | `isAidTruncated() -> Boolean`
 | Since       | 0.2
 | Description | Indicates whether the AID carried by the certificate is truncated.
 | Returns     | `true` if the AID is truncated, `false` otherwise.
@@ -598,7 +603,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `isCaCertificatesAuthenticationAllowed() -> boolean`
+| Signature   | `isCaCertificatesAuthenticationAllowed() -> Boolean`
 | Since       | 0.2
 | Description | Indicates whether the certificate is allowed to authenticate further CA certificates.
 | Returns     | `true` if CA-certificate authentication is allowed, `false` otherwise.
@@ -610,7 +615,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `isCardCertificatesAuthenticationAllowed() -> boolean`
+| Signature   | `isCardCertificatesAuthenticationAllowed() -> Boolean`
 | Since       | 0.2
 | Description | Indicates whether the certificate is allowed to authenticate card certificates.
 | Returns     | `true` if card-certificate authentication is allowed, `false` otherwise.
@@ -634,10 +639,10 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getCertificateType() -> byte`
+| Signature   | `getCertificateType() -> Byte`
 | Since       | 0.2
 | Description | Returns the certificate type identifier associated with the parser.
-| Returns     | A `byte` value.
+| Returns     | A `Byte` value.
 | Throws      | None.
 |===
 
@@ -646,10 +651,10 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `parseCertificate(cardOutputData: byte array) -> CaCertificateSpi`
+| Signature   | `parseCertificate(cardOutputData: ByteArray) -> CaCertificateSpi`
 | Since       | 0.2
 | Description | Parses the supplied card output data and returns a new CA certificate instance. The first byte of the input array MUST be the certificate type.
-| Parameters  | `cardOutputData` -- a `byte array` containing the CA certificate as stored on the card.
+| Parameters  | `cardOutputData` -- a `ByteArray` containing the CA certificate as stored on the card.
 | Returns     | A <<type_CaCertificateSpi,`CaCertificateSpi`>>.
 | Throws      | <<type_CertificateValidationException,`CertificateValidationException`>> -- if the provided certificate has an unsupported format.
 |===
@@ -692,10 +697,10 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getIssuerPublicKeyReference() -> byte array`
+| Signature   | `getIssuerPublicKeyReference() -> ByteArray`
 | Since       | 0.2
 | Description | Returns the reference of the issuer's public key, used by the upstream layer to locate the corresponding issuer certificate.
-| Returns     | A non-empty `byte array`.
+| Returns     | A non-empty `ByteArray`.
 | Throws      | None.
 |===
 
@@ -716,10 +721,10 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getCertificateType() -> byte`
+| Signature   | `getCertificateType() -> Byte`
 | Since       | 0.2
 | Description | Returns the certificate type identifier associated with the parser.
-| Returns     | A `byte` value.
+| Returns     | A `Byte` value.
 | Throws      | None.
 |===
 
@@ -728,10 +733,10 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `parseCertificate(cardOutputData: byte array) -> CardCertificateSpi`
+| Signature   | `parseCertificate(cardOutputData: ByteArray) -> CardCertificateSpi`
 | Since       | 0.2
 | Description | Parses the supplied card output data and returns a new card certificate instance. The first byte of the input MUST be the certificate type. The expected total length is 316 bytes.
-| Parameters  | `cardOutputData` -- a `byte array` containing the card certificate as stored on the card (316 bytes).
+| Parameters  | `cardOutputData` -- a `ByteArray` containing the card certificate as stored on the card (316 bytes).
 | Returns     | A <<type_CardCertificateSpi,`CardCertificateSpi`>>.
 | Throws      | <<type_CertificateValidationException,`CertificateValidationException`>> -- if the provided certificate has an unsupported format.
 |===
@@ -771,10 +776,10 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getCardAid() -> byte array`
+| Signature   | `getCardAid() -> ByteArray`
 | Since       | 0.2
-| Description | Returns the AID of the autonomous application of the card as a `byte array` of 5 to 16 bytes.
-| Returns     | A non-empty `byte array` of 5 to 16 bytes.
+| Description | Returns the AID of the autonomous application of the card as a `ByteArray` of 5 to 16 bytes.
+| Returns     | A non-empty `ByteArray` of 5 to 16 bytes.
 | Throws      | None.
 |===
 
@@ -783,10 +788,10 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getCardSerialNumber() -> byte array`
+| Signature   | `getCardSerialNumber() -> ByteArray`
 | Since       | 0.2
-| Description | Returns the serial number of the card as an 8-byte `byte array`.
-| Returns     | An 8-byte `byte array`.
+| Description | Returns the serial number of the card as an 8-byte `ByteArray`.
+| Returns     | An 8-byte `ByteArray`.
 | Throws      | None.
 |===
 
@@ -795,10 +800,10 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getIssuerPublicKeyReference() -> byte array`
+| Signature   | `getIssuerPublicKeyReference() -> ByteArray`
 | Since       | 0.2
 | Description | Returns the reference of the issuer's public key.
-| Returns     | A non-empty `byte array`.
+| Returns     | A non-empty `ByteArray`.
 | Throws      | None.
 |===
 
@@ -819,10 +824,10 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature   | `getRawValue() -> byte array`
+| Signature   | `getRawValue() -> ByteArray`
 | Since       | 0.2
 | Description | Returns the raw value of the card's public key.
-| Returns     | A 64-byte `byte array`.
+| Returns     | A 64-byte `ByteArray`.
 | Throws      | None.
 |===
 
