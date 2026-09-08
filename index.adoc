@@ -246,7 +246,8 @@ Each operation defined in this document is described by a table of the form:
 | Description | A normative description of the operation's behaviour.
 | Parameters  | A description of each input parameter.
 | Returns     | A description of the returned value, if any.
-| Errors      | A list of error conditions, each mapped to a specific error type.
+| Pre-conditions | The conditions the caller MUST satisfy before invoking the operation, each prefixed by its nature. Present only when applicable.
+| Errors      | A list of error conditions a correct caller must handle, each mapped to a specific error type.
 | See also    | Cross-references to related operations or types, each a hyperlink to the corresponding table. Present only when applicable.
 |===
 
@@ -255,10 +256,14 @@ Each operation defined in this document is described by a table of the form:
 To avoid repetition, the following rules apply to every operation table in <<sec_specification>> and are therefore
 not restated for each operation:
 
-* *Non-`null` arguments.* Unless explicitly stated otherwise, every input parameter being non-`null` is an
-  implicit pre-condition of the operation. Checking it is the responsibility of the implementation, and failing
-  to meet that pre-condition MUST raise an illegal argument error. This implicit check is not restated in the
-  *Errors* row, which states `None.` when no other error can occur.
+* *Pre-conditions.* The *Pre-conditions* row states what the caller MUST guarantee before invoking the
+  operation. Violating one is a contract error, never listed in the *Errors* row, which describes only the
+  outcomes a correct caller must handle. Each entry is prefixed by its nature, which determines the error
+  raised when the condition is not met:
+** *Argument* -- an illegal argument error.
+** *Range* -- an index out of bounds error.
+** *State* -- an illegal state error.
+** *Capability* -- an unsupported operation error.
 * *Non-`null` results.* Unless the return type is marked nullable (`T?`) or the *Returns* row states otherwise, an
   operation returns a non-`null` value.
 
@@ -468,6 +473,7 @@ Implemented by the crypto module.
 | Since       | 0.2
 | Description | Initialises the cryptographic context for a new PKI secure session with the supplied card public key.
 | Parameters  | `cardPublicKey` (<<type_CardPublicKeySpi,`CardPublicKeySpi`>>) -- the card public key, extracted from the previously validated card certificate.
+| Pre-conditions | *Argument* -- every parameter is non-`null`.
 | Errors      | <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if the provided public key value is not compliant with the current elliptic curve, or if an error occurs during the initialisation.
 |===
 
@@ -481,6 +487,7 @@ Implemented by the crypto module.
 | Description | Verifies the provided secure session signature against the previously initialised and updated context. This MUST be the final step of the PKI secure session, called after the last `updateTerminalPkiSession`.
 | Parameters  | `cardSessionSignature` -- the 64-byte card signature to verify.
 | Returns     | `true` if the signature is valid, `false` otherwise.
+| Pre-conditions | *Argument* -- every parameter is non-`null`.
 | Errors      | <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if an error occurs while verifying the signature.
 |===
 
@@ -498,6 +505,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 * For ingoing data, the input length MUST be `>= 5`.
 * For outgoing data, the input length MUST be `>= 2`.
 | Parameters  | `cardApdu` -- the APDU bytes exchanged with the card (ingoing or outgoing).
+| Pre-conditions | *Argument* -- every parameter is non-`null`.
 | Errors      | <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if an error occurs while updating the session.
 |===
 
@@ -657,6 +665,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Description | Parses the supplied card output data and returns a new CA certificate instance. The first byte of the input array MUST be the certificate type.
 | Parameters  | `cardOutputData` -- a `ByteArray` containing the CA certificate as stored on the card.
 | Returns     | A <<type_CaCertificateSpi,`CaCertificateSpi`>>.
+| Pre-conditions | *Argument* -- every parameter is non-`null`.
 | Errors      | <<type_CertificateValidation,`CertificateValidation`>> -- if the provided certificate has an unsupported format.
 |===
 
@@ -688,6 +697,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
   relevant constraints or extensions.
 | Parameters  | `issuerCertificateContent` (<<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>) -- the issuer certificate content to be used for signature verification.
 | Returns     | A <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
+| Pre-conditions | *Argument* -- every parameter is non-`null`.
 | Errors
 | <<type_CertificateValidation,`CertificateValidation`>> -- if the certificate is invalid, expired, revoked, or fails any other validation. +
   <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if a technical error occurs during the cryptographic computations.
@@ -739,6 +749,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Description | Parses the supplied card output data and returns a new card certificate instance. The first byte of the input MUST be the certificate type. The expected total length is 316 bytes.
 | Parameters  | `cardOutputData` -- a `ByteArray` containing the card certificate as stored on the card (316 bytes).
 | Returns     | A <<type_CardCertificateSpi,`CardCertificateSpi`>>.
+| Pre-conditions | *Argument* -- every parameter is non-`null`.
 | Errors      | <<type_CertificateValidation,`CertificateValidation`>> -- if the provided certificate has an unsupported format.
 |===
 
@@ -767,6 +778,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Description | Verifies the certificate signature and other relevant fields, then returns the card's public key.
 | Parameters  | `issuerCertificateContent` (<<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>) -- the issuer certificate content to be used for signature verification.
 | Returns     | A <<type_CardPublicKeySpi,`CardPublicKeySpi`>>.
+| Pre-conditions | *Argument* -- every parameter is non-`null`.
 | Errors
 | <<type_CertificateValidation,`CertificateValidation`>> -- if the certificate is invalid. +
   <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if a technical error occurs during the cryptographic computations.
