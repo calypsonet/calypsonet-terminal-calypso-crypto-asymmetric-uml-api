@@ -99,7 +99,7 @@ include::assets/layout/_colophon.adoc[]
 This document is the official technical specification of the **{doc-name}** standardised
 by the **{organization}** (CNA).
 It defines, in a language-agnostic way (using a notation inspired by the Kotlin language), the interfaces,
-classes, enumerations, exceptions, structural relationships and behavioural requirements that any conforming
+classes, enumerations, errors, structural relationships and behavioural requirements that any conforming
 implementation of the {doc-name} MUST satisfy.
 
 The {doc-name} is the SPI through which the *Terminal Calypso Card API* delegates every asymmetric-key
@@ -165,7 +165,7 @@ This specification covers:
 * the SPIs implemented by the crypto module to parse and validate certificates,
 * the SPI implemented by the crypto module to drive a PKI secure session,
 * the factory used by the upstream layer to instantiate the transaction-manager SPI,
-* the exceptions raised by the SPI.
+* the errors raised by the SPI.
 
 The following topics are *out of scope*:
 
@@ -179,7 +179,7 @@ A software product conforms to this specification if and only if:
 
 . it implements every interface defined in <<sec_specification>> with the operations and semantics prescribed in
   this document,
-. it raises exceptions exclusively of the types defined in <<sec_exceptions>> for the situations described,
+. it raises errors exclusively of the types defined in <<sec_errors>> for the situations described,
 . it preserves the structural relationships described in <<sec_architecture>>.
 
 Throughout this specification, the key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**,
@@ -217,12 +217,12 @@ semantic intent rather than the syntactic form.
 
 ==== Type tables
 
-Each interface, class, enumeration and exception defined in this document is described by a table of the form:
+Each interface, class, enumeration and error defined in this document is described by a table of the form:
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
 | Name       | The type's normalized name.
-| Kind       | The category of the type (interface, class, enumeration, exception, etc.).
+| Kind       | The category of the type (interface, class, enumeration, error, etc.).
 | Namespace  | The namespace in which the type is defined.
 | Extends    | The type extended by this type, when applicable.
 | Implements | The interface implemented by this type, when applicable.
@@ -246,7 +246,7 @@ Each operation defined in this document is described by a table of the form:
 | Description | A normative description of the operation's behaviour.
 | Parameters  | A description of each input parameter.
 | Returns     | A description of the returned value, if any.
-| Throws      | A list of exceptional conditions, each mapped to a specific exception type.
+| Throws      | A list of error conditions, each mapped to a specific error type.
 | See also    | Cross-references to related operations or types, each a hyperlink to the corresponding table. Present only when applicable.
 |===
 
@@ -256,8 +256,8 @@ To avoid repetition, the following rules apply to every operation table in <<sec
 not restated for each operation:
 
 * *Non-`null` arguments.* Unless explicitly stated otherwise, every input parameter MUST be non-`null`. An
-  implementation MUST raise `IllegalArgumentException` if a `null` value is supplied. This implicit `null` check is
-  not repeated in the *Throws* row, which states `None.` when no other exception can occur.
+  implementation MUST raise `IllegalArgumentError` if a `null` value is supplied. This implicit `null` check is
+  not repeated in the *Throws* row, which states `None.` when no other error can occur.
 * *Non-`null` results.* Unless the return type is marked nullable (`T?`) or the *Returns* row states otherwise, an
   operation returns a non-`null` value.
 
@@ -361,10 +361,10 @@ include::uml/architecture-overview.puml[]
 | Namespace                                                  | Role     | Summary
 
 | `calypso.crypto.asymmetric`                              | Public API
-| Properties and root exceptions.
+| Properties and root errors.
 
 | `calypso.crypto.asymmetric.certificate`                  | Public API
-| Certificate-validation exception type.
+| Certificate-validation error type.
 
 | `calypso.crypto.asymmetric.certificate.spi`              | SPI
 | Interfaces implemented by the crypto module for certificate parsing, validation and public-key exposure.
@@ -467,7 +467,7 @@ Implemented by the crypto module.
 | Since       | 0.2
 | Description | Initialises the cryptographic context for a new PKI secure session with the supplied card public key.
 | Parameters  | `cardPublicKey` (<<type_CardPublicKeySpi,`CardPublicKeySpi`>>) -- the card public key, extracted from the previously validated card certificate.
-| Throws      | <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if the provided public key value is not compliant with the current elliptic curve, or if an error occurs during the initialisation.
+| Throws      | <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if the provided public key value is not compliant with the current elliptic curve, or if an error occurs during the initialisation.
 |===
 
 [[op_AsymmetricCryptoCardTransactionManagerSpi_isCardPkiSessionValid]]
@@ -480,7 +480,7 @@ Implemented by the crypto module.
 | Description | Verifies the provided secure session signature against the previously initialised and updated context. This MUST be the final step of the PKI secure session, called after the last `updateTerminalPkiSession`.
 | Parameters  | `cardSessionSignature` -- the 64-byte card signature to verify.
 | Returns     | `true` if the signature is valid, `false` otherwise.
-| Throws      | <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if an error occurs while verifying the signature.
+| Throws      | <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if an error occurs while verifying the signature.
 |===
 
 [[op_AsymmetricCryptoCardTransactionManagerSpi_updateTerminalPkiSession]]
@@ -497,7 +497,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 * For ingoing data, the input length MUST be `>= 5`.
 * For outgoing data, the input length MUST be `>= 2`.
 | Parameters  | `cardApdu` -- the APDU bytes exchanged with the card (ingoing or outgoing).
-| Throws      | <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if an error occurs while updating the session.
+| Throws      | <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if an error occurs while updating the session.
 |===
 
 [[type_CaCertificateContentSpi]]
@@ -656,7 +656,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Description | Parses the supplied card output data and returns a new CA certificate instance. The first byte of the input array MUST be the certificate type.
 | Parameters  | `cardOutputData` -- a `ByteArray` containing the CA certificate as stored on the card.
 | Returns     | A <<type_CaCertificateSpi,`CaCertificateSpi`>>.
-| Throws      | <<type_CertificateValidationException,`CertificateValidationException`>> -- if the provided certificate has an unsupported format.
+| Throws      | <<type_CertificateValidation,`CertificateValidation`>> -- if the provided certificate has an unsupported format.
 |===
 
 [[type_CaCertificateSpi]]
@@ -688,8 +688,8 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Parameters  | `issuerCertificateContent` (<<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>) -- the issuer certificate content to be used for signature verification.
 | Returns     | A <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
 | Throws
-| <<type_CertificateValidationException,`CertificateValidationException`>> -- if the certificate is invalid, expired, revoked, or fails any other validation. +
-  <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if a technical error occurs during the cryptographic computations.
+| <<type_CertificateValidation,`CertificateValidation`>> -- if the certificate is invalid, expired, revoked, or fails any other validation. +
+  <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if a technical error occurs during the cryptographic computations.
 |===
 
 [[op_CaCertificateSpi_getIssuerPublicKeyReference]]
@@ -738,7 +738,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Description | Parses the supplied card output data and returns a new card certificate instance. The first byte of the input MUST be the certificate type. The expected total length is 316 bytes.
 | Parameters  | `cardOutputData` -- a `ByteArray` containing the card certificate as stored on the card (316 bytes).
 | Returns     | A <<type_CardCertificateSpi,`CardCertificateSpi`>>.
-| Throws      | <<type_CertificateValidationException,`CertificateValidationException`>> -- if the provided certificate has an unsupported format.
+| Throws      | <<type_CertificateValidation,`CertificateValidation`>> -- if the provided certificate has an unsupported format.
 |===
 
 [[type_CardCertificateSpi]]
@@ -767,8 +767,8 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Parameters  | `issuerCertificateContent` (<<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>) -- the issuer certificate content to be used for signature verification.
 | Returns     | A <<type_CardPublicKeySpi,`CardPublicKeySpi`>>.
 | Throws
-| <<type_CertificateValidationException,`CertificateValidationException`>> -- if the certificate is invalid. +
-  <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if a technical error occurs during the cryptographic computations.
+| <<type_CertificateValidation,`CertificateValidation`>> -- if the certificate is invalid. +
+  <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if a technical error occurs during the cryptographic computations.
 |===
 
 [[op_CardCertificateSpi_getCardAid]]
@@ -855,32 +855,32 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
   certificate MUST be expected to be self-signed in this context.
 | Returns     | A <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
 | Throws
-| <<type_CertificateValidationException,`CertificateValidationException`>> -- if the certificate is invalid, expired, revoked, or fails any other validation. +
-  <<type_AsymmetricCryptoException,`AsymmetricCryptoException`>> -- if a technical error occurs during the cryptographic computations.
+| <<type_CertificateValidation,`CertificateValidation`>> -- if the certificate is invalid, expired, revoked, or fails any other validation. +
+  <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if a technical error occurs during the cryptographic computations.
 |===
 
-[[sec_exceptions]]
-=== Exceptions
+[[sec_errors]]
+=== Errors
 
-[[type_AsymmetricCryptoException]]
-==== Asymmetric Crypto Exception
+[[type_AsymmetricCrypto]]
+==== Asymmetric Crypto
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `AsymmetricCryptoException`
-| Kind     | Checked exception
+| Name     | `AsymmetricCrypto`
+| Kind     | Error
 | Namespace  | `calypso.crypto.asymmetric`
 | Since    | 0.2
 | Purpose  | Indicates that an error occurred when processing an asymmetric cryptographic operation.
 |===
 
-[[type_CertificateValidationException]]
-==== Certificate Validation Exception
+[[type_CertificateValidation]]
+==== Certificate Validation
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CertificateValidationException`
-| Kind     | Checked exception
+| Name     | `CertificateValidation`
+| Kind     | Error
 | Namespace  | `calypso.crypto.asymmetric.certificate`
 | Since    | 0.2
 | Purpose  | Indicates an issue encountered during the certificate validation -- e.g. an invalid signature or incorrect metadata values.

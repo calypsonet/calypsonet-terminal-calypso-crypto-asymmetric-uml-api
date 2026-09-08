@@ -73,7 +73,7 @@ package "calypso.crypto.asymmetric" as api {
             }
         }
     }
-    +class "<<Exception>>\nAsymmetricCryptoException" as AsymmetricCryptoException <<green>> {
+    +class "<<errors>>\nAsymmetricCrypto" as AsymmetricCrypto <<green>> {
     }
     +class "**final** AsymmetricCryptoApiProperties" as ApiProperties <<green>> {
         +{static} **final** VERSION: String
@@ -125,7 +125,7 @@ package "calypso.crypto.asymmetric" as api {
                 +getRawValue() → ByteArray
             }
         }
-        +class "<<Exception>>\nCertificateValidationException" as CertificateValidationException <<green>> {
+        +class "<<errors>>\nCertificateValidation" as CertificateValidation <<green>> {
         }
     }
 }
@@ -151,9 +151,9 @@ CardCertificateSpi .right.> CardPublicKeySpi #C_LINK : provide >
 
 PcaCertificateSpi -[hidden]- CaCertificateSpi
 CaCertificateParserSpi -[hidden]- CardCertificateParserSpi
-CardCertificateSpi -[hidden]- CertificateValidationException
-AsymmetricCryptoCardTransactionManagerSpi -[hidden]- AsymmetricCryptoException
-AsymmetricCryptoException -[hidden]- ApiProperties
+CardCertificateSpi -[hidden]- CertificateValidation
+AsymmetricCryptoCardTransactionManagerSpi -[hidden]- AsymmetricCrypto
+AsymmetricCrypto -[hidden]- ApiProperties
 
 ' == STYLE ==
 
