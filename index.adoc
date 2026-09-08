@@ -246,7 +246,7 @@ Each operation defined in this document is described by a table of the form:
 | Description | A normative description of the operation's behaviour.
 | Parameters  | A description of each input parameter.
 | Returns     | A description of the returned value, if any.
-| Pre-conditions | The conditions the caller MUST satisfy before invoking the operation, each prefixed by its nature. Present only when applicable.
+| Pre-conditions | The conditions the caller MUST satisfy before invoking the operation, each prefixed by its nature.
 | Errors      | A list of error conditions a correct caller must handle, each mapped to a specific error type.
 | See also    | Cross-references to related operations or types, each a hyperlink to the corresponding table. Present only when applicable.
 |===
@@ -449,6 +449,7 @@ constraints, certificate purpose) before returning a value.
 providing the cryptographic primitives that a Calypso card transaction requires when using asymmetric (PKI) keys.
 Implemented by the crypto module.
 | Returns     | An <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -530,6 +531,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the AID value carried by the certificate.
 | Returns     | The non-empty AID, or `null` if the AID check is not requested.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -542,6 +544,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the validity end date of the certificate as a `Long` formatted `0xYYYYMMDD`. Returns `0` if the validity end date is not defined or available.
 | Returns     | The end date, or `0` when not defined.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -554,6 +557,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the public key carried by the certificate.
 | Returns     | A public-key handle.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -566,6 +570,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the reference of the public key as a `ByteArray`. The reference is the stable identifier used by other certificates to designate this key as their issuer.
 | Returns     | A non-empty `ByteArray`.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -580,6 +585,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Returns the validity start date of the certificate as a `Long` formatted `0xYYYYMMDD` (four-digit year, two-digit
   month, two-digit day). Returns `0` if the validity start date is not defined or available.
 | Returns     | The start date, or `0` when not defined.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -592,6 +598,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Indicates whether the AID associated with the certificate MUST be checked.
 | Returns     | `true` if the AID has to be checked, `false` otherwise.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -604,6 +611,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Indicates whether the AID carried by the certificate is truncated.
 | Returns     | `true` if the AID is truncated, `false` otherwise.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -616,6 +624,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Indicates whether the certificate is allowed to authenticate further CA certificates.
 | Returns     | `true` if CA-certificate authentication is allowed, `false` otherwise.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -628,6 +637,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Indicates whether the certificate is allowed to authenticate card certificates.
 | Returns     | `true` if card-certificate authentication is allowed, `false` otherwise.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -652,6 +662,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the certificate type identifier associated with the parser.
 | Returns     | A `Byte` value.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -712,6 +723,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the reference of the issuer's public key, used by the upstream layer to locate the corresponding issuer certificate.
 | Returns     | A non-empty `ByteArray`.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -736,6 +748,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the certificate type identifier associated with the parser.
 | Returns     | A `Byte` value.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -793,6 +806,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the AID of the autonomous application of the card as a `ByteArray` of 5 to 16 bytes.
 | Returns     | A non-empty `ByteArray` of 5 to 16 bytes.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -805,6 +819,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the serial number of the card as an 8-byte `ByteArray`.
 | Returns     | An 8-byte `ByteArray`.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -817,6 +832,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the reference of the issuer's public key.
 | Returns     | A non-empty `ByteArray`.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -841,6 +857,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the raw value of the card's public key.
 | Returns     | A 64-byte `ByteArray`.
+| Pre-conditions | None.
 | Errors      | None.
 |===
 
@@ -867,6 +884,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Verifies the certificate signature and other relevant fields, then returns the certificate content. The PCA
   certificate MUST be expected to be self-signed in this context.
 | Returns     | A <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
+| Pre-conditions | None.
 | Errors
 | <<type_CertificateValidation,`CertificateValidation`>> -- if the certificate is invalid, expired, revoked, or fails any other validation. +
   <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if a technical error occurs during the cryptographic computations.
