@@ -246,7 +246,7 @@ Each operation defined in this document is described by a table of the form:
 | Description | A normative description of the operation's behaviour.
 | Parameters  | A description of each input parameter.
 | Returns     | A description of the returned value, if any.
-| Throws      | A list of error conditions, each mapped to a specific error type.
+| Errors      | A list of error conditions, each mapped to a specific error type.
 | See also    | Cross-references to related operations or types, each a hyperlink to the corresponding table. Present only when applicable.
 |===
 
@@ -255,9 +255,10 @@ Each operation defined in this document is described by a table of the form:
 To avoid repetition, the following rules apply to every operation table in <<sec_specification>> and are therefore
 not restated for each operation:
 
-* *Non-`null` arguments.* Unless explicitly stated otherwise, every input parameter MUST be non-`null`. An
-  implementation MUST raise `IllegalArgumentError` if a `null` value is supplied. This implicit `null` check is
-  not repeated in the *Throws* row, which states `None.` when no other error can occur.
+* *Non-`null` arguments.* Unless explicitly stated otherwise, every input parameter being non-`null` is an
+  implicit pre-condition of the operation. Checking it is the responsibility of the implementation, and failing
+  to meet that pre-condition MUST raise an illegal argument error. This implicit check is not restated in the
+  *Errors* row, which states `None.` when no other error can occur.
 * *Non-`null` results.* Unless the return type is marked nullable (`T?`) or the *Returns* row states otherwise, an
   operation returns a non-`null` value.
 
@@ -443,7 +444,7 @@ constraints, certificate purpose) before returning a value.
 providing the cryptographic primitives that a Calypso card transaction requires when using asymmetric (PKI) keys.
 Implemented by the crypto module.
 | Returns     | An <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[type_AsymmetricCryptoCardTransactionManagerSpi]]
@@ -467,7 +468,7 @@ Implemented by the crypto module.
 | Since       | 0.2
 | Description | Initialises the cryptographic context for a new PKI secure session with the supplied card public key.
 | Parameters  | `cardPublicKey` (<<type_CardPublicKeySpi,`CardPublicKeySpi`>>) -- the card public key, extracted from the previously validated card certificate.
-| Throws      | <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if the provided public key value is not compliant with the current elliptic curve, or if an error occurs during the initialisation.
+| Errors      | <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if the provided public key value is not compliant with the current elliptic curve, or if an error occurs during the initialisation.
 |===
 
 [[op_AsymmetricCryptoCardTransactionManagerSpi_isCardPkiSessionValid]]
@@ -480,7 +481,7 @@ Implemented by the crypto module.
 | Description | Verifies the provided secure session signature against the previously initialised and updated context. This MUST be the final step of the PKI secure session, called after the last `updateTerminalPkiSession`.
 | Parameters  | `cardSessionSignature` -- the 64-byte card signature to verify.
 | Returns     | `true` if the signature is valid, `false` otherwise.
-| Throws      | <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if an error occurs while verifying the signature.
+| Errors      | <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if an error occurs while verifying the signature.
 |===
 
 [[op_AsymmetricCryptoCardTransactionManagerSpi_updateTerminalPkiSession]]
@@ -497,7 +498,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 * For ingoing data, the input length MUST be `>= 5`.
 * For outgoing data, the input length MUST be `>= 2`.
 | Parameters  | `cardApdu` -- the APDU bytes exchanged with the card (ingoing or outgoing).
-| Throws      | <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if an error occurs while updating the session.
+| Errors      | <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if an error occurs while updating the session.
 |===
 
 [[type_CaCertificateContentSpi]]
@@ -521,7 +522,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the AID value carried by the certificate.
 | Returns     | The non-empty AID, or `null` if the AID check is not requested.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[op_CaCertificateContentSpi_getEndDate]]
@@ -533,7 +534,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the validity end date of the certificate as a `Long` formatted `0xYYYYMMDD`. Returns `0` if the validity end date is not defined or available.
 | Returns     | The end date, or `0` when not defined.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[op_CaCertificateContentSpi_getPublicKey]]
@@ -545,7 +546,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the public key carried by the certificate.
 | Returns     | A public-key handle.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[op_CaCertificateContentSpi_getPublicKeyReference]]
@@ -557,7 +558,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the reference of the public key as a `ByteArray`. The reference is the stable identifier used by other certificates to designate this key as their issuer.
 | Returns     | A non-empty `ByteArray`.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[op_CaCertificateContentSpi_getStartDate]]
@@ -571,7 +572,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Returns the validity start date of the certificate as a `Long` formatted `0xYYYYMMDD` (four-digit year, two-digit
   month, two-digit day). Returns `0` if the validity start date is not defined or available.
 | Returns     | The start date, or `0` when not defined.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[op_CaCertificateContentSpi_isAidCheckRequested]]
@@ -583,7 +584,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Indicates whether the AID associated with the certificate MUST be checked.
 | Returns     | `true` if the AID has to be checked, `false` otherwise.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[op_CaCertificateContentSpi_isAidTruncated]]
@@ -595,7 +596,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Indicates whether the AID carried by the certificate is truncated.
 | Returns     | `true` if the AID is truncated, `false` otherwise.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[op_CaCertificateContentSpi_isCaCertificatesAuthenticationAllowed]]
@@ -607,7 +608,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Indicates whether the certificate is allowed to authenticate further CA certificates.
 | Returns     | `true` if CA-certificate authentication is allowed, `false` otherwise.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[op_CaCertificateContentSpi_isCardCertificatesAuthenticationAllowed]]
@@ -619,7 +620,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Indicates whether the certificate is allowed to authenticate card certificates.
 | Returns     | `true` if card-certificate authentication is allowed, `false` otherwise.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[type_CaCertificateParserSpi]]
@@ -643,7 +644,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the certificate type identifier associated with the parser.
 | Returns     | A `Byte` value.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[op_CaCertificateParserSpi_parseCertificate]]
@@ -656,7 +657,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Description | Parses the supplied card output data and returns a new CA certificate instance. The first byte of the input array MUST be the certificate type.
 | Parameters  | `cardOutputData` -- a `ByteArray` containing the CA certificate as stored on the card.
 | Returns     | A <<type_CaCertificateSpi,`CaCertificateSpi`>>.
-| Throws      | <<type_CertificateValidation,`CertificateValidation`>> -- if the provided certificate has an unsupported format.
+| Errors      | <<type_CertificateValidation,`CertificateValidation`>> -- if the provided certificate has an unsupported format.
 |===
 
 [[type_CaCertificateSpi]]
@@ -687,7 +688,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
   relevant constraints or extensions.
 | Parameters  | `issuerCertificateContent` (<<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>) -- the issuer certificate content to be used for signature verification.
 | Returns     | A <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
-| Throws
+| Errors
 | <<type_CertificateValidation,`CertificateValidation`>> -- if the certificate is invalid, expired, revoked, or fails any other validation. +
   <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if a technical error occurs during the cryptographic computations.
 |===
@@ -701,7 +702,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the reference of the issuer's public key, used by the upstream layer to locate the corresponding issuer certificate.
 | Returns     | A non-empty `ByteArray`.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[type_CardCertificateParserSpi]]
@@ -725,7 +726,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the certificate type identifier associated with the parser.
 | Returns     | A `Byte` value.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[op_CardCertificateParserSpi_parseCertificate]]
@@ -738,7 +739,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Description | Parses the supplied card output data and returns a new card certificate instance. The first byte of the input MUST be the certificate type. The expected total length is 316 bytes.
 | Parameters  | `cardOutputData` -- a `ByteArray` containing the card certificate as stored on the card (316 bytes).
 | Returns     | A <<type_CardCertificateSpi,`CardCertificateSpi`>>.
-| Throws      | <<type_CertificateValidation,`CertificateValidation`>> -- if the provided certificate has an unsupported format.
+| Errors      | <<type_CertificateValidation,`CertificateValidation`>> -- if the provided certificate has an unsupported format.
 |===
 
 [[type_CardCertificateSpi]]
@@ -766,7 +767,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Description | Verifies the certificate signature and other relevant fields, then returns the card's public key.
 | Parameters  | `issuerCertificateContent` (<<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>) -- the issuer certificate content to be used for signature verification.
 | Returns     | A <<type_CardPublicKeySpi,`CardPublicKeySpi`>>.
-| Throws
+| Errors
 | <<type_CertificateValidation,`CertificateValidation`>> -- if the certificate is invalid. +
   <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if a technical error occurs during the cryptographic computations.
 |===
@@ -780,7 +781,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the AID of the autonomous application of the card as a `ByteArray` of 5 to 16 bytes.
 | Returns     | A non-empty `ByteArray` of 5 to 16 bytes.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[op_CardCertificateSpi_getCardSerialNumber]]
@@ -792,7 +793,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the serial number of the card as an 8-byte `ByteArray`.
 | Returns     | An 8-byte `ByteArray`.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[op_CardCertificateSpi_getIssuerPublicKeyReference]]
@@ -804,7 +805,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the reference of the issuer's public key.
 | Returns     | A non-empty `ByteArray`.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[type_CardPublicKeySpi]]
@@ -828,7 +829,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Since       | 0.2
 | Description | Returns the raw value of the card's public key.
 | Returns     | A 64-byte `ByteArray`.
-| Throws      | None.
+| Errors      | None.
 |===
 
 [[type_PcaCertificateSpi]]
@@ -854,7 +855,7 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Verifies the certificate signature and other relevant fields, then returns the certificate content. The PCA
   certificate MUST be expected to be self-signed in this context.
 | Returns     | A <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
-| Throws
+| Errors
 | <<type_CertificateValidation,`CertificateValidation`>> -- if the certificate is invalid, expired, revoked, or fails any other validation. +
   <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if a technical error occurs during the cryptographic computations.
 |===
