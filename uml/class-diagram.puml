@@ -68,8 +68,11 @@ package "calypso.crypto.asymmetric" as api {
             }
             +interface AsymmetricCryptoCardTransactionManagerSpi <<red>> {
                 +initTerminalPkiSession(cardPublicKey: CardPublicKeySpi) → Unit
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: AsymmetricCrypto</color></size>
                 +updateTerminalPkiSession(cardApdu: ByteArray) → Unit
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: AsymmetricCrypto</color></size>
                 +isCardPkiSessionValid(cardSessionSignature: ByteArray) → Boolean
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: AsymmetricCrypto</color></size>
             }
         }
     }
@@ -85,21 +88,25 @@ package "calypso.crypto.asymmetric" as api {
             together {
             +interface PcaCertificateSpi <<red>> {
                 +checkCertificateAndGetContent() → CaCertificateContentSpi
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: CertificateValidation, AsymmetricCrypto</color></size>
             }
             +interface CaCertificateParserSpi <<red>> {
                 +getCertificateType() → Byte
 
                 +parseCertificate(cardOutputData: ByteArray) → CaCertificateSpi
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: CertificateValidation</color></size>
             }
             +interface CaCertificateSpi <<red>> {
                 +getIssuerPublicKeyReference() → ByteArray
 
                 +checkCertificateAndGetContent(issuerCertificateContent: CaCertificateContentSpi) → CaCertificateContentSpi
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: CertificateValidation, AsymmetricCrypto</color></size>
             }
             +interface CardCertificateParserSpi <<red>> {
                 +getCertificateType() → Byte
 
                 +parseCertificate(cardOutputData: ByteArray) → CardCertificateSpi
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: CertificateValidation</color></size>
             }
             +interface CardCertificateSpi <<red>> {
                 +getIssuerPublicKeyReference() → ByteArray
@@ -107,6 +114,7 @@ package "calypso.crypto.asymmetric" as api {
                 +getCardSerialNumber() → ByteArray
 
                 +checkCertificateAndGetPublicKey(issuerCertificateContent: CaCertificateContentSpi) → CardPublicKeySpi
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: CertificateValidation, AsymmetricCrypto</color></size>
             }
             }
             +interface CaCertificateContentSpi <<red>> {
