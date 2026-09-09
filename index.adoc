@@ -401,11 +401,11 @@ include::uml/class-diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `AsymmetricCryptoApiProperties`
-| Kind     | Final class
+| Name       | `AsymmetricCryptoApiProperties`
+| Kind       | Final class
 | Namespace  | `calypso.crypto.asymmetric`
-| Since    | 0.2
-| Purpose  | Exposes the immutable properties of the {doc-name}.
+| Since      | 0.2
+| Purpose    | Exposes the immutable properties of the {doc-name}.
 |===
 
 ===== Constants
@@ -430,11 +430,11 @@ constraints, certificate purpose) before returning a value.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `AsymmetricCryptoCardTransactionManagerFactorySpi`
-| Kind     | Interface (SPI)
+| Name       | `AsymmetricCryptoCardTransactionManagerFactorySpi`
+| Kind       | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.transaction.spi`
-| Since    | 0.2
-| Purpose  | Factory of <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
+| Since      | 0.2
+| Purpose    | Factory of <<type_AsymmetricCryptoCardTransactionManagerSpi,`AsymmetricCryptoCardTransactionManagerSpi`>>.
 |===
 
 [[op_AsymmetricCryptoCardTransactionManagerFactorySpi_createCardTransactionManager]]
@@ -458,11 +458,11 @@ Implemented by the crypto module.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `AsymmetricCryptoCardTransactionManagerSpi`
-| Kind     | Interface (SPI)
+| Name       | `AsymmetricCryptoCardTransactionManagerSpi`
+| Kind       | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.transaction.spi`
-| Since    | 0.2
-| Purpose  | Defines the cryptographic primitives required by a Calypso card transaction when using asymmetric keys. An instance is obtained via <<op_AsymmetricCryptoCardTransactionManagerFactorySpi_createCardTransactionManager,`AsymmetricCryptoCardTransactionManagerFactorySpi.createCardTransactionManager`>>.
+| Since      | 0.2
+| Purpose    | Defines the cryptographic primitives required by a Calypso card transaction when using asymmetric keys. An instance is obtained via <<op_AsymmetricCryptoCardTransactionManagerFactorySpi_createCardTransactionManager,`AsymmetricCryptoCardTransactionManagerFactorySpi.createCardTransactionManager`>>.
 |===
 
 [[op_AsymmetricCryptoCardTransactionManagerSpi_initTerminalPkiSession]]
@@ -515,11 +515,11 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CaCertificateContentSpi`
-| Kind     | Interface (SPI)
+| Name       | `CaCertificateContentSpi`
+| Kind       | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2
-| Purpose  | Exposes the content of a CA certificate that has been parsed and verified by the crypto module.
+| Since      | 0.2
+| Purpose    | Exposes the content of a CA certificate that has been parsed and verified by the crypto module.
 |===
 
 [[op_CaCertificateContentSpi_getAid]]
@@ -646,11 +646,11 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CaCertificateParserSpi`
-| Kind     | Interface (SPI)
+| Name       | `CaCertificateParserSpi`
+| Kind       | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2
-| Purpose  | Parses CA certificates from raw data stored on a card.
+| Since      | 0.2
+| Purpose    | Parses CA certificates from raw data stored on a card.
 |===
 
 [[op_CaCertificateParserSpi_getCertificateType]]
@@ -685,11 +685,11 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CaCertificateSpi`
-| Kind     | Interface (SPI)
+| Name       | `CaCertificateSpi`
+| Kind       | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2
-| Purpose  | Represents a Certification Authority (CA) certificate that has been parsed by the crypto module and is ready for chain validation.
+| Since      | 0.2
+| Purpose    | Represents a Certification Authority (CA) certificate that has been parsed by the crypto module and is ready for chain validation.
 |===
 
 [[op_CaCertificateSpi_checkCertificateAndGetContent]]
@@ -732,11 +732,11 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CardCertificateParserSpi`
-| Kind     | Interface (SPI)
+| Name       | `CardCertificateParserSpi`
+| Kind       | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2
-| Purpose  | Parses card certificates from raw data stored on a card.
+| Since      | 0.2
+| Purpose    | Parses card certificates from raw data stored on a card.
 |===
 
 [[op_CardCertificateParserSpi_getCertificateType]]
@@ -771,11 +771,11 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CardCertificateSpi`
-| Kind     | Interface (SPI)
+| Name       | `CardCertificateSpi`
+| Kind       | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2
-| Purpose  | Represents a card certificate, used to extract the card's public key after a successful chain validation.
+| Since      | 0.2
+| Purpose    | Represents a card certificate, used to extract the card's public key after a successful chain validation.
 |===
 
 [[op_CardCertificateSpi_checkCertificateAndGetPublicKey]]
@@ -841,11 +841,11 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CardPublicKeySpi`
-| Kind     | Interface (SPI)
+| Name       | `CardPublicKeySpi`
+| Kind       | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2
-| Purpose  | Exposes the card's public key extracted from a validated card certificate.
+| Since      | 0.2
+| Purpose    | Exposes the card's public key extracted from a validated card certificate.
 |===
 
 [[op_CardPublicKeySpi_getRawValue]]
@@ -866,11 +866,11 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `PcaCertificateSpi`
-| Kind     | Interface (SPI)
+| Name       | `PcaCertificateSpi`
+| Kind       | Interface (SPI)
 | Namespace  | `calypso.crypto.asymmetric.certificate.spi`
-| Since    | 0.2
-| Purpose  | Represents a Primary Certification Authority (PCA) certificate -- the self-signed trust anchor of the Calypso PKI.
+| Since      | 0.2
+| Purpose    | Represents a Primary Certification Authority (PCA) certificate -- the self-signed trust anchor of the Calypso PKI.
 |===
 
 [[op_PcaCertificateSpi_checkCertificateAndGetContent]]
@@ -893,16 +893,20 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 [[sec_errors]]
 === Errors
 
+Every error defined below carries two properties: `message` (`String`), which describes the condition, and
+`cause` (`Any?`), the underlying error that triggered it, `null` when there is none. They are not
+restated for each error.
+
 [[type_AsymmetricCrypto]]
 ==== Asymmetric Crypto
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `AsymmetricCrypto`
-| Kind     | Error
+| Name       | `AsymmetricCrypto`
+| Kind       | Error
 | Namespace  | `calypso.crypto.asymmetric`
-| Since    | 0.2
-| Purpose  | Indicates that an error occurred when processing an asymmetric cryptographic operation.
+| Since      | 0.2
+| Purpose    | Indicates that an error occurred when processing an asymmetric cryptographic operation.
 |===
 
 [[type_CertificateValidation]]
@@ -910,9 +914,9 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Name     | `CertificateValidation`
-| Kind     | Error
+| Name       | `CertificateValidation`
+| Kind       | Error
 | Namespace  | `calypso.crypto.asymmetric.certificate`
-| Since    | 0.2
-| Purpose  | Indicates an issue encountered during the certificate validation -- e.g. an invalid signature or incorrect metadata values.
+| Since      | 0.2
+| Purpose    | Indicates an issue encountered during the certificate validation -- e.g. an invalid signature or incorrect metadata values.
 |===
