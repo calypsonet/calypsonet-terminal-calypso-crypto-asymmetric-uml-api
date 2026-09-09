@@ -76,7 +76,7 @@ package "calypso.crypto.asymmetric" as api {
             }
         }
     }
-    +exception "<i>«error»\nAsymmetricCrypto" as AsymmetricCrypto <<purple>>  {
+    +exception "AsymmetricCrypto" as AsymmetricCrypto <<purple>> <<error>> {
         +val message: String
         +val cause: Any?
     }
@@ -135,7 +135,7 @@ package "calypso.crypto.asymmetric" as api {
                 +getRawValue() → ByteArray
             }
         }
-        +exception "<i>«error»\nCertificateValidation" as CertificateValidation <<purple>>  {
+        +exception "CertificateValidation" as CertificateValidation <<purple>> <<error>> {
             +val message: String
             +val cause: Any?
         }
