@@ -207,14 +207,16 @@ semantic intent rather than the syntactic form.
 
 [cols="^.^1,.^3,.^3", options="header"]
 |===
-| Type            | Description                                                     | Typical bindings
-| `String`        | Sequence of characters, UTF-8 encoded by default.                | `String`, `string`, `str`.
-| `Boolean`       | Two-state truth value.                                           | `boolean`, `bool`.
-| `Byte`          | Signed 8-bit value.                                              | `byte`, `i8`.
-| `Long`          | Signed 64-bit integer.                                           | `long`, `Int64`, `i64`.
-| `ByteArray`     | Ordered sequence of octets.                                      | `byte[]`, `[u8]`, `bytes`.
-| `PublicKey`     | Opaque, immutable handle representing an asymmetric public key.  | `PublicKey` (Java), `X509PublicKey`, `SubjectPublicKeyInfo`, equivalent.
-| `Unit`          | Indicates that an operation returns no value.                    | `void`, `Unit`, `None`, `()`.
+| Type        | Description                                                     | Typical bindings
+| `String`    | Sequence of characters, UTF-8 encoded by default.               | `String`, `string`, `str`.
+| `Boolean`   | Two-state truth value.                                          | `boolean`, `bool`.
+| `Byte`      | Signed 8-bit value.                                             | `byte`, `i8`.
+| `Long`      | Signed 64-bit integer.                                          | `long`, `Int64`, `i64`.
+| `ByteArray` | Ordered sequence of octets.                                     | `byte[]`, `[u8]`, `bytes`.
+| `PublicKey` | Opaque, immutable handle representing an asymmetric public key. | `PublicKey` (Java), `X509PublicKey`, `SubjectPublicKeyInfo`, equivalent.
+| `T?`        | Nullable value: either a `T` value or `null`.                   | `Optional<T>`, `T?`, `Option<T>`.
+| `null`      | Absence of value, the alternative held by a nullable type.      | `null`, `nil`, `None`.
+| `Unit`      | Indicates that an operation returns no value.                   | `void`, `Unit`, `()`.
 |===
 
 ==== Type tables

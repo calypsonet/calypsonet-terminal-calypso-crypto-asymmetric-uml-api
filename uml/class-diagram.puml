@@ -76,11 +76,11 @@ package "calypso.crypto.asymmetric" as api {
             }
         }
     }
-    exception "AsymmetricCrypto" as AsymmetricCrypto <<green>> <<error>> {
+    exception "AsymmetricCrypto" as AsymmetricCrypto <<error>> <<green>> {
         +val message: String
         +val cause: Any?
     }
-    class "AsymmetricCryptoApiProperties" as ApiProperties <<green>> <<constants>> {
+    class "AsymmetricCryptoApiProperties" as ApiProperties <<constants>> <<green>> {
         +const VERSION: String = "0.2"
     }
     package "certificate" as certificate {
@@ -135,7 +135,7 @@ package "calypso.crypto.asymmetric" as api {
                 +getRawValue() → ByteArray
             }
         }
-        exception "CertificateValidation" as CertificateValidation <<green>> <<error>> {
+        exception "CertificateValidation" as CertificateValidation <<error>> <<green>> {
             +val message: String
             +val cause: Any?
         }
