@@ -16,10 +16,10 @@ include::assets/logos/_terminal-api.adoc[]
 include::assets/legal/_license-cc-by-nd-4.0.adoc[]
 //
 // Revision (bumped every edition)
-:revnumber: 0.2.1-SNAPSHOT
+:revnumber: 0.3.0-SNAPSHOT
 :revdate: 2026-07-20
 // API version exposed by the VERSION constant: MAJOR.MINOR of revnumber
-:api-version: 0.2
+:api-version: 0.3
 //
 // ============================================================================
 // Document-specific constants (local — differ per spec)
@@ -163,7 +163,7 @@ the required signatures (as specified in <<ref_iso9796,ISO/IEC 9796>>) and certi
 
 This specification covers:
 
-* the data carriers used to expose certificate content and public keys to the upstream layer,
+* the data carrier used to expose certificate content to the upstream layer,
 * the SPIs implemented by the crypto module to parse and validate certificates,
 * the SPI implemented by the crypto module to drive a PKI secure session,
 * the factory used by the upstream layer to instantiate the transaction-manager SPI,
@@ -182,7 +182,25 @@ A software product conforms to this specification if and only if:
 . it implements every interface defined in <<sec_specification>> with the operations and semantics prescribed in
   this document,
 . it raises errors exclusively of the types defined in <<sec_errors>> for the situations described,
-. it preserves the structural relationships described in <<sec_architecture>>.
+. it preserves the structural relationships described in <<sec_architecture>>,
+. every object it provides implements the marker interface of <<ref_cna_tcc,CNA-TCC-API>> that corresponds to its
+  type, as described below.
+
+The Calypso Card API (<<ref_cna_tcc,CNA-TCC-API>>) declares marker interfaces through which the objects of
+an asymmetric crypto module are handed over to the card API. Those markers declare no operation: their
+content is the one defined by this specification. Every object implementing a type of the right column MUST
+therefore also implement the marker of the left column.
+
+[cols="^.^1,^.^1", options="header"]
+|===
+| CNA-TCC-API marker                              | CNA-TCCA-API type
+| `AsymmetricCryptoCardTransactionManagerFactory` | <<type_AsymmetricCryptoCardTransactionManagerFactorySpi,`AsymmetricCryptoCardTransactionManagerFactorySpi`>>
+| `CaCertificate`                                 | <<type_CaCertificateSpi,`CaCertificateSpi`>>
+| `CaCertificateParser`                           | <<type_CaCertificateParserSpi,`CaCertificateParserSpi`>>
+| `CardCertificate`                               | <<type_CardCertificateSpi,`CardCertificateSpi`>>
+| `CardCertificateParser`                         | <<type_CardCertificateParserSpi,`CardCertificateParserSpi`>>
+| `PcaCertificate`                                | <<type_PcaCertificateSpi,`PcaCertificateSpi`>>
+|===
 
 Throughout this specification, the key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**,
 **MAY** and **OPTIONAL** are to be interpreted as described in <<ref_rfc2119,RFC 2119>> and <<ref_rfc8174,RFC 8174>> when, and only when,
@@ -377,7 +395,7 @@ include::uml/architecture-overview.puml[]
 | Certificate-validation error type.
 
 | `calypso.crypto.asymmetric.certificate.spi`              | SPI
-| Interfaces implemented by the crypto module for certificate parsing, validation and public-key exposure.
+| Interfaces implemented by the crypto module for certificate parsing and validation, and the certificate content they expose.
 
 | `calypso.crypto.asymmetric.transaction.spi`              | SPI
 | Interfaces implemented by the crypto module to drive a PKI-mode card transaction.
@@ -418,6 +436,77 @@ include::uml/class-diagram.puml[Terminal Calypso Crypto Asymmetric API class dia
 
 | `VERSION` | `String` | 0.2 | String representation of the version of the API implemented by the conforming binding.
   The value is a dotted decimal of the form `MAJOR.MINOR`; it is `"{api-version}"` for this revision of the specification.
+|===
+
+=== Data
+
+[[type_CaCertificateContent]]
+==== CA Certificate Content
+
+[cols="^.^1h,.^5", grid=rows, frame=all]
+|===
+| Name       | `CaCertificateContent`
+| Kind       | Data
+| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
+| Since      | 0.2
+| Purpose    | Carries the content of a CA certificate that has been parsed and verified by the crypto module.
+|===
+
+[cols="^.^1,^.^1,^.^1,^.^1,.^5", options="header"]
+|===
+| Name | Type | Default | Since | Description
+
+| `publicKey`
+| `PublicKey`
+| --
+| 0.2
+| Public key carried by the certificate.
+
+| `publicKeyReference`
+| `ByteArray`
+| --
+| 0.2
+| Reference of the public key: the stable identifier used by other certificates to designate this key as their
+  issuer. Non-empty.
+
+| `startDate`
+| `Long`
+| --
+| 0.2
+| Validity start date of the certificate, formatted `0xYYYYMMDD` (four-digit year, two-digit month, two-digit
+  day). `0` when the validity start date is not defined or available.
+
+| `endDate`
+| `Long`
+| --
+| 0.2
+| Validity end date of the certificate, formatted `0xYYYYMMDD`. `0` when the validity end date is not defined
+  or available.
+
+| `isAidTruncated`
+| `Boolean`
+| --
+| 0.2
+| Indicates whether the AID carried by the certificate is truncated.
+
+| `aid`
+| `ByteArray?`
+| --
+| 0.2
+| AID carried by the certificate, non-empty. `null` when the AID check is not requested; otherwise the AID
+  associated with the certificate MUST be checked.
+
+| `isCaCertificatesAuthenticationAllowed`
+| `Boolean`
+| --
+| 0.2
+| Indicates whether the certificate is allowed to authenticate further CA certificates.
+
+| `isCardCertificatesAuthenticationAllowed`
+| `Boolean`
+| --
+| 0.2
+| Indicates whether the certificate is allowed to authenticate card certificates.
 |===
 
 === SPI Interfaces
@@ -473,10 +562,10 @@ Implemented by the crypto module.
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature      | `initTerminalPkiSession(cardPublicKey: CardPublicKeySpi) -> Unit`
+| Signature      | `initTerminalPkiSession(cardPublicKey: ByteArray) -> Unit`
 | Since          | 0.2
 | Description    | Initialises the cryptographic context for a new PKI secure session with the supplied card public key.
-| Parameters     | `cardPublicKey` (<<type_CardPublicKeySpi,`CardPublicKeySpi`>>) -- the card public key, extracted from the previously validated card certificate.
+| Parameters     | `cardPublicKey` -- the 64-byte raw value of the card public key, as returned by <<op_CardCertificateSpi_checkCertificateAndGetPublicKey,`CardCertificateSpi.checkCertificateAndGetPublicKey`>> once the card certificate has been validated.
 | Pre-conditions | *Argument* -- every parameter is non-`null`.
 | Errors         | <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if the provided public key value is not compliant with the current elliptic curve, or if an error occurs during the initialisation.
 |===
@@ -511,137 +600,6 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Parameters     | `cardApdu` -- the APDU bytes exchanged with the card (ingoing or outgoing).
 | Pre-conditions | *Argument* -- every parameter is non-`null`.
 | Errors         | <<type_AsymmetricCrypto,`AsymmetricCrypto`>> -- if an error occurs while updating the session.
-|===
-
-[[type_CaCertificateContentSpi]]
-==== CA Certificate Content SPI
-
-[cols="^.^1h,.^5", grid=rows, frame=all]
-|===
-| Name       | `CaCertificateContentSpi`
-| Kind       | Interface (SPI)
-| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
-| Since      | 0.2
-| Purpose    | Exposes the content of a CA certificate that has been parsed and verified by the crypto module.
-|===
-
-[[op_CaCertificateContentSpi_getAid]]
-===== Get AID
-
-[cols="^.^1h,.^5", grid=rows, frame=all]
-|===
-| Signature      | `getAid() -> ByteArray?`
-| Since          | 0.2
-| Description    | Returns the AID value carried by the certificate.
-| Returns        | The non-empty AID, or `null` if the AID check is not requested.
-| Pre-conditions | None.
-| Errors         | None.
-|===
-
-[[op_CaCertificateContentSpi_getEndDate]]
-===== Get End Date
-
-[cols="^.^1h,.^5", grid=rows, frame=all]
-|===
-| Signature      | `getEndDate() -> Long`
-| Since          | 0.2
-| Description    | Returns the validity end date of the certificate as a `Long` formatted `0xYYYYMMDD`. Returns `0` if the validity end date is not defined or available.
-| Returns        | The end date, or `0` when not defined.
-| Pre-conditions | None.
-| Errors         | None.
-|===
-
-[[op_CaCertificateContentSpi_getPublicKey]]
-===== Get Public Key
-
-[cols="^.^1h,.^5", grid=rows, frame=all]
-|===
-| Signature      | `getPublicKey() -> PublicKey`
-| Since          | 0.2
-| Description    | Returns the public key carried by the certificate.
-| Returns        | A public-key handle.
-| Pre-conditions | None.
-| Errors         | None.
-|===
-
-[[op_CaCertificateContentSpi_getPublicKeyReference]]
-===== Get Public Key Reference
-
-[cols="^.^1h,.^5", grid=rows, frame=all]
-|===
-| Signature      | `getPublicKeyReference() -> ByteArray`
-| Since          | 0.2
-| Description    | Returns the reference of the public key as a `ByteArray`. The reference is the stable identifier used by other certificates to designate this key as their issuer.
-| Returns        | A non-empty `ByteArray`.
-| Pre-conditions | None.
-| Errors         | None.
-|===
-
-[[op_CaCertificateContentSpi_getStartDate]]
-===== Get Start Date
-
-[cols="^.^1h,.^5", grid=rows, frame=all]
-|===
-| Signature      | `getStartDate() -> Long`
-| Since          | 0.2
-| Description
-| Returns the validity start date of the certificate as a `Long` formatted `0xYYYYMMDD` (four-digit year, two-digit
-  month, two-digit day). Returns `0` if the validity start date is not defined or available.
-| Returns        | The start date, or `0` when not defined.
-| Pre-conditions | None.
-| Errors         | None.
-|===
-
-[[op_CaCertificateContentSpi_isAidCheckRequested]]
-===== Is AID Check Requested
-
-[cols="^.^1h,.^5", grid=rows, frame=all]
-|===
-| Signature      | `isAidCheckRequested() -> Boolean`
-| Since          | 0.2
-| Description    | Indicates whether the AID associated with the certificate MUST be checked.
-| Returns        | `true` if the AID has to be checked, `false` otherwise.
-| Pre-conditions | None.
-| Errors         | None.
-|===
-
-[[op_CaCertificateContentSpi_isAidTruncated]]
-===== Is AID Truncated
-
-[cols="^.^1h,.^5", grid=rows, frame=all]
-|===
-| Signature      | `isAidTruncated() -> Boolean`
-| Since          | 0.2
-| Description    | Indicates whether the AID carried by the certificate is truncated.
-| Returns        | `true` if the AID is truncated, `false` otherwise.
-| Pre-conditions | None.
-| Errors         | None.
-|===
-
-[[op_CaCertificateContentSpi_isCaCertificatesAuthenticationAllowed]]
-===== Is CA Certificates Authentication Allowed
-
-[cols="^.^1h,.^5", grid=rows, frame=all]
-|===
-| Signature      | `isCaCertificatesAuthenticationAllowed() -> Boolean`
-| Since          | 0.2
-| Description    | Indicates whether the certificate is allowed to authenticate further CA certificates.
-| Returns        | `true` if CA-certificate authentication is allowed, `false` otherwise.
-| Pre-conditions | None.
-| Errors         | None.
-|===
-
-[[op_CaCertificateContentSpi_isCardCertificatesAuthenticationAllowed]]
-===== Is Card Certificates Authentication Allowed
-
-[cols="^.^1h,.^5", grid=rows, frame=all]
-|===
-| Signature      | `isCardCertificatesAuthenticationAllowed() -> Boolean`
-| Since          | 0.2
-| Description    | Indicates whether the certificate is allowed to authenticate card certificates.
-| Returns        | `true` if card-certificate authentication is allowed, `false` otherwise.
-| Pre-conditions | None.
-| Errors         | None.
 |===
 
 [[type_CaCertificateParserSpi]]
@@ -702,15 +660,15 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 |===
 | Signature
 | `checkCertificateAndGetContent(` +
-`{nbsp}{nbsp}{nbsp}{nbsp}issuerCertificateContent: CaCertificateContentSpi` +
-`) -> CaCertificateContentSpi`
+`{nbsp}{nbsp}{nbsp}{nbsp}issuerCertificateContent: CaCertificateContent` +
+`) -> CaCertificateContent`
 | Since          | 0.2
 | Description
 | Verifies the certificate signature and other relevant fields, then returns the certificate content. The
   validation MUST be comprehensive: signature correctness, validity period, issuer and subject details and any
   relevant constraints or extensions.
-| Parameters     | `issuerCertificateContent` (<<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>) -- the issuer certificate content to be used for signature verification.
-| Returns        | A <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
+| Parameters     | `issuerCertificateContent` (<<type_CaCertificateContent,`CaCertificateContent`>>) -- the issuer certificate content to be used for signature verification.
+| Returns        | A <<type_CaCertificateContent,`CaCertificateContent`>>.
 | Pre-conditions | *Argument* -- every parameter is non-`null`.
 | Errors
 | <<type_CertificateValidation,`CertificateValidation`>> -- if the certificate is invalid, expired, revoked, or fails any other validation. +
@@ -788,12 +746,12 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 |===
 | Signature
 | `checkCertificateAndGetPublicKey(` +
-`{nbsp}{nbsp}{nbsp}{nbsp}issuerCertificateContent: CaCertificateContentSpi` +
-`) -> CardPublicKeySpi`
+`{nbsp}{nbsp}{nbsp}{nbsp}issuerCertificateContent: CaCertificateContent` +
+`) -> ByteArray`
 | Since          | 0.2
 | Description    | Verifies the certificate signature and other relevant fields, then returns the card's public key.
-| Parameters     | `issuerCertificateContent` (<<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>) -- the issuer certificate content to be used for signature verification.
-| Returns        | A <<type_CardPublicKeySpi,`CardPublicKeySpi`>>.
+| Parameters     | `issuerCertificateContent` (<<type_CaCertificateContent,`CaCertificateContent`>>) -- the issuer certificate content to be used for signature verification.
+| Returns        | A 64-byte `ByteArray` holding the raw value of the card public key.
 | Pre-conditions | *Argument* -- every parameter is non-`null`.
 | Errors
 | <<type_CertificateValidation,`CertificateValidation`>> -- if the certificate is invalid. +
@@ -839,31 +797,6 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 | Errors         | None.
 |===
 
-[[type_CardPublicKeySpi]]
-==== Card Public Key SPI
-
-[cols="^.^1h,.^5", grid=rows, frame=all]
-|===
-| Name       | `CardPublicKeySpi`
-| Kind       | Interface (SPI)
-| Namespace  | `calypso.crypto.asymmetric.certificate.spi`
-| Since      | 0.2
-| Purpose    | Exposes the card's public key extracted from a validated card certificate.
-|===
-
-[[op_CardPublicKeySpi_getRawValue]]
-===== Get Raw Value
-
-[cols="^.^1h,.^5", grid=rows, frame=all]
-|===
-| Signature      | `getRawValue() -> ByteArray`
-| Since          | 0.2
-| Description    | Returns the raw value of the card's public key.
-| Returns        | A 64-byte `ByteArray`.
-| Pre-conditions | None.
-| Errors         | None.
-|===
-
 [[type_PcaCertificateSpi]]
 ==== PCA Certificate SPI
 
@@ -881,12 +814,12 @@ MUST be called for every APDU exchanged during the PKI secure session, in the or
 
 [cols="^.^1h,.^5", grid=rows, frame=all]
 |===
-| Signature      | `checkCertificateAndGetContent() -> CaCertificateContentSpi`
+| Signature      | `checkCertificateAndGetContent() -> CaCertificateContent`
 | Since          | 0.2
 | Description
 | Verifies the certificate signature and other relevant fields, then returns the certificate content. The PCA
   certificate MUST be expected to be self-signed in this context.
-| Returns        | A <<type_CaCertificateContentSpi,`CaCertificateContentSpi`>>.
+| Returns        | A <<type_CaCertificateContent,`CaCertificateContent`>>.
 | Pre-conditions | None.
 | Errors
 | <<type_CertificateValidation,`CertificateValidation`>> -- if the certificate is invalid, expired, revoked, or fails any other validation. +
