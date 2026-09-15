@@ -232,6 +232,7 @@ semantic intent rather than the syntactic form.
 | `Long`      | Signed 64-bit integer.                                          | `long`, `Int64`, `i64`.
 | `ByteArray` | Ordered sequence of octets.                                     | `byte[]`, `[u8]`, `bytes`.
 | `PublicKey` | Opaque, immutable handle representing an asymmetric public key. | `PublicKey` (Java), `X509PublicKey`, `SubjectPublicKeyInfo`, equivalent.
+| `Any`       | Value of any type, root of the type hierarchy.                  | `Object`, `Any`, `object`, `Box<dyn Any>`.
 | `T?`        | Nullable value: either a `T` value or `null`.                   | `Optional<T>`, `T?`, `Option<T>`.
 | `null`      | Absence of value, the alternative held by a nullable type.      | `null`, `nil`, `None`.
 | `Unit`      | Indicates that an operation returns no value.                   | `void`, `Unit`, `()`.
