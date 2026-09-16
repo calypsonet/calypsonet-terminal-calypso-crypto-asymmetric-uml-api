@@ -55,8 +55,6 @@ hide <<grey>> stereotype
 ' == CONTENT ==
 
 legend top
-    * __External public API references__
-    *** <back:yellow>java.security</back>
     * __Text__
     *** <color:blue><b>New element added since the last version
     *** <color:red><s><b>Element marked as deprecated since the last version
@@ -126,7 +124,7 @@ package "calypso.crypto.asymmetric" as api {
             }
             }
             class "<color:blue>CaCertificateContent" as CaCertificateContent <<data>> <<green>> {
-                +val publicKey: <back:yellow>PublicKey</back>
+                +val publicKey: PublicKey
                 +val publicKeyReference: ByteArray
 
                 +val startDate: Long
