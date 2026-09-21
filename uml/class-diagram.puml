@@ -2,7 +2,7 @@
 title
     <img:assets/logos/calypso.svg{scale=0.2}>
 
-    Terminal Calypso Crypto Asymmetric API 0.2.+ (2024-03-15)
+    Terminal Calypso Crypto Asymmetric API 0.3.+ (2026-09-14)
 end title
 
 ' == THEME (class) ==
@@ -22,7 +22,7 @@ end title
 skinparam stereotypeABorderColor #A9DCDF
 skinparam stereotypeIBorderColor #B4A7E5
 skinparam stereotypeCBorderColor #ADD1B2
-skinparam stereotypeEBorderColor #EB93DF
+skinparam stereotypeEBorderColor #EB937F
 ' -- END --
 
 skinparam ClassBorderThickness 2
@@ -55,77 +55,91 @@ hide <<grey>> stereotype
 ' == CONTENT ==
 
 legend top
-    __Colors legend__ :
-    * __External public API references__ :
-    ** <back:yellow>java.security</back>
+    * __Text__
+    *** <color:blue><b>New element added since the last version
+    *** <color:red><s><b>Element marked as deprecated since the last version
+    *** <s><b>Element marked as deprecated
+    *** <color:grey><b>Work in progress...
+    * __Object__
+    *** <back:#FEFECE><color:#D4AC0D><b>Interface that cannot be instantiated directly by the factory
+    *** <back:#FDEDEC><color:#E74C3C><b>SPI (Service Provider Interface) to be provided by the end-user
+    *** <back:#E9F7EF><color:#27AE60><b>Data, constants, enumeration or error
 end legend
 
 package "calypso.crypto.asymmetric" as api {
     package "transaction" as transaction {
         package spi {
-            +interface AsymmetricCryptoCardTransactionManagerFactorySpi <<red>> {
-                +AsymmetricCryptoCardTransactionManagerSpi createCardTransactionManager ()
+            interface AsymmetricCryptoCardTransactionManagerFactorySpi <<red>> {
+                +createCardTransactionManager() → AsymmetricCryptoCardTransactionManagerSpi
             }
-            +interface AsymmetricCryptoCardTransactionManagerSpi <<red>> {
-                +void initTerminalPkiSession (CardPublicKeySpi cardPublicKey)
-                +void updateTerminalPkiSession (byte[] cardApdu)
-                +boolean isCardPkiSessionValid (byte[] cardSessionSignature)
+            interface AsymmetricCryptoCardTransactionManagerSpi <<red>> {
+                +initTerminalPkiSession(cardPublicKey: <color:blue>ByteArray</color>) → Unit
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: AsymmetricCrypto</color></size>
+                +updateTerminalPkiSession(cardApdu: ByteArray) → Unit
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: AsymmetricCrypto</color></size>
+                +isCardPkiSessionValid(cardSessionSignature: ByteArray) → Boolean
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: AsymmetricCrypto</color></size>
             }
         }
     }
-    +class "<<Exception>>\nAsymmetricCryptoException" as AsymmetricCryptoException <<green>> {
+    exception "AsymmetricCrypto" as AsymmetricCrypto <<error>> <<green>> {
+        +val message: String
+        +val cause: Any?
     }
-    +class "**final** AsymmetricCryptoApiProperties" as ApiProperties <<green>> {
-        +{static} **final** String VERSION
+    class "AsymmetricCryptoApiProperties" as ApiProperties <<constants>> <<green>> {
+        +const VERSION: String = "0.3"
     }
     package "certificate" as certificate {
         package spi {
             together {
-            +interface PcaCertificateSpi <<red>> {
-                +CaCertificateContentSpi checkCertificateAndGetContent ()
+            interface PcaCertificateSpi <<red>> {
+                +checkCertificateAndGetContent() → <color:blue>CaCertificateContent</color>
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: CertificateValidation, AsymmetricCrypto</color></size>
             }
-            +interface CaCertificateParserSpi <<red>> {
-                +byte getCertificateType ()
+            interface CaCertificateParserSpi <<red>> {
+                +getCertificateType() → Byte
 
-                +CaCertificateSpi parseCertificate (byte[] cardOutputData)
+                +parseCertificate(cardOutputData: ByteArray) → CaCertificateSpi
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: CertificateValidation</color></size>
             }
-            +interface CaCertificateSpi <<red>> {
-                +byte[] getIssuerPublicKeyReference ()
+            interface CaCertificateSpi <<red>> {
+                +getIssuerPublicKeyReference() → ByteArray
 
-                +CaCertificateContentSpi checkCertificateAndGetContent (CaCertificateContentSpi issuerCertificateContent)
+                +checkCertificateAndGetContent(issuerCertificateContent: <color:blue>CaCertificateContent</color>) → <color:blue>CaCertificateContent</color>
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: CertificateValidation, AsymmetricCrypto</color></size>
             }
-            +interface CardCertificateParserSpi <<red>> {
-                +byte getCertificateType ()
+            interface CardCertificateParserSpi <<red>> {
+                +getCertificateType() → Byte
 
-                +CardCertificateSpi parseCertificate (byte[] cardOutputData)
+                +parseCertificate(cardOutputData: ByteArray) → CardCertificateSpi
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: CertificateValidation</color></size>
             }
-            +interface CardCertificateSpi <<red>> {
-                +byte[] getIssuerPublicKeyReference ()
-                +byte[] getCardAid ()
-                +byte[] getCardSerialNumber ()
+            interface CardCertificateSpi <<red>> {
+                +getIssuerPublicKeyReference() → ByteArray
+                +getCardAid() → ByteArray
+                +getCardSerialNumber() → ByteArray
 
-                +CardPublicKeySpi checkCertificateAndGetPublicKey (CaCertificateContentSpi issuerCertificateContent)
+                +checkCertificateAndGetPublicKey(issuerCertificateContent: <color:blue>CaCertificateContent</color>) → <color:blue>ByteArray</color>
+                {method} <size:10><color:#7F8C8D>    ⚠ errors: CertificateValidation, AsymmetricCrypto</color></size>
             }
             }
-            +interface CaCertificateContentSpi <<red>> {
-                +<back:yellow>PublicKey</back> getPublicKey ()
-                +byte[] getPublicKeyReference ()
+            class "<color:blue>CaCertificateContent" as CaCertificateContent <<data>> <<green>> {
+                +val publicKey: PublicKey
+                +val publicKeyReference: ByteArray
 
-                +long getStartDate ()
-                +long getEndDate ()
+                +val startDate: Long
+                +val endDate: Long
 
-                +boolean isAidCheckRequested ()
-                +boolean isAidTruncated ()
-                +byte[] getAid ()
+                +val isAidTruncated: Boolean
+                +val aid: ByteArray?
 
-                +boolean isCaCertificatesAuthenticationAllowed ()
-                +boolean isCardCertificatesAuthenticationAllowed ()
-            }
-            +interface CardPublicKeySpi <<red>> {
-                +byte[] getRawValue ()
+                +val isCaCertificatesAuthenticationAllowed: Boolean
+                +val isCardCertificatesAuthenticationAllowed: Boolean
             }
         }
-        +class "<<Exception>>\nCertificateValidationException" as CertificateValidationException <<green>> {
+        exception "CertificateValidation" as CertificateValidation <<error>> <<green>> {
+            +val message: String
+            +val cause: Any?
         }
     }
 }
@@ -134,26 +148,23 @@ package "calypso.crypto.asymmetric" as api {
 
 AsymmetricCryptoCardTransactionManagerFactorySpi ..> AsymmetricCryptoCardTransactionManagerSpi #C_LINK : provide >
 
-AsymmetricCryptoCardTransactionManagerSpi ..> CardPublicKeySpi #C_USE : use >
-
 CaCertificateParserSpi .right.> CaCertificateSpi #C_LINK : provide >
 CardCertificateParserSpi .right.> CardCertificateSpi #C_LINK : provide >
 
-PcaCertificateSpi ..> CaCertificateContentSpi #C_LINK : provide >
+PcaCertificateSpi ..> CaCertificateContent #C_LINK : provide >
 
-CaCertificateSpi .right.> CaCertificateContentSpi #C_USE : use >
-CaCertificateSpi .right.> CaCertificateContentSpi #C_LINK : provide >
+CaCertificateSpi .right.> CaCertificateContent #C_USE : use >
+CaCertificateSpi .right.> CaCertificateContent #C_LINK : provide >
 
-CardCertificateSpi .up.> CaCertificateContentSpi #C_USE : use >
-CardCertificateSpi .right.> CardPublicKeySpi #C_LINK : provide >
+CardCertificateSpi .up.> CaCertificateContent #C_USE : use >
 
 ' == LAYOUT ==
 
 PcaCertificateSpi -[hidden]- CaCertificateSpi
 CaCertificateParserSpi -[hidden]- CardCertificateParserSpi
-CardCertificateSpi -[hidden]- CertificateValidationException
-AsymmetricCryptoCardTransactionManagerSpi -[hidden]- AsymmetricCryptoException
-AsymmetricCryptoException -[hidden]- ApiProperties
+CardCertificateSpi -[hidden]- CertificateValidation
+AsymmetricCryptoCardTransactionManagerSpi -[hidden]- AsymmetricCrypto
+AsymmetricCrypto -[hidden]- ApiProperties
 
 ' == STYLE ==
 
