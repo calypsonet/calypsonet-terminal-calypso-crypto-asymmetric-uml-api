@@ -2,7 +2,7 @@
 title
     <img:assets/logos/calypso.svg{scale=0.2}>
 
-    Terminal Calypso Crypto Asymmetric API 0.3.+ (2026-09-14)
+    Terminal Calypso Crypto Asymmetric API 0.3 — UML Class Diagram
 end title
 
 ' == THEME (class) ==
@@ -173,5 +173,9 @@ package api.transaction #C_GREY2 {}
 package api.transaction.spi #C_GREY3 {}
 package api.certificate #C_GREY2 {}
 package api.certificate.spi #C_GREY3 {}
+
+center footer
+<size:10><color:#566573>Terminal Calypso Crypto Asymmetric API 0.3 (2026-07-20) — CNA-TCCA-API — Copyright © Calypso Networks Association — CC BY-ND 4.0 (https://creativecommons.org/licenses/by-nd/4.0/) — https://docs.terminal-api.calypsonet.org</color></size>
+end footer
 
 @enduml
