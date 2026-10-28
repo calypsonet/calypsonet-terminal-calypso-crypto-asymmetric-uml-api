@@ -3,21 +3,21 @@ layout: default
 title: "calypsonet-terminal-calypso-crypto-asymmetric-api-spec"
 repository: "calypsonet-terminal-calypso-crypto-asymmetric-api-spec"
 doc_name: "Terminal Calypso Crypto Asymmetric API"
-latest_stable: "0.2.0"
-latest_stable_path: ""
+latest_stable: "0.3.0"
+latest_stable_path: "latest-stable/"
 versions:
-  - version: "0.3.0-SNAPSHOT"
-    status: snapshot
+  - version: "0.3.0"
+    status: stable
     files:
       diagram:
-        name: "class-diagram.svg"
+        name: "261028-SP-CNATerminalAPI-CalypsoCryptoAsymmetric_v0.3.0-class-diagram.svg"
         size: "55 kB"
       html:
-        name: "261028-SP-CNATerminalAPI-CalypsoCryptoAsymmetric_v0.3.0-SNAPSHOT.html"
+        name: "261028-SP-CNATerminalAPI-CalypsoCryptoAsymmetric_v0.3.0.html"
         size: "1.4 MB"
       pdf:
-        name: "261028-SP-CNATerminalAPI-CalypsoCryptoAsymmetric_v0.3.0-SNAPSHOT.pdf"
-        size: "987 kB"
+        name: "261028-SP-CNATerminalAPI-CalypsoCryptoAsymmetric_v0.3.0.pdf"
+        size: "986 kB"
   - version: "0.2.0"
     status: stable
     files:
