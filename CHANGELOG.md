@@ -16,5 +16,9 @@ applied to the specified contract:
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-28
 ### Added
 - Initial baseline (v0.3.0) of the Terminal Calypso Crypto Asymmetric API specification.
+
+[unreleased]: https://github.com/calypsonet/calypsonet-terminal-calypso-crypto-asymmetric-api-spec/compare/0.3.0...HEAD
+[0.3.0]: https://github.com/calypsonet/calypsonet-terminal-calypso-crypto-asymmetric-api-spec/releases/tag/0.3.0
